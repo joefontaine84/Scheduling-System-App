@@ -44,11 +44,13 @@ public abstract class JDBC {
          }
      }
 
-public static void makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
-   if (conn != null)
+public static PreparedStatement makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
+   if (conn != null) {
        preparedStatement = conn.prepareStatement(sqlStatement);
-   else
+        return preparedStatement;}
+   else {
        System.out.println("Prepared Statement Creation Failed!");
+        return null;}
 }
 public static PreparedStatement getPreparedStatement() throws SQLException {
    if (preparedStatement != null)

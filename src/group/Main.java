@@ -1,11 +1,14 @@
 package group;
 
+import group.dao.Data;
 import group.dao.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -18,8 +21,9 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         JDBC.makeConnection();
+        Data.populateUsers();
         launch(args);
         JDBC.closeConnection();
     }

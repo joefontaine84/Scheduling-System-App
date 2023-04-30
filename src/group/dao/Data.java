@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Data {
     private String sql;
-    private static ArrayList<Users> usersList = new ArrayList<Users>();
+    public static ArrayList<Users> usersList = new ArrayList<Users>();
 
     /**
      * This function creates Users objects, populates each object with username and password data,

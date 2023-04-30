@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group.controller.AppointmentsController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="621.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.AppointmentsController">
+   <children>
+      <TableView layoutX="29.0" layoutY="57.0" prefHeight="507.0" prefWidth="859.0">
+        <columns>
+          <TableColumn prefWidth="101.0" text="Appointment_ID" />
+          <TableColumn prefWidth="58.0" text="Title" />
+            <TableColumn prefWidth="78.0" text="Description" />
+            <TableColumn prefWidth="75.0" text="Location" />
+            <TableColumn prefWidth="75.0" text="Contact" />
+            <TableColumn prefWidth="75.0" text="Type" />
+            <TableColumn prefWidth="115.0" text="Start Date &amp; Time" />
+            <TableColumn prefWidth="106.0" text="End Date &amp; Time" />
+            <TableColumn minWidth="4.0" prefWidth="79.0" text="Customer ID" />
+            <TableColumn prefWidth="96.0" text="User ID" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>

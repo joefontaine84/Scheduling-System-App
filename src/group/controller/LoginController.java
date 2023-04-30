@@ -33,29 +33,42 @@ public class LoginController implements Initializable {
     public Text passwordText;
     public Text userLocationText;
     public Button loginButton;
+    public TextField userLocationTextField;
+    private boolean englishLanguage = true;
     @FXML
     private TextField username;
 
     @FXML
     private TextField password;
 
+    /**
+     * This is the first function called once the Login portion of the GUI is fired. This function determines region/language
+     * locale information and adjusts the text translation within the GUI accordingly. In addition, this function populates the User
+     * Location field with disabled text based on the locale information.
+     * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         System.out.println("Initializer for login controller");
-        if (Locale.getDefault().getLanguage().equals("en")) {
-
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            englishLanguage = false;
             usernameText.setText("Nom d'utilisateur:");
             passwordText.setText("Pot de passe:");
             userLocationText.setText("Emplacement:");
             loginButton.setText("Connexion");
-
+            userLocationTextField.setText("Canada");
+        } else if (Locale.getDefault().getISO3Country().equals("USA")){
+            userLocationTextField.setText("United States");
+            System.out.println(Locale.getDefault().getISO3Country());
+        } else if (Locale.getDefault().getISO3Country().equals("GBR")) {
+            userLocationTextField.setText("Great Britain");
         }
     }
 
     /**
      * This function is called when the "Login" button of the GUI login page is clicked and verifies that a correct combination of
      * username and password fields were entered. If a correct combination is entered, the GUI transfers the user to the GUI appointments page,
-     * otherwise, a warning message is displayed.
+     * otherwise, a warning message is displayed. Based on the user's locale, the error message within this function will translate to french
+     * or default to english.
      * */
     @FXML
     public void verifyUser() throws SQLException, IOException {
@@ -76,10 +89,18 @@ public class LoginController implements Initializable {
                 primaryStage.show();
             }
         }
-        if (match == false) {
+        if (match == false && englishLanguage == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid combination of username and password were entered. Please try again.");
             alert.show();
         }
+
+        if (match == false && englishLanguage == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Une combinaison invalide de nom d'utilisateur et de mot de passe a été saisie. Veuillez réessayer.");
+            alert.setHeaderText("Erreur");
+            alert.setTitle("Erreur");
+            alert.show();
+        }
+
     }
 
 }

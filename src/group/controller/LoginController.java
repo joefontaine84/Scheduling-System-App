@@ -10,11 +10,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import static group.dao.Data.usersList;
 import static group.Main.primaryStage;
@@ -25,6 +29,10 @@ import static group.Main.primaryStage;
 
 public class LoginController implements Initializable {
 
+    public Text usernameText;
+    public Text passwordText;
+    public Text userLocationText;
+    public Button loginButton;
     @FXML
     private TextField username;
 
@@ -34,6 +42,14 @@ public class LoginController implements Initializable {
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         System.out.println("Initializer for login controller");
+        if (Locale.getDefault().getLanguage().equals("en")) {
+
+            usernameText.setText("Nom d'utilisateur:");
+            passwordText.setText("Pot de passe:");
+            userLocationText.setText("Emplacement:");
+            loginButton.setText("Connexion");
+
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import static group.dao.Data.usersList;
+import static group.model.Users.usersList;
 import static group.Main.primaryStage;
 
 /**

@@ -1,9 +1,12 @@
 package group.model;
 
+import java.util.ArrayList;
+
 public class Users {
 
     private String username;
     private String password;
+    public static ArrayList<Users> usersList = new ArrayList<Users>();
 
     public String getUsername() {
         return username;

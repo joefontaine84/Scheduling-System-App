@@ -6,18 +6,18 @@
 
 <AnchorPane prefHeight="612.0" prefWidth="1022.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.AppointmentsController">
    <children>
-      <TableView layoutX="82.0" layoutY="53.0" prefHeight="507.0" prefWidth="859.0">
+      <TableView fx:id="apptsTableView" layoutX="82.0" layoutY="53.0" prefHeight="507.0" prefWidth="859.0">
         <columns>
-          <TableColumn prefWidth="101.0" text="Appointment_ID" />
-          <TableColumn prefWidth="58.0" text="Title" />
-            <TableColumn prefWidth="78.0" text="Description" />
-            <TableColumn prefWidth="75.0" text="Location" />
-            <TableColumn prefWidth="75.0" text="Contact" />
-            <TableColumn prefWidth="75.0" text="Type" />
-            <TableColumn prefWidth="115.0" text="Start Date &amp; Time" />
-            <TableColumn prefWidth="106.0" text="End Date &amp; Time" />
-            <TableColumn minWidth="4.0" prefWidth="79.0" text="Customer ID" />
-            <TableColumn prefWidth="96.0" text="User ID" />
+          <TableColumn fx:id="appointmentID" prefWidth="101.0" text="Appointment ID" />
+          <TableColumn fx:id="title" prefWidth="58.0" text="Title" />
+            <TableColumn fx:id="description" prefWidth="90.0" text="Description" />
+            <TableColumn fx:id="location" prefWidth="95.0" text="Location" />
+            <TableColumn fx:id="type" prefWidth="43.0" text="Type" />
+            <TableColumn fx:id="startDateTime" prefWidth="115.0" text="Start Date &amp; Time" />
+            <TableColumn fx:id="endDateTime" prefWidth="128.0" text="End Date &amp; Time" />
+            <TableColumn fx:id="customerID" minWidth="4.0" prefWidth="85.0" text="Customer ID" />
+            <TableColumn fx:id="userID" prefWidth="68.0" text="User ID" />
+            <TableColumn fx:id="contactID" prefWidth="75.0" text="Contact ID" />
         </columns>
       </TableView>
    </children>

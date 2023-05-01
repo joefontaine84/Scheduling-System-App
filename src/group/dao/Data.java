@@ -1,5 +1,7 @@
 package group.dao;
 
+import group.model.Users;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,9 +26,12 @@ public class Data {
             newUser.setPassword(rs.getString(2));
             usersList.add(newUser);
         }
-
-
     }
+
+    public static void populateAppointments() {
+        //String sql = ""
+    }
+
 }
 
 

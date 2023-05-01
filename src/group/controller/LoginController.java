@@ -1,8 +1,6 @@
 package group.controller;
 
 import group.dao.Data;
-import group.dao.JDBC;
-import group.dao.Users;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,9 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,7 +37,7 @@ public class LoginController implements Initializable {
     private TextField username;
 
     @FXML
-    private TextField password;
+    private PasswordField password;
 
     /**
      * This is the first function called once the Login portion of the GUI is fired. This function determines region/language
@@ -82,9 +80,9 @@ public class LoginController implements Initializable {
                 match = true;
                 Scene scene;
                 Parent root;
-                FXMLLoader AppointmentsView = new FXMLLoader(getClass().getResource("/views/AppointmentsView.fxml"));
+                FXMLLoader AppointmentsView = new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
                 root = AppointmentsView.load();
-                scene = new Scene(root, 1076, 520);
+                scene = new Scene(root, 1022, 612);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }

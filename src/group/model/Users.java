@@ -1,4 +1,4 @@
-package group.dao;
+package group.model;
 
 public class Users {
 

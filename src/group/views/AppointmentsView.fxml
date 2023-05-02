@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="612.0" prefWidth="1022.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.AppointmentsController">
+<AnchorPane prefHeight="652.0" prefWidth="1129.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.AppointmentsController">
    <children>
-      <TableView fx:id="apptsTableView" layoutX="82.0" layoutY="53.0" prefHeight="507.0" prefWidth="859.0">
+      <TableView fx:id="apptsTableView" layoutX="96.0" layoutY="41.0" prefHeight="571.0" prefWidth="938.0">
         <columns>
           <TableColumn fx:id="appointmentID" prefWidth="101.0" text="Appointment ID" />
           <TableColumn fx:id="title" prefWidth="58.0" text="Title" />
             <TableColumn fx:id="description" prefWidth="90.0" text="Description" />
             <TableColumn fx:id="location" prefWidth="95.0" text="Location" />
-            <TableColumn fx:id="type" prefWidth="43.0" text="Type" />
-            <TableColumn fx:id="startDateTime" prefWidth="115.0" text="Start Date &amp; Time" />
-            <TableColumn fx:id="endDateTime" prefWidth="128.0" text="End Date &amp; Time" />
-            <TableColumn fx:id="customerID" minWidth="4.0" prefWidth="85.0" text="Customer ID" />
-            <TableColumn fx:id="userID" prefWidth="68.0" text="User ID" />
-            <TableColumn fx:id="contactID" prefWidth="75.0" text="Contact ID" />
+            <TableColumn fx:id="type" prefWidth="87.0" text="Type" />
+            <TableColumn fx:id="startDateTime" prefWidth="122.0" text="Start Date &amp; Time" />
+            <TableColumn fx:id="endDateTime" prefWidth="123.0" text="End Date &amp; Time" />
+            <TableColumn fx:id="customerID" minWidth="4.0" prefWidth="79.0" text="Customer ID" />
+            <TableColumn fx:id="userID" prefWidth="90.0" text="User ID" />
+            <TableColumn fx:id="contactID" prefWidth="92.0" text="Contact ID" />
         </columns>
       </TableView>
+      <Button layoutX="9.0" layoutY="65.0" mnemonicParsing="false" onAction="#switchToAddAppts" prefHeight="61.0" prefWidth="87.0" text="Add &#10;Appointment" textAlignment="CENTER" />
+      <Button layoutX="9.0" layoutY="126.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="87.0" text="Modify&#10;Appointment" textAlignment="CENTER" />
+      <Button layoutX="9.0" layoutY="187.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="87.0" text="Delete&#10;Appointment" textAlignment="CENTER" />
+      <Button layoutX="9.0" layoutY="307.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="87.0" text="Manage&#10;Customers" textAlignment="CENTER" />
+      <Button layoutX="9.0" layoutY="570.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="87.0" text="Exit&#10;Application" textAlignment="CENTER" />
    </children>
 </AnchorPane>

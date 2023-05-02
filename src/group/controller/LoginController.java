@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
                 Parent root;
                 FXMLLoader AppointmentsView = new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
                 root = AppointmentsView.load();
-                scene = new Scene(root, 1022, 612);
+                scene = new Scene(root, 1066, 665);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }

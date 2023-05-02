@@ -98,8 +98,6 @@ public class Appointments {
     public int getContactID() {
         return contactID;
     }
-
-
 }
 
 

@@ -83,6 +83,17 @@ public class AppointmentsController implements Initializable {
             Parent root;
             FXMLLoader modApptsView = new FXMLLoader(getClass().getResource("/group/views/ModApptsView.fxml"));
             root = modApptsView.load();
+
+            ModApptsController modApptsController = modApptsView.getController();
+            modApptsController.appointmentIDTextField.setText(String.valueOf(selected.getAppointmentID()));
+            modApptsController.titleTextField.setText(selected.getTitle());
+            modApptsController.descriptionTextField.setText(selected.getDescription());
+            modApptsController.locationTextField.setText(selected.getLocation());
+
+            //left off here... instead of creating instance of ModApptsController --> create static variable
+            // in ModApptsController that stores index of object selected?
+
+
             scene = new Scene(root, 1066, 665);
             primaryStage.setScene(scene);
             primaryStage.show();

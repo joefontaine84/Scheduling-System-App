@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Appointments {
@@ -63,8 +65,8 @@ public class Appointments {
         this.startDateTime = startDateTime;
     }
 
-    public Timestamp getStartDateTime() {
-        return startDateTime;
+    public String getStartDateTime() {
+        return startDateTime.toLocalDateTime().plusHours(6).format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
     }
 
     public void setEndDateTime(Timestamp endDateTime) {
@@ -73,6 +75,7 @@ public class Appointments {
 
     public Timestamp getEndDateTime() {
         return endDateTime;
+                //toLocalDateTime().plusHours(6).format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
     }
 
     public void setCustomerID(int customerID) {

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
@@ -41,6 +43,8 @@ public class AppointmentsController implements Initializable {
     public TableColumn<Appointments, Integer> customerID;
     public TableColumn<Appointments, Integer> userID;
     public TableColumn<Appointments, Integer> contactID;
+    public RadioButton apptsByWeek;
+    public RadioButton apptsByMonth;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -136,6 +140,16 @@ public class AppointmentsController implements Initializable {
     @FXML
     public void exit () {
         Platform.exit();
+    }
+
+    @FXML
+    public void weekFilter() {
+        if (apptsByWeek.isSelected()) {
+            // filter apptsList variable by system time
+            // how to determine system time?
+            //apptsList.stream().filter(element -> element.getStartDateTime() < )
+            
+        }
     }
 
 }

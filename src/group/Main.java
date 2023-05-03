@@ -10,6 +10,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Main extends Application {
@@ -27,7 +31,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         JDBC.makeConnection();
-
+        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm")));
         //Data.populateUsers();
         launch(args);
         JDBC.closeConnection();

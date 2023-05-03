@@ -2,12 +2,14 @@ package group.controller;
 
 import group.dao.Data;
 import group.model.Appointments;
+import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,6 +22,7 @@ import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
 import static group.model.Appointments.apptsList;
+import static group.controller.ModApptsController.apptIndex;
 
 /**
  * This class provides various functionality for the AppointmentsView FXML page related to the GUI pane observed
@@ -74,62 +77,65 @@ public class AppointmentsController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function changes the view from AppointmentsView to ModApptsView. Additionally, the function records
+     * the index of the appointment object selected of the apptsList static variable so this information can
+     * be used in the ModApptsController initializer function.
+     *
+     * This function is triggered when the "Modify Appointment" button is clicked within the appointments page
+     * of the GUI.
+     *
+     * @throws IOException
+     * */
     @FXML
     public void switchToModAppts() throws IOException {
 
         if (!apptsTableView.getSelectionModel().isEmpty()) {
             Appointments selected = apptsTableView.getSelectionModel().getSelectedItem();
+            apptIndex = apptsList.indexOf(selected);
             Scene scene;
             Parent root;
             FXMLLoader modApptsView = new FXMLLoader(getClass().getResource("/group/views/ModApptsView.fxml"));
             root = modApptsView.load();
-
-            ModApptsController modApptsController = modApptsView.getController();
-            modApptsController.appointmentIDTextField.setText(String.valueOf(selected.getAppointmentID()));
-            modApptsController.titleTextField.setText(selected.getTitle());
-            modApptsController.descriptionTextField.setText(selected.getDescription());
-            modApptsController.locationTextField.setText(selected.getLocation());
-
-            //left off here... instead of creating instance of ModApptsController --> create static variable
-            // in ModApptsController that stores index of object selected?
-
-
-            scene = new Scene(root, 1066, 665);
+            scene = new Scene(root, 745, 468);
             primaryStage.setScene(scene);
             primaryStage.show();
-
-
-/*            Product selected = productTableView.getSelectionModel().getSelectedItem();
-            Parent root;
-            Scene scene;
-            FXMLLoader modifyProductView = new FXMLLoader(getClass().getResource("/group/ims/modifyProductView.fxml"));
-            selectedIndex = getAllProducts().indexOf(selected); // selectedIndex is a static variable of the ModifyProductController class... information assigned to this variable in the Main form will be accessible for use in the Modify Product form.
-            root = modifyProductView.load();
-
-            ModifyProductController modProdCont = modifyProductView.getController(); // creates an instance of the ModifyProductController so that pre-existing product data can be loaded into the textfields
-            modProdCont.Product_ID.setText(String.valueOf(selected.getId())); // sets the Product_ID textfield text to the selected product's ID value
-            modProdCont.Product_InventoryLevel.setText(String.valueOf(selected.getStock())); // sets the Product_InventoryLevel textfield text to the selected product's stock value
-            modProdCont.Product_Max.setText(String.valueOf(selected.getMax())); // sets the Product_Max textfield text to the selected product's max value
-            modProdCont.Product_Min.setText(String.valueOf(selected.getMin())); // sets the Product_Min textfield text to the selected product's min value
-            modProdCont.Product_Name.setText(String.valueOf(selected.getName())); // sets the Product_Name textfield text to the selected product's name value
-            modProdCont.Product_Price.setText(String.valueOf(selected.getPrice())); // sets the Product_Price textfield text to the selected product's price value
-
-
-            scene = new Scene(root, 1076, 602);
-            primaryStage.setScene(scene);
-            primaryStage.show();  */
-
-
-
-
-
-
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment to modify.");
+            alert.show();
         }
-
-
     }
 
+    /**
+     * This function deletes an appointment from the apptsList static variable.
+     * */
+    @FXML
+    public void deleteAppointment() {
 
+        if (!apptsTableView.getSelectionModel().isEmpty()) {
+            Appointments selectedAppt = apptsTableView.getSelectionModel().getSelectedItem();
+            apptsList.remove(apptsList.indexOf(selectedAppt));
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have deleted Appointment ID: " + selectedAppt.getAppointmentID());
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment to delete.");
+        }
+    }
 
+    @FXML
+    public void switchToManageCustomers() throws IOException {
+        Scene scene;
+        Parent root;
+        FXMLLoader manageCustomersView = new FXMLLoader(getClass().getResource("/group/views/ManageCustomersView.fxml"));
+        root = manageCustomersView.load();
+        scene = new Scene(root, 1066, 665);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    @FXML
+    public void exit () {
+        Platform.exit();
+    }
 
 }

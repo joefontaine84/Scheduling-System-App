@@ -4,6 +4,8 @@ import group.dao.Data;
 import group.model.Appointments;
 import javafx.application.Platform;
 import javafx.beans.property.Property;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
 import static group.model.Appointments.apptsList;
@@ -45,6 +48,7 @@ public class AppointmentsController implements Initializable {
     public TableColumn<Appointments, Integer> contactID;
     public RadioButton apptsByWeek;
     public RadioButton apptsByMonth;
+    public RadioButton allAppts;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -142,13 +146,27 @@ public class AppointmentsController implements Initializable {
         Platform.exit();
     }
 
+    /**
+     * This function applies to the three radio buttons in the Appointments pane of the GUI and controls how the displayed appointments are
+     * filtered by the selected button (all appointments, by current month, or by current week).
+     * */
     @FXML
-    public void weekFilter() {
+    public void timeFilter() {
+        ObservableList<Appointments> tempList = FXCollections.observableArrayList();
         if (apptsByWeek.isSelected()) {
             LocalDateTime dateTimeOffset = LocalDateTime.now().plusDays(7);
-            //apptsList.stream().filter(element -> element.getStartDateTime().before(Timestamp.valueOf(dateTimeOffset)))
-
+            tempList = apptsList.stream().filter(element -> element.getStartDateTime().before(Timestamp.valueOf(dateTimeOffset))).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            apptsTableView.setItems(tempList);
+        } else if (apptsByMonth.isSelected()) {
+            int month = LocalDateTime.now().getMonthValue();
+            int year = LocalDateTime.now().getYear();
+            tempList = apptsList.stream().filter(element -> element.getStartDateTime().toLocalDateTime().getMonthValue() == month && element.getStartDateTime().toLocalDateTime().getYear() == year).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            apptsTableView.setItems(tempList);
+        } else if (allAppts.isSelected()) {
+            apptsTableView.setItems(apptsList);
         }
     }
+
+
 
 }

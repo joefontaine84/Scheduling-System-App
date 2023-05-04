@@ -28,11 +28,12 @@
       <Button layoutX="9.0" layoutY="187.0" mnemonicParsing="false" onAction="#deleteAppointment" prefHeight="61.0" prefWidth="87.0" text="Delete&#10;Appointment" textAlignment="CENTER" />
       <Button layoutX="9.0" layoutY="307.0" mnemonicParsing="false" onAction="#switchToManageCustomers" prefHeight="61.0" prefWidth="87.0" text="Manage&#10;Customers" textAlignment="CENTER" />
       <Button layoutX="9.0" layoutY="570.0" mnemonicParsing="false" onAction="#exit" prefHeight="42.0" prefWidth="87.0" text="Exit&#10;Application" textAlignment="CENTER" />
-      <RadioButton fx:id="apptsByWeek" layoutX="237.0" layoutY="621.0" mnemonicParsing="false" text="View Appointments By Week">
+      <RadioButton fx:id="apptsByWeek" layoutX="478.0" layoutY="621.0" mnemonicParsing="false" onAction="#timeFilter" text="View Appointments By Week">
          <toggleGroup>
             <ToggleGroup fx:id="timeFilter" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="apptsByMonth" layoutX="614.0" layoutY="621.0" mnemonicParsing="false" text="View Appointments By Month" toggleGroup="$timeFilter" />
+      <RadioButton fx:id="apptsByMonth" layoutX="750.0" layoutY="621.0" mnemonicParsing="false" onAction="#timeFilter" text="View Appointments By Month" toggleGroup="$timeFilter" />
+      <RadioButton fx:id="allAppts" layoutX="239.0" layoutY="621.0" mnemonicParsing="false" onAction="#timeFilter" selected="true" text="View All Appointments" toggleGroup="$timeFilter" />
    </children>
 </AnchorPane>

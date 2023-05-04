@@ -145,10 +145,9 @@ public class AppointmentsController implements Initializable {
     @FXML
     public void weekFilter() {
         if (apptsByWeek.isSelected()) {
-            // filter apptsList variable by system time
-            // how to determine system time?
-            //apptsList.stream().filter(element -> element.getStartDateTime() < )
-            
+            LocalDateTime dateTimeOffset = LocalDateTime.now().plusDays(7);
+            //apptsList.stream().filter(element -> element.getStartDateTime().before(Timestamp.valueOf(dateTimeOffset)))
+
         }
     }
 

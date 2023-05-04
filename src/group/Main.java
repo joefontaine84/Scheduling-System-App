@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -31,7 +32,12 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         JDBC.makeConnection();
-        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm")));
+        //System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm")));
+        Timestamp test1 = Timestamp.valueOf(LocalDateTime.now());
+        System.out.println(test1);
+        Timestamp test2 = Timestamp.valueOf(LocalDateTime.now().plusDays(2));
+        System.out.println(test2);
+        System.out.println(test1.before(test2));
         //Data.populateUsers();
         launch(args);
         JDBC.closeConnection();

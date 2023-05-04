@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Appointments {
     private int appointmentID;
@@ -65,8 +66,12 @@ public class Appointments {
         this.startDateTime = startDateTime;
     }
 
-    public String getStartDateTime() {
-        return startDateTime.toLocalDateTime().plusHours(6).format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
+    public Timestamp getStartDateTime() {
+/*        String timePattern = "uuuu-MM-dd kk:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timePattern);
+        LocalDateTime localDateTime = LocalDateTime.from(formatter.parse(timePattern));
+        startDateTime = Timestamp.valueOf(timePattern);*/
+        return startDateTime;
     }
 
     public void setEndDateTime(Timestamp endDateTime) {
@@ -75,7 +80,7 @@ public class Appointments {
 
     public Timestamp getEndDateTime() {
         return endDateTime;
-                //toLocalDateTime().plusHours(6).format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
+                //.toLocalDateTime().format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
     }
 
     public void setCustomerID(int customerID) {

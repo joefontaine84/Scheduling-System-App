@@ -1,12 +1,14 @@
 package group.dao;
 
 import group.model.Appointments;
+import group.model.Contacts;
 import group.model.Users;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static group.model.Contacts.contactList;
 import static group.model.Users.usersList;
 import static group.model.Appointments.apptsList;
 
@@ -53,6 +55,26 @@ public class Data {
             newAppts.setContactID(rs.getInt(10));
             apptsList.add(newAppts);
         }
+    }
+
+    public static void populateContacts () throws SQLException {
+        String sql = "SELECT Contact_Name FROM client_schedule.contacts";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Contacts contact = new Contacts();
+            contact.setName(rs.getString(1));
+            contactList.add(contact);
+        }
+    }
+
+
+    public static int getNextAppointmentID () throws SQLException {
+        String sql = "SELECT max(Appointment_ID) as Appointment_ID from client_schedule.appointments";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        return rs.getInt(1) + 1;
     }
 
 }

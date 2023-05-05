@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -14,11 +15,10 @@
       <TextField fx:id="descriptionTextField" layoutX="171.0" layoutY="215.0" />
       <TextField fx:id="locationTextField" layoutX="171.0" layoutY="258.0" />
       <TextField fx:id="typeTextField" layoutX="171.0" layoutY="304.0" />
-      <TextField fx:id="startDateTimeTextField" layoutX="500.0" layoutY="130.0" />
-      <TextField fx:id="userIDTextField" layoutX="500.0" layoutY="258.0" />
+      <TextField fx:id="startDateTimeTextField" layoutX="500.0" layoutY="130.0" promptText="yyyy-mm-dd hh:mm" />
+      <TextField fx:id="userIDTextField" layoutX="500.0" layoutY="258.0" onAction="#test" />
       <TextField fx:id="customerIDTextField" layoutX="500.0" layoutY="215.0" />
       <TextField fx:id="endDateTimeTextField" layoutX="500.0" layoutY="175.0" />
-      <TextField fx:id="contactIDTextField" layoutX="500.0" layoutY="304.0" />
       <Text layoutX="54.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID:" />
       <Text layoutX="116.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
       <Text layoutX="79.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
@@ -36,6 +36,7 @@
       </Text>
       <Button layoutX="294.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Save" />
       <Button layoutX="389.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
-      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="352.0" prefWidth="150.0" promptText="Contact ID" />
+      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="306.0" prefWidth="150.0" promptText="Select Contact ID" />
+      <DatePicker fx:id="startDatePicker" layoutX="488.0" layoutY="67.0" />
    </children>
 </AnchorPane>

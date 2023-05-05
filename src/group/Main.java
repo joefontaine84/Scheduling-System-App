@@ -3,6 +3,7 @@ package group;
 import group.controller.LoginController;
 import group.dao.Data;
 import group.dao.JDBC;
+import group.model.Appointments;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

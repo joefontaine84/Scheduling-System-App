@@ -4,8 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -67,11 +69,11 @@ public class Appointments {
     }
 
     public Timestamp getStartDateTime() {
-/*        String timePattern = "uuuu-MM-dd kk:mm";
+        String timePattern = "yyyy-MM-dd kk:mm";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timePattern);
-        LocalDateTime localDateTime = LocalDateTime.from(formatter.parse(timePattern));
-        startDateTime = Timestamp.valueOf(timePattern);*/
-        return startDateTime;
+        LocalDateTime localDateTime = LocalDateTime.parse(startDateTime.toLocalDateTime().toString(), formatter);
+
+        return Timestamp.valueOf(localDateTime);
     }
 
     public void setEndDateTime(Timestamp endDateTime) {

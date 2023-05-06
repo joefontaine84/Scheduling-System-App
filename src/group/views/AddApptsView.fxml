@@ -10,33 +10,36 @@
 
 <AnchorPane prefHeight="468.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.AddApptsController">
    <children>
-      <TextField fx:id="appointmentIDTextField" disable="true" layoutX="171.0" layoutY="130.0" />
-      <TextField fx:id="titleTextField" layoutX="171.0" layoutY="175.0" />
-      <TextField fx:id="descriptionTextField" layoutX="171.0" layoutY="215.0" />
-      <TextField fx:id="locationTextField" layoutX="171.0" layoutY="258.0" />
-      <TextField fx:id="typeTextField" layoutX="171.0" layoutY="304.0" />
-      <TextField fx:id="startDateTimeTextField" layoutX="500.0" layoutY="130.0" promptText="yyyy-mm-dd hh:mm" />
-      <TextField fx:id="userIDTextField" layoutX="500.0" layoutY="258.0" onAction="#test" />
-      <TextField fx:id="customerIDTextField" layoutX="500.0" layoutY="215.0" />
-      <TextField fx:id="endDateTimeTextField" layoutX="500.0" layoutY="175.0" />
-      <Text layoutX="54.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID:" />
-      <Text layoutX="116.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
-      <Text layoutX="79.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
-      <Text layoutX="94.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
-      <Text layoutX="114.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" />
-      <Text layoutX="387.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date &amp; Time:" />
-      <Text layoutX="391.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date &amp; Time:" />
-      <Text layoutX="415.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID:" />
-      <Text layoutX="442.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID:" />
-      <Text layoutX="424.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact ID:" />
-      <Text layoutX="275.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Appointment:">
+      <TextField fx:id="appointmentIDTextField" disable="true" layoutX="171.0" layoutY="109.0" />
+      <TextField fx:id="titleTextField" layoutX="171.0" layoutY="154.0" />
+      <TextField fx:id="descriptionTextField" layoutX="171.0" layoutY="194.0" />
+      <TextField fx:id="locationTextField" layoutX="171.0" layoutY="237.0" />
+      <TextField fx:id="typeTextField" layoutX="171.0" layoutY="283.0" />
+      <TextField fx:id="userIDTextField" layoutX="170.0" layoutY="369.0" />
+      <TextField fx:id="customerIDTextField" layoutX="170.0" layoutY="326.0" />
+      <TextField fx:id="startDateTimeTextField" layoutX="500.0" layoutY="154.0" />
+      <Text layoutX="54.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID:" />
+      <Text layoutX="116.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
+      <Text layoutX="79.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+      <Text layoutX="94.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
+      <Text layoutX="114.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" />
+      <Text layoutX="425.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
+      <Text layoutX="426.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
+      <Text layoutX="85.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID:" />
+      <Text layoutX="112.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID:" />
+      <Text layoutX="424.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact ID:" />
+      <Text layoutX="275.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Appointment:">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Button layoutX="294.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Save" />
-      <Button layoutX="389.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
-      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="306.0" prefWidth="150.0" promptText="Select Contact ID" />
-      <DatePicker fx:id="startDatePicker" layoutX="488.0" layoutY="67.0" />
+      <Button layoutX="294.0" layoutY="429.0" mnemonicParsing="false" onAction="#formatStartDateTime" prefHeight="25.0" prefWidth="52.0" text="Save" />
+      <Button layoutX="389.0" layoutY="429.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
+      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="285.0" prefWidth="150.0" promptText="Select Contact ID" />
+      <DatePicker fx:id="startDatePicker" layoutX="500.0" layoutY="109.0" prefHeight="25.0" prefWidth="149.0" />
+      <DatePicker layoutX="500.0" layoutY="194.0" prefHeight="25.0" prefWidth="149.0" />
+      <Text layoutX="431.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:" />
+      <TextField layoutX="500.0" layoutY="237.0" />
+      <Text layoutX="430.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
    </children>
 </AnchorPane>

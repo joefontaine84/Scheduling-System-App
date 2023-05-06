@@ -13,7 +13,9 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.ResourceBundle;
 
 import static group.dao.Data.getNextAppointmentID;
@@ -26,6 +28,7 @@ public class AddApptsController implements Initializable {
     public TextField appointmentIDTextField;
     public ComboBox<String> contactIDComboBox;
     public DatePicker startDatePicker;
+    public TextField startDateTimeTextField;
 
 
     @FXML
@@ -47,14 +50,29 @@ public class AddApptsController implements Initializable {
     }
 
     @FXML
-    public void test() {
-        //contactIDComboBox.getValue(); ... this is to get value from contactIDComboBox
+    public void formatStartDateTime() {
+        //contactIDComboBox.getValue(); this is to get value from contactIDComboBox
 
-/*        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
 
         if (startDatePicker.getValue() != null) {
-            System.out.println(startDatePicker.getValue().format(formatter));
-        }..... this is to obtain the date from the datePicker*/
+            String date = startDatePicker.getValue().format(formatter);
+            String time = startDateTimeTextField.getText();
+            LocalTime localTime = LocalTime.parse(time, timeFormatter);
+            String combinedDateTime = date + " " + localTime + ":00";
+            System.out.println(combinedDateTime);
+
+            //write try catch statement!!!
+
+        }
+
+
+
+
+        // this is to obtain the date from the datePicker*/
 
         //to manage appointments so that they don't overlap:
         //enter in time (24-hour clock)

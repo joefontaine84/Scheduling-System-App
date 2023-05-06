@@ -3,6 +3,7 @@ package group.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -69,11 +70,13 @@ public class Appointments {
     }
 
     public Timestamp getStartDateTime() {
-        String timePattern = "yyyy-MM-dd kk:mm";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timePattern);
-        LocalDateTime localDateTime = LocalDateTime.parse(startDateTime.toLocalDateTime().toString(), formatter);
+        //implement the commented code block below for formatting to Appointments pane
+        /*        String dateTimePattern = "uuuu-MM-dd HH:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
+        String time = startDateTime.toLocalDateTime().format(formatter);
+        return time;*/
 
-        return Timestamp.valueOf(localDateTime);
+        return startDateTime;
     }
 
     public void setEndDateTime(Timestamp endDateTime) {
@@ -81,8 +84,14 @@ public class Appointments {
     }
 
     public Timestamp getEndDateTime() {
+
+        //implement the commented code block below for formatting to Appointments pane
+        /*        String dateTimePattern = "uuuu-MM-dd HH:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
+        String time = endDateTime.toLocalDateTime().format(formatter);
+        return time;*/
+
         return endDateTime;
-                //.toLocalDateTime().format(DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm"));
     }
 
     public void setCustomerID(int customerID) {

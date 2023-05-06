@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 public class Contacts {
 
     private String name;
+    private int contactID;
     public static ObservableList<Contacts> contactList = FXCollections.observableArrayList();
 
     public String getName() {
@@ -14,6 +15,14 @@ public class Contacts {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getContactID() {
+        return contactID;
+    }
+
+    public void setContactID(int contactID) {
+        this.contactID = contactID;
     }
 
 }

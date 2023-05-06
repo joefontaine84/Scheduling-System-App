@@ -70,7 +70,7 @@ public class LoginController implements Initializable {
      * */
     @FXML
     public void verifyUser() throws SQLException, IOException {
-        Data.populateUsers();
+        //Data.populateUsers();
         String providedUsername = username.getText();
         String providedPassword = password.getText();
         boolean match = false;

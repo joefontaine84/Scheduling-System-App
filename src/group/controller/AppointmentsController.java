@@ -52,8 +52,7 @@ public class AppointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            Data.populateAppointments();
+            //Data.populateAppointments();
             apptsTableView.setItems(apptsList);
             appointmentID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("appointmentID"));
             title.setCellValueFactory(new PropertyValueFactory<Appointments, String>("title"));
@@ -65,9 +64,6 @@ public class AppointmentsController implements Initializable {
             customerID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("customerID"));
             userID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("userID"));
             contactID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("contactID"));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 
     /**

@@ -58,12 +58,13 @@ public class Data {
     }
 
     public static void populateContacts () throws SQLException {
-        String sql = "SELECT Contact_Name FROM client_schedule.contacts";
+        String sql = "SELECT Contact_ID, Contact_Name FROM client_schedule.contacts";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Contacts contact = new Contacts();
-            contact.setName(rs.getString(1));
+            contact.setContactID(rs.getInt(1));
+            contact.setName(rs.getString(2));
             contactList.add(contact);
         }
     }

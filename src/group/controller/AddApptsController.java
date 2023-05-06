@@ -6,12 +6,17 @@ import group.model.Contacts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -21,8 +26,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.ResourceBundle;
 
+import static group.Main.primaryStage;
 import static group.dao.Data.getNextAppointmentID;
 import static group.dao.Data.populateContacts;
+import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
 
 public class AddApptsController implements Initializable {
@@ -46,7 +53,7 @@ public class AddApptsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             appointmentIDTextField.setText(String.valueOf(getNextAppointmentID()));
-            populateContacts();
+            //populateContacts();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -59,17 +66,39 @@ public class AddApptsController implements Initializable {
     }
 
     @FXML
-    public void save() {
-        Appointments appt = new Appointments();
-        appt.setContactID(Integer.valueOf(appointmentIDTextField.getText()));
-        appt.setTitle(titleTextField.getText());
-        appt.setDescription(descriptionTextField.getText());
-        appt.setLocation(locationTextField.getText());
-        appt.setType(typeTextField.getText());
-        appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
-        appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
-        appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
-        appt.setUserID(Integer.valueOf(userIDTextField.getText()));
+    public void save() throws IOException {
+        try {
+            Appointments appt = new Appointments();
+            appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
+            appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+            appt.setUserID(Integer.valueOf(userIDTextField.getText()));
+            appt.setTitle(titleTextField.getText());
+            appt.setDescription(descriptionTextField.getText());
+            appt.setLocation(locationTextField.getText());
+            appt.setType(typeTextField.getText());
+            appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
+            appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
+            appt.setContactID(findContactID());
+            apptsList.add(appt);
+            switchToAppointmentsController();
+        } catch (NumberFormatException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
+            alert.show();
+        } catch (NullPointerException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Contact.");
+            alert.show();
+        }//NOTE THAT APPOINTMENTID WILL ALWAYS BE 3 UNTIL THE APPOINTMENTS ARE ADDED INTO THE DATABASE, SEE GETNEXTAPPOINTID function in Data Class.
+    }
+
+    @FXML
+    public void switchToAppointmentsController() throws IOException {
+        Scene scene;
+        Parent root;
+        FXMLLoader appointmentsController= new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
+        root = appointmentsController.load();
+        scene = new Scene(root, 1066, 665);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
@@ -77,7 +106,7 @@ public class AddApptsController implements Initializable {
      * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
      * provides validation that the time has been entered according to the provided pattern.
      * */
-    @FXML
+
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
@@ -101,8 +130,20 @@ public class AddApptsController implements Initializable {
         }
     }
 
-    public void validateContactSelection() {
-
+    /**
+     * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
+     * @returns The contact ID for the contact selected.
+     * */
+    @FXML
+    public Integer findContactID() {
+        if (contactIDComboBox.getValue() != null) {
+            for (Contacts contact : contactList) {
+                if (contactIDComboBox.getValue().equals(contact.getName())) {
+                    return contact.getContactID();
+                }
+            }
+        }
+        return null;
     }
 
 

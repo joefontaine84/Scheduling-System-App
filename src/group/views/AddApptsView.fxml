@@ -33,8 +33,8 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <Button layoutX="294.0" layoutY="429.0" mnemonicParsing="false" onAction="#formatStartDateTime" prefHeight="25.0" prefWidth="52.0" text="Save" />
-      <Button layoutX="389.0" layoutY="429.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
+      <Button layoutX="294.0" layoutY="429.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="52.0" text="Save" />
+      <Button layoutX="389.0" layoutY="429.0" mnemonicParsing="false" onAction="#switchToAppointmentsController" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
       <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="328.0" prefWidth="150.0" promptText="Select Contact ID" />
       <DatePicker fx:id="startDatePicker" layoutX="500.0" layoutY="109.0" prefHeight="25.0" prefWidth="149.0" />
       <DatePicker fx:id="endDatePicker" layoutX="500.0" layoutY="194.0" prefHeight="25.0" prefWidth="149.0" />

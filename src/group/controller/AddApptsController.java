@@ -79,15 +79,34 @@ public class AddApptsController implements Initializable {
             appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
             appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             appt.setContactID(findContactID());
+
+            //Problem: logic check that user-entered start time and end time is within business hours
+            //Facts: (1) business hours are 8a to 10p, EST
+            //To-Do: (1) get values entered in start and end times
+            //          (2) compare values to business hours, must compare Locale to EST
+            //Actions: (1) Created inputvalidation custom exception... now I can throw this error if there is a
+            //              logic check that is invalid and at it to the catch list below.
+
+           // LocalTime timeConversion = appt.getStartDateTime().toLocalDateTime().toLocalTime();
+           // timeConversion.atOffset()
+
+            if (appt.getStartDateTime().toLocalDateTime().getHour())
+
+
             apptsList.add(appt);
             switchToAppointmentsController();
         } catch (NumberFormatException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
             alert.show();
         } catch (NullPointerException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Contact.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, dates, and times.");
             alert.show();
-        }//NOTE THAT APPOINTMENTID WILL ALWAYS BE 3 UNTIL THE APPOINTMENTS ARE ADDED INTO THE DATABASE, SEE GETNEXTAPPOINTID function in Data Class.
+        } catch (DateTimeException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values as the following format: HH:mm");
+            alert.show();
+        }
+
+        //NOTE THAT APPOINTMENTID WILL ALWAYS BE 3 UNTIL THE APPOINTMENTS ARE ADDED INTO THE DATABASE, SEE GETNEXTAPPOINTID function in Data Class.
     }
 
     @FXML
@@ -111,7 +130,15 @@ public class AddApptsController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
 
-        if (datePicker.getValue() != null) {
+        String combinedDateTime = "";
+
+        String date = datePicker.getValue().format(formatter);
+        String time = textField.getText();
+        LocalTime localTime = LocalTime.parse(time, timeFormatter);
+        combinedDateTime = date + " " + localTime + ":00";
+        return Timestamp.valueOf(combinedDateTime);
+    }
+/*        if (datePicker.getValue() != null) {
             String combinedDateTime = "";
             try {
                 String date = datePicker.getValue().format(formatter);
@@ -128,22 +155,21 @@ public class AddApptsController implements Initializable {
             alert.show();
             return null;
         }
-    }
+    }*/
 
     /**
      * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
      * @returns The contact ID for the contact selected.
      * */
     @FXML
-    public Integer findContactID() {
-        if (contactIDComboBox.getValue() != null) {
-            for (Contacts contact : contactList) {
-                if (contactIDComboBox.getValue().equals(contact.getName())) {
-                    return contact.getContactID();
-                }
+    public int findContactID() {
+        int contactID = 0;
+        for (Contacts contactObj : contactList) {
+            if (contactIDComboBox.getValue().equals(contactObj.getName())) {
+                contactID = contactObj.getContactID();
             }
         }
-        return null;
+        return contactID;
     }
 
 

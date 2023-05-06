@@ -7,12 +7,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.DateTimeException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
@@ -29,6 +32,14 @@ public class AddApptsController implements Initializable {
     public ComboBox<String> contactIDComboBox;
     public DatePicker startDatePicker;
     public TextField startDateTimeTextField;
+    public TextField titleTextField;
+    public TextField descriptionTextField;
+    public TextField locationTextField;
+    public TextField typeTextField;
+    public TextField userIDTextField;
+    public TextField customerIDTextField;
+    public TextField endDateTimeTextField;
+    public DatePicker endDatePicker;
 
 
     @FXML
@@ -45,29 +56,54 @@ public class AddApptsController implements Initializable {
             templist.add(element.getName());
         }
         contactIDComboBox.setItems(templist);
-
-
     }
 
     @FXML
-    public void formatStartDateTime() {
-        //contactIDComboBox.getValue(); this is to get value from contactIDComboBox
+    public void save() {
+        Appointments appt = new Appointments();
+        appt.setContactID(Integer.valueOf(appointmentIDTextField.getText()));
+        appt.setTitle(titleTextField.getText());
+        appt.setDescription(descriptionTextField.getText());
+        appt.setLocation(locationTextField.getText());
+        appt.setType(typeTextField.getText());
+        appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+        appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
+        appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
+        appt.setUserID(Integer.valueOf(userIDTextField.getText()));
+    }
 
-
-
+    /**
+     * Within the AddApptsController, this function is meant to combine a date chosen in a DatePicker
+     * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
+     * provides validation that the time has been entered according to the provided pattern.
+     * */
+    @FXML
+    public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
 
-        if (startDatePicker.getValue() != null) {
-            String date = startDatePicker.getValue().format(formatter);
-            String time = startDateTimeTextField.getText();
-            LocalTime localTime = LocalTime.parse(time, timeFormatter);
-            String combinedDateTime = date + " " + localTime + ":00";
-            System.out.println(combinedDateTime);
-
-            //write try catch statement!!!
-
+        if (datePicker.getValue() != null) {
+            String combinedDateTime = "";
+            try {
+                String date = datePicker.getValue().format(formatter);
+                String time = textField.getText();
+                LocalTime localTime = LocalTime.parse(time, timeFormatter);
+                combinedDateTime = date + " " + localTime + ":00";
+            } catch (DateTimeException exception) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter a time for the appointment in the format of HH:mm");
+                alert.show();
+            }
+            return Timestamp.valueOf(combinedDateTime);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a start and end date.");
+            alert.show();
+            return null;
         }
+    }
+
+    public void validateContactSelection() {
+
+    }
 
 
 
@@ -81,7 +117,7 @@ public class AddApptsController implements Initializable {
         //create list of selecteddates?
 
 
-    }
+
 
 
 }

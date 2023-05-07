@@ -4,6 +4,7 @@ import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
+import group.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,13 +25,17 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
 import static group.dao.Data.getNextAppointmentID;
 import static group.dao.Data.populateContacts;
 import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
+import static group.model.Users.usersList;
 
 public class AddApptsController implements Initializable {
 
@@ -47,10 +52,13 @@ public class AddApptsController implements Initializable {
     public TextField customerIDTextField;
     public TextField endDateTimeTextField;
     public DatePicker endDatePicker;
+    public ComboBox userIDComboBox;
 
 
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Establish immutable appointmentID text field
         try {
             appointmentIDTextField.setText(String.valueOf(getNextAppointmentID()));
             //populateContacts();
@@ -58,12 +66,24 @@ public class AddApptsController implements Initializable {
             throwables.printStackTrace();
         }
 
-        ObservableList<String> templist = FXCollections.observableArrayList();
+        // Populate ContactList
+        ObservableList<String> tempContactList = FXCollections.observableArrayList();
         for (Contacts element : contactList) {
-            templist.add(element.getName());
+            tempContactList.add(element.getName());
         }
-        contactIDComboBox.setItems(templist);
+        contactIDComboBox.setItems(tempContactList);
+
+        // Populate User ID List
+        ObservableList<String> tempUserList = FXCollections.observableArrayList();
+        for (Users element : usersList) {
+            tempUserList.add(element.getUsername());
+        }
+        userIDComboBox.setItems(tempUserList);
+
     }
+
+
+
 
     @FXML
     public void save() throws IOException, InputValidationException {
@@ -71,7 +91,7 @@ public class AddApptsController implements Initializable {
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
             appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
-            appt.setUserID(Integer.valueOf(userIDTextField.getText()));
+            appt.setUserID(findUserID());
             appt.setTitle(titleTextField.getText());
             appt.setDescription(descriptionTextField.getText());
             appt.setLocation(locationTextField.getText());
@@ -80,26 +100,26 @@ public class AddApptsController implements Initializable {
             appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             appt.setContactID(findContactID());
 
-            //Problem: logic check that user-entered start time and end time is within business hours
-            //Facts: (1) business hours are 8a to 10p, EST
-            //To-Do: (1) get values entered in start and end times
-            //          (2) compare values to business hours, must compare Locale to EST
-            //Actions: (1) Created inputvalidation custom exception... now I can throw this error if there is a
-            //              logic check that is invalid and at it to the catch list below.
+            // determine if the time entered overlaps with an existing appointment for the contact person
 
-            // LocalTime timeConversion = appt.getStartDateTime().toLocalDateTime().toLocalTime();
-            // timeConversion.atOffset()
+            // for the contact selected, compare appointment being entered with appointments already scheduled for this contact
 
- /*           ZoneId asiaSingapore = ZoneId.of("Asia/Singapore");
-            LocalDateTime currentLocalTime = LocalDateTime.now();
+            // need to know: contact selected, appointments where this contact is selected
 
-            ZonedDateTime zonedDateTime = currentLocalTime.atZone(asiaSingapore);
-            LocalDateTime asiaSingaporeTime = LocalDateTime.now(asiaSingapore);
+            // actions: compare appointments where this contact is selected to the times entered
 
-            */
-            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
+            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
+            for (Appointments element : apptsByContact) {
+                // how are overlapping meetings defined? : start time or end time begins between appt
+                if (!(appt.getStartDateTime().before(element.getStartDateTime()) && appt.getEndDateTime().before(element.getStartDateTime())) || !(appt.getStartDateTime().after(element.getStartDateTime()) && appt.getEndDateTime().after(element.getEndDateTime()))) {
+                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
+                }
+            }
+
+            // convert from UTC to localdatetime when showing times in tableview
+
+            // start code block: the following code block determines if the appointment times are entered during business hours based on EST
             ZoneId zoneId = ZoneId.of("America/New_York");
-
             ZonedDateTime start = appt.getStartDateTime().toLocalDateTime().atZone(zoneId); //start time in EST
             ZonedDateTime end = appt.getEndDateTime().toLocalDateTime().atZone(zoneId); // end time in EST
 
@@ -107,7 +127,7 @@ public class AddApptsController implements Initializable {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST.");
             }
 
-
+            // end code block
 
             apptsList.add(appt);
             switchToAppointmentsController();
@@ -115,7 +135,7 @@ public class AddApptsController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
             alert.show();
         } catch (NullPointerException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, dates, and times.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, user ID, dates, and times.");
             alert.show();
         } catch (DateTimeException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values as the following format: HH:mm");
@@ -132,7 +152,7 @@ public class AddApptsController implements Initializable {
     public void switchToAppointmentsController() throws IOException {
         Scene scene;
         Parent root;
-        FXMLLoader appointmentsController= new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
+        FXMLLoader appointmentsController = new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
         root = appointmentsController.load();
         scene = new Scene(root, 1066, 665);
         primaryStage.setScene(scene);
@@ -143,7 +163,7 @@ public class AddApptsController implements Initializable {
      * Within the AddApptsController, this function is meant to combine a date chosen in a DatePicker
      * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
      * provides validation that the time has been entered according to the provided pattern.
-     * */
+     */
 
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -157,29 +177,13 @@ public class AddApptsController implements Initializable {
         combinedDateTime = date + " " + localTime + ":00";
         return Timestamp.valueOf(combinedDateTime);
     }
-/*        if (datePicker.getValue() != null) {
-            String combinedDateTime = "";
-            try {
-                String date = datePicker.getValue().format(formatter);
-                String time = textField.getText();
-                LocalTime localTime = LocalTime.parse(time, timeFormatter);
-                combinedDateTime = date + " " + localTime + ":00";
-            } catch (DateTimeException exception) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter a time for the appointment in the format of HH:mm");
-                alert.show();
-            }
-            return Timestamp.valueOf(combinedDateTime);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a start and end date.");
-            alert.show();
-            return null;
-        }
-    }*/
 
     /**
      * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
+     *
      * @returns The contact ID for the contact selected.
-     * */
+     */
+
     @FXML
     public int findContactID() {
         int contactID = 0;
@@ -191,18 +195,19 @@ public class AddApptsController implements Initializable {
         return contactID;
     }
 
-
-
-
-        // this is to obtain the date from the datePicker*/
-
-        //to manage appointments so that they don't overlap:
-        //enter in time (24-hour clock)
-        //localdatetime.before & localdatetime.after... compare start times & end times to see if they overlap if they have
-        //same date
-        //create list of selecteddates?
-
-
+    /**
+     * This function returns the corresponding userID of the User that is selected when adding an appointment.
+     *
+     * @returns The user ID for the User selected.
+     * */
+    public int findUserID() {
+        int userID = 0;
+        for (Users userObj : usersList) {
+            if (userIDComboBox.getValue().equals(userObj.getUsername())) {
+                userID = userObj.getUserID();
+            }
+        }   return userID;
+    }
 
 
 

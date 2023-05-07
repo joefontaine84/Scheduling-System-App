@@ -7,7 +7,9 @@ public class Contacts {
 
     private String name;
     private int contactID;
+
     public static ObservableList<Contacts> contactList = FXCollections.observableArrayList();
+    //public ObservableList<Appointments> contactApptList = FXCollections.observableArrayList();
 
     public String getName() {
         return name;

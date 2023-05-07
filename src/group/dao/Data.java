@@ -22,13 +22,14 @@ public class Data {
      * and adds each Users object to the usersList variable.
      * */
     public static void populateUsers() throws SQLException {
-        String sql = "SELECT User_Name, Password FROM users";
+        String sql = "SELECT User_ID, User_Name, Password FROM users";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Users newUser = new Users();
-            newUser.setUsername(rs.getString(1));
-            newUser.setPassword(rs.getString(2));
+            newUser.setUserID(rs.getInt(1));
+            newUser.setUsername(rs.getString(2));
+            newUser.setPassword(rs.getString(3));
             usersList.add(newUser);
         }
     }

@@ -1,6 +1,7 @@
 package group.controller;
 
 import group.dao.Data;
+import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
 import javafx.collections.FXCollections;
@@ -20,8 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.DateTimeException;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.ResourceBundle;
@@ -66,7 +66,7 @@ public class AddApptsController implements Initializable {
     }
 
     @FXML
-    public void save() throws IOException {
+    public void save() throws IOException, InputValidationException {
         try {
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
@@ -87,10 +87,26 @@ public class AddApptsController implements Initializable {
             //Actions: (1) Created inputvalidation custom exception... now I can throw this error if there is a
             //              logic check that is invalid and at it to the catch list below.
 
-           // LocalTime timeConversion = appt.getStartDateTime().toLocalDateTime().toLocalTime();
-           // timeConversion.atOffset()
+            // LocalTime timeConversion = appt.getStartDateTime().toLocalDateTime().toLocalTime();
+            // timeConversion.atOffset()
 
-            if (appt.getStartDateTime().toLocalDateTime().getHour())
+ /*           ZoneId asiaSingapore = ZoneId.of("Asia/Singapore");
+            LocalDateTime currentLocalTime = LocalDateTime.now();
+
+            ZonedDateTime zonedDateTime = currentLocalTime.atZone(asiaSingapore);
+            LocalDateTime asiaSingaporeTime = LocalDateTime.now(asiaSingapore);
+
+            */
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
+            ZoneId zoneId = ZoneId.of("America/New_York");
+
+            ZonedDateTime start = appt.getStartDateTime().toLocalDateTime().atZone(zoneId); //start time in EST
+            ZonedDateTime end = appt.getEndDateTime().toLocalDateTime().atZone(zoneId); // end time in EST
+
+            if (!(start.getHour() >= 8 && end.getHour() <= 22)) {
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST.");
+            }
+
 
 
             apptsList.add(appt);
@@ -103,6 +119,9 @@ public class AddApptsController implements Initializable {
             alert.show();
         } catch (DateTimeException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values as the following format: HH:mm");
+            alert.show();
+        } catch (InputValidationException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());
             alert.show();
         }
 

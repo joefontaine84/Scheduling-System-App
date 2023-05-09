@@ -101,13 +101,6 @@ public class AddApptsController implements Initializable {
             appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             appt.setContactID(findContactID());
 
-            // determine if the time entered overlaps with an existing appointment for the contact person
-
-            // for the contact selected, compare appointment being entered with appointments already scheduled for this contact
-
-            // need to know: contact selected, appointments where this contact is selected
-
-            // actions: compare appointments where this contact is selected to the times entered
 
             List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
             for (Appointments element : apptsByContact) {
@@ -117,18 +110,9 @@ public class AddApptsController implements Initializable {
                 }
             }
 
-            // convert from UTC to localdatetime when showing times in tableview
-
-            // start code block: the following code block determines if the appointment times are entered during business hours based on EST
-            ZoneId zoneId = ZoneId.of("America/New_York");
-            ZonedDateTime start = appt.getStartDateTime().toLocalDateTime().atZone(zoneId); //start time in EST
-            ZonedDateTime end = appt.getEndDateTime().toLocalDateTime().atZone(zoneId); // end time in EST
-
-            if (!(start.getHour() >= 8 && end.getHour() <= 22)) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST.");
+            if (!(localTimeToNYTime(appt.getStartDateTime().toLocalDateTime()).getHour() >= 8) && !(localTimeToNYTime(appt.getEndDateTime().toLocalDateTime()).getHour() <= 22)) {
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
             }
-
-            // end code block
 
             apptsList.add(appt);
             switchToAppointmentsController();
@@ -211,7 +195,7 @@ public class AddApptsController implements Initializable {
     }
 
 
-    public LocalDateTime timeCheck(LocalDateTime localDateTime) {
+    public LocalDateTime localTimeToNYTime(LocalDateTime localDateTime) {
 
         ZoneId newYork = ZoneId.of("America/New_York");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm Z");
@@ -224,11 +208,11 @@ public class AddApptsController implements Initializable {
         String localSubstring = "";
         String newYorkSubstring = "";
 
-        localDateTimeFormatted = localDateTimeFormatted.format(String.valueOf(formatter));
-        newYorkDateTimeFormatted = newYorkDateTimeFormatted.format(String.valueOf(formatter));
+        localDateTimeFormatted = localZoneDateTime.format(formatter);
+        newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);
 
-        localSubstring = localSubstring.substring(17, 20);
-        newYorkSubstring = newYorkSubstring.substring(17, 20);
+        localSubstring = localDateTimeFormatted.substring(17, 20);
+        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);
 
         long localOffset = Integer.valueOf(localSubstring);
         long newYorkOffset = Integer.valueOf(newYorkSubstring);

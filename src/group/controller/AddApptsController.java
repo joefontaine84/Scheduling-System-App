@@ -28,6 +28,7 @@ import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
@@ -207,6 +208,35 @@ public class AddApptsController implements Initializable {
                 userID = userObj.getUserID();
             }
         }   return userID;
+    }
+
+
+    public LocalDateTime timeCheck(LocalDateTime localDateTime) {
+
+        ZoneId newYork = ZoneId.of("America/New_York");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm Z");
+
+        ZonedDateTime localZoneDateTime = localDateTime.atZone(TimeZone.getDefault().toZoneId());
+        ZonedDateTime newYorkZoneDateTime = localDateTime.atZone(newYork);
+
+        String localDateTimeFormatted = "";
+        String newYorkDateTimeFormatted = "";
+        String localSubstring = "";
+        String newYorkSubstring = "";
+
+        localDateTimeFormatted = localDateTimeFormatted.format(String.valueOf(formatter));
+        newYorkDateTimeFormatted = newYorkDateTimeFormatted.format(String.valueOf(formatter));
+
+        localSubstring = localSubstring.substring(17, 20);
+        newYorkSubstring = newYorkSubstring.substring(17, 20);
+
+        long localOffset = Integer.valueOf(localSubstring);
+        long newYorkOffset = Integer.valueOf(newYorkSubstring);
+
+        long timeDifference = localOffset - newYorkOffset;
+
+        return localDateTime.plusHours(timeDifference);
+
     }
 
 

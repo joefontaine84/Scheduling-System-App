@@ -103,21 +103,26 @@ public class AddApptsController implements Initializable {
 
 
             List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
+            System.out.println(apptsByContact.size());
             for (Appointments element : apptsByContact) {
+
+                System.out.println(element.getStartDateTime());
+
+
+
                 // how are overlapping meetings defined? : start time or end time begins between appt
-                if (!(appt.getStartDateTime().before(element.getStartDateTime()) && appt.getEndDateTime().before(element.getStartDateTime())) || !(appt.getStartDateTime().after(element.getStartDateTime()) && appt.getEndDateTime().after(element.getEndDateTime()))) {
+/*                if (!(appt.getStartDateTime().before(element.getStartDateTime()) && appt.getEndDateTime().before(element.getStartDateTime())) || !(appt.getStartDateTime().after(element.getStartDateTime()) && appt.getEndDateTime().after(element.getEndDateTime()))) {
                     throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
-                }
+                }*/
             }
 
             boolean timeCheck = true;
             if (hourConversionNYTime(appt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
-                if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) <= 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
-                    if (appt.getEndDateTime().toLocalDateTime().getHour() == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {  // checks whether the end time is exactly 10:00 PM for the New York timezone.
-                        timeCheck = true;
-                    } else {
-                        timeCheck = false;
-                    }
+                if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
+                    timeCheck = true;
+                }
+                else if (appt.getEndDateTime().toLocalDateTime().getHour() == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
+                    timeCheck = true;
                 } else {
                     timeCheck = false;
                 }
@@ -125,8 +130,13 @@ public class AddApptsController implements Initializable {
                 timeCheck = false;
             }
 
-            if (timeCheck = false) {
+
+            if (timeCheck == false) {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
+            }
+
+            if (appt.getEndDateTime().before(appt.getStartDateTime())) {
+                throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
             }
 
             apptsList.add(appt);

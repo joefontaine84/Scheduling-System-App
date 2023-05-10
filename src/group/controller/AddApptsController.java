@@ -110,7 +110,22 @@ public class AddApptsController implements Initializable {
                 }
             }
 
-            if (!(localTimeToNYTime(appt.getStartDateTime().toLocalDateTime()).getHour() >= 8) && !(localTimeToNYTime(appt.getEndDateTime().toLocalDateTime()).getHour() <= 22)) {
+            boolean timeCheck = true;
+            if (hourConversionNYTime(appt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
+                if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) <= 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
+                    if (appt.getEndDateTime().toLocalDateTime().getHour() == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {  // checks whether the end time is exactly 10:00 PM for the New York timezone.
+                        timeCheck = true;
+                    } else {
+                        timeCheck = false;
+                    }
+                } else {
+                    timeCheck = false;
+                }
+            } else {
+                timeCheck = false;
+            }
+
+            if (timeCheck = false) {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
             }
 
@@ -195,7 +210,7 @@ public class AddApptsController implements Initializable {
     }
 
 
-    public LocalDateTime localTimeToNYTime(LocalDateTime localDateTime) {
+    public long hourConversionNYTime(LocalDateTime localDateTime) {
 
         ZoneId newYork = ZoneId.of("America/New_York");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm Z");
@@ -219,7 +234,12 @@ public class AddApptsController implements Initializable {
 
         long timeDifference = localOffset - newYorkOffset;
 
-        return localDateTime.plusHours(timeDifference);
+        long hoursFromNYTime = 0;
+
+        hoursFromNYTime = localDateTime.getHour() - timeDifference;
+
+        return hoursFromNYTime;
+
 
     }
 

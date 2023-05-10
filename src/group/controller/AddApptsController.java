@@ -104,16 +104,20 @@ public class AddApptsController implements Initializable {
 
             List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
             System.out.println(apptsByContact.size());
+            boolean before = false;
+            boolean after = false;
             for (Appointments element : apptsByContact) {
+                if (appt.getStartDateTime().before(element.getStartDateTime()) && (appt.getEndDateTime().before(element.getStartDateTime()) || appt.getEndDateTime().equals(element.getStartDateTime()))) {
+                    before = true;
+                }
 
-                System.out.println(element.getStartDateTime());
+                if ((appt.getStartDateTime().after(element.getEndDateTime()) || appt.getStartDateTime().equals(element.getEndDateTime())) && appt.getEndDateTime().after(element.getEndDateTime())) {
+                    after = true;
+                }
 
-
-
-                // how are overlapping meetings defined? : start time or end time begins between appt
-/*                if (!(appt.getStartDateTime().before(element.getStartDateTime()) && appt.getEndDateTime().before(element.getStartDateTime())) || !(appt.getStartDateTime().after(element.getStartDateTime()) && appt.getEndDateTime().after(element.getEndDateTime()))) {
+                if (before == false && after == false) {
                     throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
-                }*/
+                }
             }
 
             boolean timeCheck = true;
@@ -141,6 +145,7 @@ public class AddApptsController implements Initializable {
 
             apptsList.add(appt);
             switchToAppointmentsController();
+
         } catch (NumberFormatException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
             alert.show();

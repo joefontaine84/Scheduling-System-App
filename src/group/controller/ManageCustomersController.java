@@ -47,5 +47,16 @@ public class ManageCustomersController implements Initializable {
         primaryStage.show();
     }
 
+    @FXML
+    public void switchToAddCustomers() throws IOException {
+        Scene scene;
+        Parent root;
+        FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/AddCustomersView.fxml"));
+        root = addApptsView.load();
+        scene = new Scene(root, 1129, 652);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
 
 }

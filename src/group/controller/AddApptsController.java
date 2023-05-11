@@ -80,7 +80,6 @@ public class AddApptsController implements Initializable {
             tempUserList.add(element.getUsername());
         }
         userIDComboBox.setItems(tempUserList);
-
     }
 
 

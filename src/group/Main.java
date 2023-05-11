@@ -36,6 +36,9 @@ public class Main extends Application {
         Data.populateUsers();
         Data.populateContacts();
         Data.populateAppointments();
+        Data.populateCustomers();
+        Data.populateCountries();
+        Data.populateFirstLevelDivisions();
         launch(args);
         JDBC.closeConnection();
     }

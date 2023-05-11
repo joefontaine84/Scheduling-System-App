@@ -1,8 +1,6 @@
 package group.dao;
 
-import group.model.Appointments;
-import group.model.Contacts;
-import group.model.Users;
+import group.model.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,13 +68,58 @@ public class Data {
         }
     }
 
-
     public static int getNextAppointmentID () throws SQLException {
         String sql = "SELECT max(Appointment_ID) as Appointment_ID from client_schedule.appointments";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
         ResultSet rs = ps.executeQuery();
         rs.next();
         return rs.getInt(1) + 1;
+    }
+
+    public static void populateCustomers() throws SQLException {
+        String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM client_schedule.customers";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Customers customer = new Customers();
+            customer.setCustomerID(rs.getInt(1));
+            customer.setCustomerName(rs.getString(2));
+            customer.setAddress(rs.getString(3));
+            customer.setPostalCode(rs.getString(4));
+            customer.setPhoneNumber(rs.getString(5));
+            customer.setDivisionID(rs.getInt(6));
+        }
+    }
+
+    public static int getNextCustomerID() throws SQLException {
+        String sql = "SELECT max(Customer_ID) as Customer_ID FROM client_schedule.customers";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        return rs.getInt(1) + 1;
+    }
+
+    public static void populateCountries() throws SQLException {
+        String sql = "SELECT Country_ID, Country FROM client_schedule.countries";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Countries country = new Countries();
+            country.setCountryID(rs.getInt(1));
+            country.setCountryName(rs.getString(2));
+        }
+    }
+
+    public static void populateFirstLevelDivisions() throws SQLException {
+        String sql = "SELECT Division_ID, Division, Country_ID FROM client_schedule.first_level_divisions";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            FirstLevelDivisions fld = new FirstLevelDivisions();
+            fld.setDivisionID(rs.getInt(1));
+            fld.setDivisionName(rs.getString(2));
+            fld.setCountryID(rs.getInt(3));
+        }
     }
 
 }

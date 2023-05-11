@@ -50,18 +50,20 @@ public class ModApptsController implements Initializable {
 
     public static int apptIndex;
 
+    public Appointments selectedAppt = apptsList.get(apptIndex);
+
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
 
-        appointmentIDTextField.setText(String.valueOf(apptsList.get(apptIndex).getAppointmentID()));
-        titleTextField.setText(apptsList.get(apptIndex).getTitle());
-        descriptionTextField.setText(apptsList.get(apptIndex).getDescription());
-        locationTextField.setText(apptsList.get(apptIndex).getLocation());
-        typeTextField.setText(apptsList.get(apptIndex).getType());
+        appointmentIDTextField.setText(String.valueOf(selectedAppt.getAppointmentID()));
+        titleTextField.setText(selectedAppt.getTitle());
+        descriptionTextField.setText(selectedAppt.getDescription());
+        locationTextField.setText(selectedAppt.getLocation());
+        typeTextField.setText(selectedAppt.getType());
 
-        customerIDTextField.setText(String.valueOf(apptsList.get(apptIndex).getCustomerID()));
-        setDateTimeFromTS(apptsList.get(apptIndex).getStartDateTime(), startDatePicker, startDateTimeTextField);
-        setDateTimeFromTS(apptsList.get(apptIndex).getEndDateTime(), endDatePicker, endDateTimeTextField);
+        customerIDTextField.setText(String.valueOf(selectedAppt.getCustomerID()));
+        setDateTimeFromTS(selectedAppt.getStartDateTime(), startDatePicker, startDateTimeTextField);
+        setDateTimeFromTS(selectedAppt.getEndDateTime(), endDatePicker, endDateTimeTextField);
 
         // Populate ContactList
         ObservableList<String> tempContactList = FXCollections.observableArrayList();
@@ -170,29 +172,28 @@ public class ModApptsController implements Initializable {
     @FXML
     public void save() throws IOException, InputValidationException {
         try {
-            Appointments appt = new Appointments();
-            appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
-            appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
-            appt.setUserID(findUserID());
-            appt.setTitle(titleTextField.getText());
-            appt.setDescription(descriptionTextField.getText());
-            appt.setLocation(locationTextField.getText());
-            appt.setType(typeTextField.getText());
-            appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
-            appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
-            appt.setContactID(findContactID());
+            selectedAppt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
+            selectedAppt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+            selectedAppt.setUserID(findUserID());
+            selectedAppt.setTitle(titleTextField.getText());
+            selectedAppt.setDescription(descriptionTextField.getText());
+            selectedAppt.setLocation(locationTextField.getText());
+            selectedAppt.setType(typeTextField.getText());
+            selectedAppt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
+            selectedAppt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
+            selectedAppt.setContactID(findContactID());
 
 
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
+            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == selectedAppt.getContactID()).collect(Collectors.toList());
             System.out.println(apptsByContact.size());
             boolean before = false;
             boolean after = false;
             for (Appointments element : apptsByContact) {
-                if (appt.getStartDateTime().before(element.getStartDateTime()) && (appt.getEndDateTime().before(element.getStartDateTime()) || appt.getEndDateTime().equals(element.getStartDateTime()))) {
+                if (selectedAppt.getStartDateTime().before(element.getStartDateTime()) && (selectedAppt.getEndDateTime().before(element.getStartDateTime()) || selectedAppt.getEndDateTime().equals(element.getStartDateTime()))) {
                     before = true;
                 }
 
-                if ((appt.getStartDateTime().after(element.getEndDateTime()) || appt.getStartDateTime().equals(element.getEndDateTime())) && appt.getEndDateTime().after(element.getEndDateTime())) {
+                if ((selectedAppt.getStartDateTime().after(element.getEndDateTime()) || selectedAppt.getStartDateTime().equals(element.getEndDateTime())) && selectedAppt.getEndDateTime().after(element.getEndDateTime())) {
                     after = true;
                 }
 
@@ -202,11 +203,11 @@ public class ModApptsController implements Initializable {
             }
 
             boolean timeCheck = true;
-            if (hourConversionNYTime(appt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
-                if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
+            if (hourConversionNYTime(selectedAppt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
+                if (hourConversionNYTime(selectedAppt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
                     timeCheck = true;
                 }
-                else if (appt.getEndDateTime().toLocalDateTime().getHour() == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
+                else if (selectedAppt.getEndDateTime().toLocalDateTime().getHour() == 22 && selectedAppt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
                     timeCheck = true;
                 } else {
                     timeCheck = false;
@@ -220,11 +221,10 @@ public class ModApptsController implements Initializable {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
             }
 
-            if (appt.getEndDateTime().before(appt.getStartDateTime())) {
+            if (selectedAppt.getEndDateTime().before(selectedAppt.getStartDateTime())) {
                 throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
             }
 
-            apptsList.add(appt);
             switchToAppointmentsController();
 
         } catch (NumberFormatException exception) {

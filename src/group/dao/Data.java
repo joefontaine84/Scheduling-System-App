@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static group.model.Contacts.contactList;
+import static group.model.Countries.countriesList;
+import static group.model.Customers.customerList;
+import static group.model.FirstLevelDivisions.divisionList;
 import static group.model.Users.usersList;
 import static group.model.Appointments.apptsList;
 
@@ -88,6 +91,7 @@ public class Data {
             customer.setPostalCode(rs.getString(4));
             customer.setPhoneNumber(rs.getString(5));
             customer.setDivisionID(rs.getInt(6));
+            customerList.add(customer);
         }
     }
 
@@ -107,6 +111,7 @@ public class Data {
             Countries country = new Countries();
             country.setCountryID(rs.getInt(1));
             country.setCountryName(rs.getString(2));
+            countriesList.add(country);
         }
     }
 
@@ -119,6 +124,7 @@ public class Data {
             fld.setDivisionID(rs.getInt(1));
             fld.setDivisionName(rs.getString(2));
             fld.setCountryID(rs.getInt(3));
+            divisionList.add(fld);
         }
     }
 

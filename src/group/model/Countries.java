@@ -1,8 +1,12 @@
 package group.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Countries {
     private int countryID;
     private String countryName;
+    public static ObservableList<Countries> countriesList = FXCollections.observableArrayList();
 
     public int getCountryID() {
         return countryID;

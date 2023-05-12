@@ -5,16 +5,21 @@ import group.model.FirstLevelDivisions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static group.Main.primaryStage;
 import static group.dao.Data.getNextCustomerID;
 import static group.model.Countries.countriesList;
 import static group.model.FirstLevelDivisions.divisionList;
@@ -71,5 +76,15 @@ public class AddCustomersController implements Initializable {
             }
         }
         return tempID;
+    }
+
+    public void switchToManageCustomers() throws IOException {
+        Scene scene;
+        Parent root;
+        FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/ManageCustomersView.fxml"));
+        root = addApptsView.load();
+        scene = new Scene(root, 1129, 652);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

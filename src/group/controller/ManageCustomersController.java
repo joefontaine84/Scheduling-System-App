@@ -1,6 +1,8 @@
 package group.controller;
 
+import group.model.Countries;
 import group.model.Customers;
+import group.model.FirstLevelDivisions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +27,7 @@ public class ManageCustomersController implements Initializable {
     public TableColumn<Customers, String> postalCode;
     public TableColumn<Customers, String> phoneNumber;
     public TableColumn<Customers, Integer> customerID;
+    public TableColumn<Customers, Integer> divisionID;
 
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -34,6 +37,7 @@ public class ManageCustomersController implements Initializable {
         address.setCellValueFactory(new PropertyValueFactory<Customers, String>("address"));
         postalCode.setCellValueFactory(new PropertyValueFactory<Customers, String>("postalCode"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<Customers, String>("phoneNumber"));
+        divisionID.setCellValueFactory(new PropertyValueFactory<Customers, Integer>("divisionID"));
     }
 
     @FXML

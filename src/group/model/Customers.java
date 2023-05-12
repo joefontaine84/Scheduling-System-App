@@ -3,6 +3,8 @@ package group.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import static group.model.FirstLevelDivisions.divisionList;
+
 public class Customers {
     private int customerID;
     private String customerName;
@@ -10,6 +12,10 @@ public class Customers {
     private String postalCode;
     private String phoneNumber;
     private int divisionID;
+
+    private String countryName;
+    private String divisionName;
+
     public static ObservableList<Customers> customerList = FXCollections.observableArrayList();
 
     public int getCustomerID() {
@@ -59,4 +65,16 @@ public class Customers {
     public void setDivisionID(int divisionID) {
         this.divisionID = divisionID;
     }
+
+    public String getCountryName () {
+        String divisionName = "";
+        for (FirstLevelDivisions element : divisionList) {
+            if (element.getDivisionID() == getDivisionID()) {
+                divisionName = element.getDivisionName();
+                //write another for loop that matches with country id and returns country name
+            }
+        }
+    }
+
+
 }

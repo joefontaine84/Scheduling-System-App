@@ -151,7 +151,7 @@ public class AppointmentsController implements Initializable {
         ObservableList<Appointments> tempList = FXCollections.observableArrayList();
         if (apptsByWeek.isSelected()) {
             LocalDateTime dateTimeOffset = LocalDateTime.now().plusDays(7);
-            tempList = apptsList.stream().filter(element -> element.getStartDateTime().before(Timestamp.valueOf(dateTimeOffset))).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tempList = apptsList.stream().filter(element -> element.getStartDateTime().before(Timestamp.valueOf(dateTimeOffset)) && element.getStartDateTime().after(Timestamp.valueOf(LocalDateTime.now()))).collect(Collectors.toCollection(FXCollections::observableArrayList));
             apptsTableView.setItems(tempList);
         } else if (apptsByMonth.isSelected()) {
             int month = LocalDateTime.now().getMonthValue();

@@ -16,43 +16,32 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
-import static group.dao.Data.getNextCustomerID;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
 import static group.model.FirstLevelDivisions.divisionList;
 
-public class AddCustomersController implements Initializable {
-
+public class ModCustomersController implements Initializable {
     public TextField customerIDTextField;
     public TextField customerNameTextField;
     public TextField addressTextField;
     public TextField postalCodeTextField;
     public TextField phoneNumberTextField;
-    public ComboBox<String> countryComboBox;
-    public ComboBox<String> divisionComboBox;
+    public ComboBox countryComboBox;
+    public ComboBox divisionComboBox;
     public ObservableList<String> tempDivListName = FXCollections.observableArrayList();
-
+    public static int customerIndex;
+    public Customers selectedCustomer = customerList.get(customerIndex);
 
     @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            customerIDTextField.setText(String.valueOf(getNextCustomerID()));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        ObservableList<String> tempCountriesList = FXCollections.observableArrayList();
-        for (Countries country : countriesList) {
-            tempCountriesList.add(country.getCountryName());
-        }
-        countryComboBox.setItems(tempCountriesList);
-
+    public void initialize (URL url, ResourceBundle resourceBundle) {
+        //start initializing... use selectedCustomer.set...
     }
+
+
+
 
     @FXML
     public void filterDivisions () {
@@ -122,5 +111,4 @@ public class AddCustomersController implements Initializable {
         }
 
     }
-
 }

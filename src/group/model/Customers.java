@@ -3,6 +3,7 @@ package group.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import static group.model.Countries.countriesList;
 import static group.model.FirstLevelDivisions.divisionList;
 
 public class Customers {
@@ -66,14 +67,28 @@ public class Customers {
         this.divisionID = divisionID;
     }
 
-    public String getCountryName () {
+    public String getDivisionName () {
         String divisionName = "";
         for (FirstLevelDivisions element : divisionList) {
             if (element.getDivisionID() == getDivisionID()) {
                 divisionName = element.getDivisionName();
-                //write another for loop that matches with country id and returns country name
             }
         }
+        return divisionName;
+    }
+
+    public String getCountryName() {
+        String countryName = "";
+        for (FirstLevelDivisions element : divisionList) {
+            if (element.getDivisionID() == getDivisionID()) {
+                for (Countries country : countriesList) {
+                    if (country.getCountryID() == element.getCountryID()) {
+                        countryName = country.getCountryName();
+                    }
+                }
+            }
+        }
+        return countryName;
     }
 
 

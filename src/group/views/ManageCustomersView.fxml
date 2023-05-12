@@ -5,20 +5,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="427.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ManageCustomersController">
+<AnchorPane prefHeight="427.0" prefWidth="825.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ManageCustomersController">
    <children>
-      <TableView fx:id="customersTableView" layoutX="96.0" layoutY="67.0" prefHeight="279.0" prefWidth="604.0">
+      <TableView fx:id="customersTableView" layoutX="96.0" layoutY="67.0" prefHeight="279.0" prefWidth="695.0">
         <columns>
             <TableColumn fx:id="customerID" prefWidth="88.0" text="Customer ID" />
           <TableColumn fx:id="customerName" prefWidth="116.0" text="Customer Name" />
           <TableColumn fx:id="address" prefWidth="98.0" text="Address" />
             <TableColumn fx:id="postalCode" prefWidth="84.0" text="Postal Code" />
-            <TableColumn fx:id="divisionID" prefWidth="92.0" text="Division ID" />
+            <TableColumn fx:id="country" prefWidth="92.0" text="Country" />
+            <TableColumn fx:id="division" prefWidth="92.0" text="Division" />
             <TableColumn fx:id="phoneNumber" prefWidth="125.0" text="Phone Number" />
         </columns>
       </TableView>
       <Button layoutX="9.0" layoutY="67.0" mnemonicParsing="false" onAction="#switchToAddCustomers" prefHeight="61.0" prefWidth="87.0" text="Add &#10;Customer" textAlignment="CENTER" />
-      <Button layoutX="9.0" layoutY="128.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="87.0" text="Modify&#10;Customer" textAlignment="CENTER" />
+      <Button layoutX="9.0" layoutY="128.0" mnemonicParsing="false" onAction="#switchToModifyCustomers" prefHeight="61.0" prefWidth="87.0" text="Modify&#10;Customer" textAlignment="CENTER" />
       <Button layoutX="9.0" layoutY="189.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="87.0" text="Delete&#10;Customer" textAlignment="CENTER" />
       <Button layoutX="562.0" layoutY="369.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="47.0" text="Back" />
    </children>

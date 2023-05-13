@@ -123,6 +123,7 @@ public class AppointmentsController implements Initializable {
             alert.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment to delete.");
+            alert.show();
         }
     }
 
@@ -162,6 +163,7 @@ public class AppointmentsController implements Initializable {
             apptsTableView.setItems(apptsList);
         }
     }
+
 
 
 

@@ -1,5 +1,6 @@
 package group.controller;
 
+import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Countries;
 import group.model.Customers;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 import static group.Main.primaryStage;
 import static group.controller.ModApptsController.apptIndex;
 import static group.controller.ModCustomersController.customerIndex;
+import static group.model.Appointments.apptsList;
 import static group.model.Customers.customerList;
 
 public class ManageCustomersController implements Initializable {
@@ -87,5 +89,24 @@ public class ManageCustomersController implements Initializable {
         }
     }
 
+    @FXML
+    public void delete () throws InputValidationException {
+        try {
+            if (!customersTableView.getSelectionModel().isEmpty()) {
+                for (Appointments appts : apptsList) {
+                    if (appts.getCustomerID() == customersTableView.getSelectionModel().getSelectedItem().getCustomerID()) {
+                        throw new InputValidationException("You must first delete all associated appointments with this customer before deleting the customer record.");
+                    }
+                }
+                customerList.remove(customersTableView.getSelectionModel().getSelectedItem());
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer record to delete.");
+                alert.show();
+            }
+        } catch (InputValidationException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());
+            alert.show();
+        }
+    }
 
 }

@@ -1,5 +1,7 @@
 package group.controller;
 
+import group.helper.InputValidationException;
+import group.model.Appointments;
 import group.model.Countries;
 import group.model.Customers;
 import group.model.FirstLevelDivisions;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
+import static group.model.Appointments.apptsList;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
 import static group.model.FirstLevelDivisions.divisionList;
@@ -37,9 +40,20 @@ public class ModCustomersController implements Initializable {
 
     @FXML
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        //start initializing... use selectedCustomer.set...
-    }
+        customerIDTextField.setText(String.valueOf(selectedCustomer.getCustomerID()));
+        customerNameTextField.setText(selectedCustomer.getCustomerName());
+        addressTextField.setText(selectedCustomer.getAddress());
+        postalCodeTextField.setText(selectedCustomer.getPostalCode());
+        phoneNumberTextField.setText(selectedCustomer.getPhoneNumber());
+        countryComboBox.setValue(selectedCustomer.getCountryName());
+        divisionComboBox.setValue(selectedCustomer.getDivisionName());
 
+        ObservableList<String> tempCountriesList = FXCollections.observableArrayList();
+        for (Countries country : countriesList) {
+            tempCountriesList.add(country.getCountryName());
+        }
+        countryComboBox.setItems(tempCountriesList);
+    }
 
 
 
@@ -103,12 +117,13 @@ public class ModCustomersController implements Initializable {
             customer.setPostalCode(postalCodeTextField.getText());
             customer.setDivisionID(findDivisionID());
             switchToManageCustomers();
+            customerList.remove(selectedCustomer);
             customerList.add(customer);
-            System.out.println(findDivisionID());
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure that information has been entered/selected for all fields.");
             alert.show();
         }
-
     }
+
+
 }

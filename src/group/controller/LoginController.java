@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import static group.model.Users.usersList;
 import static group.Main.primaryStage;
+import static group.controller.AppointmentsController.loggedInUser;
 
 /**
  * This class provides functionality to the LoginView FXML page related to the Login portion of the GUI.
@@ -77,6 +78,7 @@ public class LoginController implements Initializable {
         for (int i = 0; i < usersList.size(); i++) {
             if (usersList.get(i).getUsername().equals(providedUsername) && usersList.get(i).getPassword().equals(providedPassword)) {
                 // switch to new scene
+                loggedInUser = usersList.get(i);
                 match = true;
                 Scene scene;
                 Parent root;

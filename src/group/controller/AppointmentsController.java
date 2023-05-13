@@ -2,6 +2,7 @@ package group.controller;
 
 import group.dao.Data;
 import group.model.Appointments;
+import group.model.Users;
 import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,8 @@ public class AppointmentsController implements Initializable {
     public RadioButton apptsByWeek;
     public RadioButton apptsByMonth;
     public RadioButton allAppts;
+
+    public static Users loggedInUser;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -161,6 +165,25 @@ public class AppointmentsController implements Initializable {
             apptsTableView.setItems(tempList);
         } else if (allAppts.isSelected()) {
             apptsTableView.setItems(apptsList);
+        }
+    }
+
+    public void meetingsInFifteen() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowPlusFifteenMin = LocalDateTime.now().plusMinutes(15);
+        ObservableList<Appointments> tempList = FXCollections.observableArrayList();
+        tempList = apptsList.stream().filter(element -> element.getUserID() == loggedInUser.getUserID()).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        for (Appointments appts : tempList) {
+            LocalDateTime startTime = appts.getStartDateTime().toLocalDateTime();
+            if (!((startTime.equals(now) || startTime.equals(nowPlusFifteenMin)) || (startTime.isAfter(now) && startTime.isBefore(nowPlusFifteenMin)))) {
+                tempList.remove(appts);
+            }
+        }
+        if (tempList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have no appointments within the next 15 minutes.");
+            alert.show();
+        } else {
+            // create alert that prints appointment IDs, date and time
         }
     }
 

@@ -102,7 +102,6 @@ public class AddApptsController implements Initializable {
 
 
             List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
-            System.out.println(apptsByContact.size());
             boolean before = false;
             boolean after = false;
             for (Appointments element : apptsByContact) {
@@ -133,9 +132,12 @@ public class AddApptsController implements Initializable {
                 timeCheck = false;
             }
 
+            if (!(appt.getStartDateTime().toLocalDateTime().toLocalDate().equals(appt.getEndDateTime().toLocalDateTime().toLocalDate()))) {
+                timeCheck = false;
+            }
 
             if (timeCheck == false) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within a given day.");
             }
 
             if (appt.getEndDateTime().before(appt.getStartDateTime())) {
@@ -248,11 +250,11 @@ public class AddApptsController implements Initializable {
 
         long timeDifference = localOffset - newYorkOffset;
 
-        long hoursFromNYTime = 0;
+        long adjustedHours = 0;
 
-        hoursFromNYTime = localDateTime.getHour() - timeDifference;
+        adjustedHours = localDateTime.getHour() - timeDifference;
 
-        return hoursFromNYTime;
+        return adjustedHours;
 
 
     }

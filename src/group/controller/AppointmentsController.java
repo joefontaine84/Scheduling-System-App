@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -123,7 +125,7 @@ public class AppointmentsController implements Initializable {
         if (!apptsTableView.getSelectionModel().isEmpty()) {
             Appointments selectedAppt = apptsTableView.getSelectionModel().getSelectedItem();
             apptsList.remove(apptsList.indexOf(selectedAppt));
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have deleted Appointment ID: " + selectedAppt.getAppointmentID());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have deleted Appointment ID: " + selectedAppt.getAppointmentID() + "; Type of appointment: " + selectedAppt.getType() + ".");
             alert.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment to delete.");
@@ -184,8 +186,19 @@ public class AppointmentsController implements Initializable {
             alert.show();
         } else {
             // create alert that prints appointment IDs, date and time
+            String apptsInFifteen = "The following appointments are scheduled within fifteen minutes:\n\n";
+            for (Appointments appts : tempList) {
+                String id = String.valueOf(appts.getAppointmentID());
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                String date = appts.getStartDateTime().toLocalDateTime().toLocalDate().toString();
+                String time = appts.getStartDateTime().toLocalDateTime().toLocalTime().format(timeFormatter).toString();
+                apptsInFifteen = apptsInFifteen + "Appointment ID: " + id + "    " + "Date: " + date + "    " + "Time: " + time + "\n";
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, apptsInFifteen);
+            alert.show();
         }
     }
+
 
 
 

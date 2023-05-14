@@ -13,9 +13,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import static group.model.Users.usersList;
@@ -71,7 +75,6 @@ public class LoginController implements Initializable {
      * */
     @FXML
     public void verifyUser() throws SQLException, IOException {
-        //Data.populateUsers();
         String providedUsername = username.getText();
         String providedPassword = password.getText();
         boolean match = false;
@@ -100,7 +103,26 @@ public class LoginController implements Initializable {
             alert.setTitle("Erreur");
             alert.show();
         }
-
+        loginActivity(match);
     }
 
+    public void loginActivity(boolean successfulLogin) {
+        try {
+            File loginTracker = new File("login_activity.txt");
+            loginTracker.createNewFile();
+
+            String text = "User login attempt...\n"
+                    + "Provided Username: " + username.getText() +"\n"
+                    + "Local Date & Time: " + Timestamp.valueOf(LocalDateTime.now()).toString() + "\n"
+                    + "Successful Login?: " + String.valueOf(successfulLogin) + "\n\n";
+
+            boolean append = true;
+            FileWriter write = new FileWriter("login_activity.txt", true);
+            write.append(text);
+            write.close();
+
+        } catch (IOException exception) {
+            exception.getMessage();
+        }
+    }
 }

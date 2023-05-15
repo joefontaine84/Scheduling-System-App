@@ -9,8 +9,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Appointments {
     private int appointmentID;
@@ -24,6 +24,7 @@ public class Appointments {
     private int userID;
     private int contactID;
     public static ObservableList<Appointments> apptsList = FXCollections.observableArrayList();
+    public Map<String, Integer> typeMap = new HashMap<>();
 
     public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
@@ -116,6 +117,14 @@ public class Appointments {
 
     public int getContactID() {
         return contactID;
+    }
+
+    public Set<String> getTypeStrings() {
+        return typeMap.keySet();
+    }
+
+    public Collection<Integer> getTypeInts () {
+        return typeMap.values();
     }
 }
 

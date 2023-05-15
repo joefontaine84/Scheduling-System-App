@@ -8,19 +8,18 @@ import javafx.scene.control.TableColumn;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import static group.model.Appointments.apptsList
+import static group.model.Appointments.apptsList;
 
 public class ApptsByTypeController implements Initializable {
 
     public TableColumn amount;
     public TableColumn type;
-    ArrayList<String> typeList = new ArrayList<>();
 
 
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        for (Appointments appt : apptsList) {
+/*        for (Appointments appt : apptsList) {
             typeList.add(appt.getType().toLowerCase());
         }
 
@@ -28,6 +27,7 @@ public class ApptsByTypeController implements Initializable {
             if typeList.get(i).equals()
         }
 
-    }
+    }*/
 
+    }
 }

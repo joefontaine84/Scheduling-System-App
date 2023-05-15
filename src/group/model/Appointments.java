@@ -24,7 +24,7 @@ public class Appointments {
     private int userID;
     private int contactID;
     public static ObservableList<Appointments> apptsList = FXCollections.observableArrayList();
-    public Map<String, Integer> typeMap = new HashMap<>();
+
 
     public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
@@ -119,13 +119,6 @@ public class Appointments {
         return contactID;
     }
 
-    public Set<String> getTypeStrings() {
-        return typeMap.keySet();
-    }
-
-    public Collection<Integer> getTypeInts () {
-        return typeMap.values();
-    }
 }
 
 

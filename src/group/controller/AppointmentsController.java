@@ -1,10 +1,8 @@
 package group.controller;
 
-import group.dao.Data;
 import group.model.Appointments;
 import group.model.Users;
 import javafx.application.Platform;
-import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,19 +16,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
 import static group.model.Appointments.apptsList;
 import static group.controller.ModApptsController.apptIndex;
+import static group.controller.ReportsController.selectedReport;
 
 /**
  * This class provides various functionality for the AppointmentsView FXML page related to the GUI pane observed
@@ -207,17 +202,16 @@ public class AppointmentsController implements Initializable {
 
     @FXML
     public void reportsSelection() throws IOException {
-        if (reportsComboBox.getValue().equals("Appointments By Type")) {
+        selectedReport = reportsComboBox.getValue().toString();
+        if (selectedReport.equals("Appointments By Type")) {
             Scene scene;
             Stage stage = new Stage();
             Parent root;
-            FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/ApptsByType.fxml"));
+            FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/ApptsByTypeView.fxml"));
             root = apptsByType.load();
-            scene = new Scene(root, 1066, 665);
+            scene = new Scene(root, 600, 400);
             stage.setScene(scene);
             stage.show();
-/*            primaryStage.setScene(scene);
-            primaryStage.show();*/
         }
     }
 

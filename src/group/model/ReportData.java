@@ -3,11 +3,11 @@ package group.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ApptsByType {
+public class ReportData {
 
     private String type;
     private int count;
-    public static ObservableList<ApptsByType> apptsByTypeOL = FXCollections.observableArrayList();
+    public static ObservableList<ReportData> reportDataOL = FXCollections.observableArrayList();
 
     public String getType() {
         return type;

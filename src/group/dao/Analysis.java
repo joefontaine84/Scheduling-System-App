@@ -1,18 +1,20 @@
 package group.dao;
 
 import group.model.Appointments;
-import group.model.ApptsByType;
+import group.model.ReportData;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static group.model.Appointments.apptsList;
-import static group.model.ApptsByType.apptsByTypeOL;
+import static group.model.ReportData.reportDataOL;
 
 public class Analysis {
     public ArrayList<String> typeList = new ArrayList<>();
     public static Map<String, Integer> typeMap = new HashMap<>();
+    public static Map<String, Integer> months = new HashMap<>();
 
     public void populateTypeMap() {
         for (Appointments appts : apptsList) {
@@ -38,13 +40,48 @@ public class Analysis {
 
     public void getUniqueTypes() {
         populateTypeMap();
+        reportDataOL.clear();
         for (Map.Entry<String, Integer> entry : typeMap.entrySet()) {
-            ApptsByType obj = new ApptsByType();
+            ReportData obj = new ReportData();
             obj.setType(entry.getKey());
             obj.setCount(entry.getValue());
-            apptsByTypeOL.add(obj);
+            reportDataOL.add(obj);
         }
     }
 
+    public void populateMonthsHashMap() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-uuuu");
+        ArrayList<String> monthList = new ArrayList<>();
+        for (Appointments appts : apptsList) {
+            monthList.add(appts.getStartDateTime().toLocalDateTime().format(formatter));
+        }
+
+        for (int i = 0; i < monthList.size(); i++) {
+            String key = "";
+            int count = 0;
+            for (int j = 0; j < monthList.size(); j++) {
+                if (monthList.get(i).equals(monthList.get(j))) {
+                    ++count;
+                    if (count == 1) {
+                        key = monthList.get(i);
+                    }
+                }
+                if (j == (monthList.size() - 1)) {
+                    months.put(key, count);
+                }
+            }
+        }
+    }
+
+    public void getApptsByMonth() {
+        populateMonthsHashMap();
+        reportDataOL.clear();
+        for (Map.Entry<String, Integer> entry : months.entrySet()) {
+            ReportData obj = new ReportData();
+            obj.setType(entry.getKey());
+            obj.setCount(entry.getValue());
+            reportDataOL.add(obj);
+        }
+    }
 
 }

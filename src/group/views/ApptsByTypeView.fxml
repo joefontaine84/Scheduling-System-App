@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ReportsController">
+   <children>
+      <TableView fx:id="apptsByTypeTableView" layoutX="91.0" layoutY="75.0" prefHeight="250.0" prefWidth="418.0">
+        <columns>
+          <TableColumn fx:id="amount" prefWidth="209.0" text="Amount of Appointments" />
+          <TableColumn fx:id="typeOrMonth" prefWidth="208.0" text="Type_Or_Month" />
+        </columns>
+      </TableView>
+      <Text layoutX="210.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments by Type">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

@@ -12,11 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -55,6 +54,7 @@ public class AppointmentsController implements Initializable {
     public RadioButton allAppts;
 
     public static Users loggedInUser;
+    public ComboBox reportsComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,6 +70,12 @@ public class AppointmentsController implements Initializable {
             customerID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("customerID"));
             userID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("userID"));
             contactID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("contactID"));
+
+            ObservableList<String> reports = FXCollections.observableArrayList();
+            reports.add("Appointments By Type");
+            reports.add("Appointments By Month");
+            reportsComboBox.setItems(reports);
+
     }
 
     /**
@@ -196,6 +202,22 @@ public class AppointmentsController implements Initializable {
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION, apptsInFifteen);
             alert.show();
+        }
+    }
+
+    @FXML
+    public void reportsSelection() throws IOException {
+        if (reportsComboBox.getValue().equals("Appointments By Type")) {
+            Scene scene;
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/ApptsByType.fxml"));
+            root = apptsByType.load();
+            scene = new Scene(root, 1066, 665);
+            stage.setScene(scene);
+            stage.show();
+/*            primaryStage.setScene(scene);
+            primaryStage.show();*/
         }
     }
 

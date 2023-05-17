@@ -25,18 +25,18 @@ import static group.model.ReportData.reportDataOL;
 
 public class ReportsController implements Initializable {
 
-    public TableColumn amount;
-    public TableColumn typeOrMonth;
-    public TableView apptsTableView;
+    public TableColumn<ReportData, Integer> amount;
+    public TableColumn<ReportData, String> typeOrMonth;
+    public TableView<ReportData> apptsTableView;
     public static String selectedReport = "";
-    public TableColumn appointmentID;
-    public TableColumn title;
-    public TableColumn description;
-    public TableColumn startDateTime;
-    public TableColumn endDateTime;
-    public TableColumn customerID;
+    public TableColumn<ReportData, Integer> appointmentID;
+    public TableColumn<ReportData, String> title;
+    public TableColumn<ReportData, String> description;
+    public TableColumn<ReportData, Timestamp> startDateTime;
+    public TableColumn<ReportData, Timestamp> endDateTime;
+    public TableColumn<ReportData, Integer> customerID;
     public Text titleText;
-    public ComboBox contactComboBox;
+    public ComboBox<String> contactComboBox;
     public Text introText;
     Analysis analysis = new Analysis();
 
@@ -58,6 +58,7 @@ public class ReportsController implements Initializable {
         }
         if (selectedReport == "Schedules By Contact") {
             // pop-up to select Contact
+            analysis.getContactSchedule();
             ObservableList<String> tempList = FXCollections.observableArrayList();
             for (Contacts contact : contactList) {
                 tempList.add(contact.getName());
@@ -72,14 +73,14 @@ public class ReportsController implements Initializable {
     public void showSchedule() {
         if (!(contactComboBox.getValue() == null)) {
             ObservableList<ReportData> filteredData = reportDataOL.stream().filter(element -> element.getContactName().equals(contactComboBox.getValue().toString())).collect(Collectors.toCollection(FXCollections::observableArrayList));
-            analysis.getContactSchedule();
             apptsTableView.setItems(filteredData);
             appointmentID.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("appointmentID"));
             title.setCellValueFactory(new PropertyValueFactory<ReportData, String>("title"));
-            typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("typeOrMonth"));
+            typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
             description.setCellValueFactory(new PropertyValueFactory<ReportData, String>("description"));
             startDateTime.setCellValueFactory(new PropertyValueFactory<ReportData, Timestamp>("startDateTime"));
             endDateTime.setCellValueFactory(new PropertyValueFactory<ReportData, Timestamp>("endDateTime"));
+            customerID.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("customerID"));
             introText.setVisible(false);
             contactComboBox.setVisible(false);
             apptsTableView.setVisible(true);

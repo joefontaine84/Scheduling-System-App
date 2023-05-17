@@ -71,4 +71,33 @@ public class ReportData {
     public String getContactName() {
         return contactName;
     }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public int getAppointmentID() {
+        return appointmentID;
+    }
+
+    public int getContactID() {
+        return contactID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Timestamp getEndDateTime() {
+        return endDateTime;
+    }
+
+    public Timestamp getStartDateTime() {
+        return startDateTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    
 }

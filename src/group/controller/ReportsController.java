@@ -19,6 +19,12 @@ public class ReportsController implements Initializable {
     public TableColumn typeOrMonth;
     public TableView apptsTableView;
     public static String selectedReport = "";
+    public TableColumn appointmentID;
+    public TableColumn title;
+    public TableColumn description;
+    public TableColumn startDateTime;
+    public TableColumn endDateTime;
+    public TableColumn customerID;
 
 
     @FXML
@@ -26,17 +32,24 @@ public class ReportsController implements Initializable {
         Analysis analysis = new Analysis();
         if (selectedReport == "Appointments By Type") {
             analysis.getUniqueTypes();
+            apptsTableView.setItems(reportDataOL);
+            amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
+            typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
         }
         if (selectedReport == "Appointments By Month") {
             analysis.getApptsByMonth();
+            apptsTableView.setItems(reportDataOL);
+            amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
+            typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
+        }
+        if (selectedReport == "Schedules By Contact") {
+            analysis.getContactSchedule();
+            apptsTableView.setItems(reportDataOL);
+            appointmentID.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("appointmentID"));
         }
 
-        apptsTableView.setItems(reportDataOL);
-        amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
-        typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
 
-        //LEFT OFF ADJUSTING CODE SO THAT TYPE OR MONTH IN SCENE BUILDER COLUMN CAN FLUCTUATE BASED ON WHAT
-        //REPORT IS SELECTED
+
     }
 
 

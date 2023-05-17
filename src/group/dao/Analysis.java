@@ -1,6 +1,7 @@
 package group.dao;
 
 import group.model.Appointments;
+import group.model.Contacts;
 import group.model.ReportData;
 
 import java.time.format.DateTimeFormatter;
@@ -10,11 +11,13 @@ import java.util.Map;
 
 import static group.model.Appointments.apptsList;
 import static group.model.ReportData.reportDataOL;
+import static group.model.Contacts.contactList;
 
 public class Analysis {
     public ArrayList<String> typeList = new ArrayList<>();
     public static Map<String, Integer> typeMap = new HashMap<>();
     public static Map<String, Integer> months = new HashMap<>();
+    public static Map<Contacts, ArrayList> schedule = new HashMap<>();
 
     public void populateTypeMap() {
         for (Appointments appts : apptsList) {
@@ -81,6 +84,36 @@ public class Analysis {
             obj.setType_Month(entry.getKey());
             obj.setCount(entry.getValue());
             reportDataOL.add(obj);
+        }
+    }
+
+    public void populateContactHashMap() {
+        for (int i = 0; i < contactList.size(); i++) {
+            ArrayList<Appointments> apptsByContact = new ArrayList<>();
+            for (int j = 0; j < apptsList.size(); j++) {
+                if (apptsList.get(j).getContactID() == contactList.get(i).getContactID()) {
+                    apptsByContact.add(apptsList.get(j));
+                }
+            }
+            schedule.put(contactList.get(i), apptsByContact);
+        }
+    }
+
+    public void getContactSchedule() {
+        populateContactHashMap();
+        reportDataOL.clear();
+        for (Map.Entry<Contacts, ArrayList> entry : schedule.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                ReportData obj = new ReportData();
+                obj.setContactID(entry.getKey().getContactID());
+                obj.setTitle(((Appointments)entry.getValue().get(i)).getTitle());
+                obj.setDescription(((Appointments)entry.getValue().get(i)).getDescription());
+                obj.setCustomerID(((Appointments)entry.getValue().get(i)).getCustomerID());
+                obj.setType_Month(((Appointments)entry.getValue().get(i)).getType());
+                obj.setStartDateTime(((Appointments)entry.getValue().get(i)).getStartDateTime());
+                obj.setEndDateTime(((Appointments)entry.getValue().get(i)).getEndDateTime());
+                reportDataOL.add(obj);
+            }
         }
     }
 

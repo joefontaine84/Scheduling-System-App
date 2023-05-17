@@ -5,12 +5,12 @@ import javafx.collections.ObservableList;
 
 public class ReportData {
 
-    private String type;
+    private String type_Month;
     private int count;
     public static ObservableList<ReportData> reportDataOL = FXCollections.observableArrayList();
 
-    public String getType() {
-        return type;
+    public String getType_Month() {
+        return type_Month;
     }
 
     public int getCount() {
@@ -21,7 +21,7 @@ public class ReportData {
         this.count = count;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType_Month(String type_Month) {
+        this.type_Month = type_Month;
     }
 }

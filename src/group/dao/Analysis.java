@@ -43,7 +43,7 @@ public class Analysis {
         reportDataOL.clear();
         for (Map.Entry<String, Integer> entry : typeMap.entrySet()) {
             ReportData obj = new ReportData();
-            obj.setType(entry.getKey());
+            obj.setType_Month(entry.getKey());
             obj.setCount(entry.getValue());
             reportDataOL.add(obj);
         }
@@ -78,7 +78,7 @@ public class Analysis {
         reportDataOL.clear();
         for (Map.Entry<String, Integer> entry : months.entrySet()) {
             ReportData obj = new ReportData();
-            obj.setType(entry.getKey());
+            obj.setType_Month(entry.getKey());
             obj.setCount(entry.getValue());
             reportDataOL.add(obj);
         }

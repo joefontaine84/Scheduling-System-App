@@ -69,6 +69,7 @@ public class AppointmentsController implements Initializable {
             ObservableList<String> reports = FXCollections.observableArrayList();
             reports.add("Appointments By Type");
             reports.add("Appointments By Month");
+            reports.add("Schedules By Contact");
             reportsComboBox.setItems(reports);
 
     }
@@ -208,6 +209,26 @@ public class AppointmentsController implements Initializable {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/ApptsByTypeView.fxml"));
+            root = apptsByType.load();
+            scene = new Scene(root, 600, 400);
+            stage.setScene(scene);
+            stage.show();
+        }
+        if (selectedReport.equals("Appointments By Month")) {
+            Scene scene;
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/ApptsByMonthView.fxml"));
+            root = apptsByType.load();
+            scene = new Scene(root, 600, 400);
+            stage.setScene(scene);
+            stage.show();
+        }
+        if (selectedReport.equals("Schedules By Contact")) {
+            Scene scene;
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader apptsByType = new FXMLLoader(getClass().getResource("/group/views/SchedulesByContactView.fxml"));
             root = apptsByType.load();
             scene = new Scene(root, 600, 400);
             stage.setScene(scene);

@@ -17,7 +17,7 @@ public class ReportsController implements Initializable {
 
     public TableColumn amount;
     public TableColumn typeOrMonth;
-    public TableView apptsByTypeTableView;
+    public TableView apptsTableView;
     public static String selectedReport = "";
 
 
@@ -31,10 +31,9 @@ public class ReportsController implements Initializable {
             analysis.getApptsByMonth();
         }
 
-        apptsByTypeTableView.setItems(reportDataOL);
+        apptsTableView.setItems(reportDataOL);
         amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
-        typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type"));
-
+        typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
 
         //LEFT OFF ADJUSTING CODE SO THAT TYPE OR MONTH IN SCENE BUILDER COLUMN CAN FLUCTUATE BASED ON WHAT
         //REPORT IS SELECTED

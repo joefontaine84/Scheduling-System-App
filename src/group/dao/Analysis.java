@@ -106,6 +106,7 @@ public class Analysis {
             for (int i = 0; i < entry.getValue().size(); i++) {
                 ReportData obj = new ReportData();
                 obj.setContactID(entry.getKey().getContactID());
+                obj.setContactName(entry.getKey().getName());
                 obj.setTitle(((Appointments)entry.getValue().get(i)).getTitle());
                 obj.setDescription(((Appointments)entry.getValue().get(i)).getDescription());
                 obj.setCustomerID(((Appointments)entry.getValue().get(i)).getCustomerID());

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,7 +10,7 @@
 
 <AnchorPane prefHeight="499.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ReportsController">
    <children>
-      <TableView fx:id="apptsTableView" layoutX="63.0" layoutY="68.0" prefHeight="398.0" prefWidth="631.0">
+      <TableView fx:id="apptsTableView" layoutX="63.0" layoutY="68.0" prefHeight="398.0" prefWidth="631.0" visible="false">
         <columns>
           <TableColumn fx:id="appointmentID" prefWidth="105.0" text="Appointment ID" />
           <TableColumn fx:id="title" prefWidth="71.0" text="Title" />
@@ -20,9 +21,15 @@
             <TableColumn fx:id="customerID" prefWidth="83.0" text="Customer ID" />
         </columns>
       </TableView>
-      <Text fx:id="titleText" layoutX="249.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Schedule For &lt;Contact&gt;">
+      <Text fx:id="titleText" layoutX="249.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Schedule For &lt;Contact&gt;" visible="false">
          <font>
             <Font size="24.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="contactComboBox" layoutX="278.0" layoutY="234.0" onAction="#showSchedule" prefHeight="32.0" prefWidth="182.0" promptText="Click Here..." />
+      <Text fx:id="introText" layoutX="191.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Select a Contact to Generate Their Respective Schedule:" textAlignment="CENTER" wrappingWidth="356.013671875">
+         <font>
+            <Font size="18.0" />
          </font>
       </Text>
    </children>

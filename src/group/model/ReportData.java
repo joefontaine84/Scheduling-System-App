@@ -16,6 +16,7 @@ public class ReportData {
     private Timestamp endDateTime;
     private int customerID;
     private int contactID;
+    private String contactName;
 
     public static ObservableList<ReportData> reportDataOL = FXCollections.observableArrayList();
 
@@ -63,4 +64,11 @@ public class ReportData {
         this.title = title;
     }
 
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
 }

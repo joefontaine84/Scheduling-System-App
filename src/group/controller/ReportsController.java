@@ -35,11 +35,12 @@ public class ReportsController implements Initializable {
     public TableColumn<ReportData, Timestamp> startDateTime;
     public TableColumn<ReportData, Timestamp> endDateTime;
     public TableColumn<ReportData, Integer> customerID;
+    public TableColumn<ReportData, String> customerName;
     public Text titleText;
     public ComboBox<String> contactComboBox;
     public Text introText;
-    Analysis analysis = new Analysis();
 
+    Analysis analysis = new Analysis();
 
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,6 +56,13 @@ public class ReportsController implements Initializable {
             apptsTableView.setItems(reportDataOL);
             amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
             typeOrMonth.setCellValueFactory(new PropertyValueFactory<ReportData, String>("type_Month"));
+        }
+        if (selectedReport == "Appointments By Customer") {
+            analysis.getAppointmentsByCustomer();
+            apptsTableView.setItems(reportDataOL);
+            amount.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("count"));
+            customerID.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("customerID"));
+            customerName.setCellValueFactory(new PropertyValueFactory<ReportData, String>("customerName"));
         }
         if (selectedReport == "Schedules By Contact") {
             // pop-up to select Contact

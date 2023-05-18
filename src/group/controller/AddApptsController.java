@@ -170,7 +170,7 @@ public class AddApptsController implements Initializable {
         Parent root;
         FXMLLoader appointmentsController = new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
         root = appointmentsController.load();
-        scene = new Scene(root, 1066, 665);
+        scene = new Scene(root, 1183, 665);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

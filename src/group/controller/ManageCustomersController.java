@@ -55,7 +55,7 @@ public class ManageCustomersController implements Initializable {
         Parent root;
         FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/AppointmentsView.fxml"));
         root = addApptsView.load();
-        scene = new Scene(root, 1129, 652);
+        scene = new Scene(root, 1183, 665);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

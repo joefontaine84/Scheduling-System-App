@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ReportsController">
+   <children>
+      <TableView fx:id="apptsTableView" layoutX="91.0" layoutY="75.0" prefHeight="250.0" prefWidth="418.0">
+        <columns>
+          <TableColumn fx:id="customerName" prefWidth="133.0" text="Customer Name" />
+          <TableColumn fx:id="customerID" prefWidth="119.0" text="Customer ID" />
+            <TableColumn fx:id="amount" prefWidth="165.0" text="Amount of Appointments" />
+        </columns>
+      </TableView>
+      <Text layoutX="202.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments by Customer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

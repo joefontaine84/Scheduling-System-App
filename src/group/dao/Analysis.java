@@ -2,6 +2,7 @@ package group.dao;
 
 import group.model.Appointments;
 import group.model.Contacts;
+import group.model.Customers;
 import group.model.ReportData;
 
 import java.time.format.DateTimeFormatter;
@@ -12,12 +13,14 @@ import java.util.Map;
 import static group.model.Appointments.apptsList;
 import static group.model.ReportData.reportDataOL;
 import static group.model.Contacts.contactList;
+import static group.model.Customers.customerList;
 
 public class Analysis {
     public ArrayList<String> typeList = new ArrayList<>();
     public static Map<String, Integer> typeMap = new HashMap<>();
     public static Map<String, Integer> months = new HashMap<>();
     public static Map<Contacts, ArrayList> schedule = new HashMap<>();
+    public static Map<Customers, ArrayList> customersHashMap = new HashMap<>();
 
     public void populateTypeMap() {
         for (Appointments appts : apptsList) {
@@ -114,6 +117,32 @@ public class Analysis {
                 obj.setType_Month(((Appointments)entry.getValue().get(i)).getType());
                 obj.setStartDateTime(((Appointments)entry.getValue().get(i)).getStartDateTime());
                 obj.setEndDateTime(((Appointments)entry.getValue().get(i)).getEndDateTime());
+                reportDataOL.add(obj);
+            }
+        }
+    }
+
+    public void populateCustomersHashMap() {
+        for (int i = 0; i < customerList.size(); i++) {
+            ArrayList<Appointments> apptsByCustomer = new ArrayList<>();
+            for (int j = 0; j < apptsList.size(); j++) {
+                if (apptsList.get(j).getCustomerID() == customerList.get(i).getCustomerID()) {
+                    apptsByCustomer.add(apptsList.get(j));
+                }
+            }
+            customersHashMap.put(customerList.get(i), apptsByCustomer);
+        }
+    }
+
+    public void getAppointmentsByCustomer() {
+        populateCustomersHashMap();
+        reportDataOL.clear();
+        for (Map.Entry<Customers, ArrayList> entry : customersHashMap.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                ReportData obj = new ReportData();
+                obj.setCustomerID(entry.getKey().getCustomerID());
+                obj.setCustomerName(entry.getKey().getCustomerName());
+                obj.setCount(entry.getValue().size());
                 reportDataOL.add(obj);
             }
         }

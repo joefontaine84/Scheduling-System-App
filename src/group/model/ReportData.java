@@ -15,6 +15,7 @@ public class ReportData {
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     private int customerID;
+    private String customerName;
     private int contactID;
     private String contactName;
 
@@ -99,5 +100,12 @@ public class ReportData {
     public String getTitle() {
         return title;
     }
-    
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 }

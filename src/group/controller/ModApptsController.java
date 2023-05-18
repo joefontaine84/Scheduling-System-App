@@ -3,6 +3,7 @@ package group.controller;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
+import group.model.Customers;
 import group.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 import static group.Main.primaryStage;
 import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
+import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
 
 public class ModApptsController implements Initializable {
@@ -51,6 +53,7 @@ public class ModApptsController implements Initializable {
     public static int apptIndex;
 
     public Appointments selectedAppt = apptsList.get(apptIndex);
+    public ComboBox customerIDComboBox;
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
@@ -60,8 +63,7 @@ public class ModApptsController implements Initializable {
         descriptionTextField.setText(selectedAppt.getDescription());
         locationTextField.setText(selectedAppt.getLocation());
         typeTextField.setText(selectedAppt.getType());
-
-        customerIDTextField.setText(String.valueOf(selectedAppt.getCustomerID()));
+        //customerIDTextField.setText(String.valueOf(selectedAppt.getCustomerID()));
         setDateTimeFromTS(selectedAppt.getStartDateTime(), startDatePicker, startDateTimeTextField);
         setDateTimeFromTS(selectedAppt.getEndDateTime(), endDatePicker, endDateTimeTextField);
 
@@ -80,6 +82,13 @@ public class ModApptsController implements Initializable {
         }
         userIDComboBox.setItems(tempUserList);
         userIDComboBox.setValue(getUsernameFromID());
+
+        ObservableList<String> tempCustomerList = FXCollections.observableArrayList();
+        for (Customers element : customerList) {
+            tempCustomerList.add(element.getCustomerName());
+        }
+        customerIDComboBox.setItems(tempCustomerList);
+        customerIDComboBox.setValue(getCustomerNameFromID());
     }
 
 
@@ -137,6 +146,16 @@ public class ModApptsController implements Initializable {
         }   return userID;
     }
 
+    public int findCustomerID() {
+        int customerID = 0;
+        for (Customers customerObj : customerList) {
+            if (customerIDComboBox.getValue().equals(customerObj.getCustomerName())) {
+                customerID = customerObj.getCustomerID();
+            }
+        }   return customerID;
+
+    }
+
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 
         ZoneId newYork = ZoneId.of("America/New_York");
@@ -173,7 +192,7 @@ public class ModApptsController implements Initializable {
     public void save() throws IOException, InputValidationException {
         try {
             selectedAppt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
-            selectedAppt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+            selectedAppt.setCustomerID(findCustomerID());
             selectedAppt.setUserID(findUserID());
             selectedAppt.setTitle(titleTextField.getText());
             selectedAppt.setDescription(descriptionTextField.getText());
@@ -262,6 +281,16 @@ public class ModApptsController implements Initializable {
             }
         }
         return username;
+    }
+
+    public String getCustomerNameFromID() {
+        String customerName = "";
+        for (Customers customer : customerList) {
+            if (customer.getCustomerID() == apptsList.get(apptIndex).getCustomerID()) {
+                customerName = customer.getCustomerName();
+            }
+        }
+        return customerName;
     }
 
 

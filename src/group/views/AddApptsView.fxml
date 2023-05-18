@@ -15,7 +15,6 @@
       <TextField fx:id="descriptionTextField" layoutX="171.0" layoutY="194.0" />
       <TextField fx:id="locationTextField" layoutX="171.0" layoutY="237.0" />
       <TextField fx:id="typeTextField" layoutX="171.0" layoutY="283.0" />
-      <TextField fx:id="customerIDTextField" layoutX="170.0" layoutY="326.0" />
       <TextField fx:id="startDateTimeTextField" layoutX="500.0" layoutY="154.0" />
       <Text layoutX="54.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID:" />
       <Text layoutX="116.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
@@ -41,5 +40,6 @@
       <TextField fx:id="endDateTimeTextField" layoutX="500.0" layoutY="237.0" />
       <Text layoutX="430.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
       <ComboBox fx:id="userIDComboBox" layoutX="500.0" layoutY="283.0" prefWidth="150.0" promptText="Select User ID" />
+      <ComboBox fx:id="customerIDComboBox" layoutX="171.0" layoutY="328.0" prefWidth="150.0" promptText="Select Customer ID" />
    </children>
 </AnchorPane>

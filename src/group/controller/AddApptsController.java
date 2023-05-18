@@ -4,6 +4,7 @@ import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
+import group.model.Customers;
 import group.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +37,7 @@ import static group.dao.Data.getNextAppointmentID;
 import static group.dao.Data.populateContacts;
 import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
+import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
 
 public class AddApptsController implements Initializable {
@@ -54,6 +56,7 @@ public class AddApptsController implements Initializable {
     public TextField endDateTimeTextField;
     public DatePicker endDatePicker;
     public ComboBox userIDComboBox;
+    public ComboBox customerIDComboBox;
 
 
     @FXML
@@ -80,6 +83,13 @@ public class AddApptsController implements Initializable {
             tempUserList.add(element.getUsername());
         }
         userIDComboBox.setItems(tempUserList);
+
+        ObservableList<String> tempCustomerList = FXCollections.observableArrayList();
+        for (Customers element : customerList) {
+            tempCustomerList.add(element.getCustomerName());
+        }
+        customerIDComboBox.setItems(tempCustomerList);
+
     }
 
 
@@ -90,7 +100,7 @@ public class AddApptsController implements Initializable {
         try {
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
-            appt.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+            appt.setCustomerID(findCustomerID());
             appt.setUserID(findUserID());
             appt.setTitle(titleTextField.getText());
             appt.setDescription(descriptionTextField.getText());
@@ -223,6 +233,16 @@ public class AddApptsController implements Initializable {
                 userID = userObj.getUserID();
             }
         }   return userID;
+    }
+
+    public int findCustomerID() {
+        int customerID = 0;
+        for (Customers customerObj : customerList) {
+            if (customerIDComboBox.getValue().equals(customerObj.getCustomerName())) {
+                customerID = customerObj.getCustomerID();
+            }
+        }   return customerID;
+
     }
 
 

@@ -142,7 +142,7 @@ public class AppointmentsController implements Initializable {
         Parent root;
         FXMLLoader manageCustomersView = new FXMLLoader(getClass().getResource("/group/views/ManageCustomersView.fxml"));
         root = manageCustomersView.load();
-        scene = new Scene(root, 1066, 665);
+        scene = new Scene(root, 825, 427);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

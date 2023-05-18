@@ -66,7 +66,7 @@ public class ManageCustomersController implements Initializable {
         Parent root;
         FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/AddCustomersView.fxml"));
         root = addApptsView.load();
-        scene = new Scene(root, 1129, 652);
+        scene = new Scene(root, 745, 468);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -80,7 +80,7 @@ public class ManageCustomersController implements Initializable {
             Parent root;
             FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/ModCustomersView.fxml"));
             root = addApptsView.load();
-            scene = new Scene(root, 1129, 652);
+            scene = new Scene(root, 745, 468);
             primaryStage.setScene(scene);
             primaryStage.show();
         } else {
@@ -92,12 +92,14 @@ public class ManageCustomersController implements Initializable {
     @FXML
     public void delete () throws InputValidationException {
         try {
-            if (!customersTableView.getSelectionModel().isEmpty()) {
+            if (!(customersTableView.getSelectionModel().isEmpty())) {
                 for (Appointments appts : apptsList) {
                     if (appts.getCustomerID() == customersTableView.getSelectionModel().getSelectedItem().getCustomerID()) {
                         throw new InputValidationException("You must first delete all associated appointments with this customer before deleting the customer record.");
                     }
                 }
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have successfully deleted the selected Customer with Customer ID: " + customersTableView.getSelectionModel().getSelectedItem().getCustomerID());
+                alert.show();
                 customerList.remove(customersTableView.getSelectionModel().getSelectedItem());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer record to delete.");

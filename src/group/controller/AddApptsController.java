@@ -164,7 +164,7 @@ public class AddApptsController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, user ID, dates, and times.");
             alert.show();
         } catch (DateTimeException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values as the following format: HH:mm");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values in accordance with the following format: HH:mm (hours:minutes).");
             alert.show();
         } catch (InputValidationException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());

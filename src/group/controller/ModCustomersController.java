@@ -101,7 +101,7 @@ public class ModCustomersController implements Initializable {
         Parent root;
         FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/ManageCustomersView.fxml"));
         root = addApptsView.load();
-        scene = new Scene(root, 1129, 652);
+        scene = new Scene(root, 825, 427);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

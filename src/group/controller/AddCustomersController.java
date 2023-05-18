@@ -98,7 +98,7 @@ public class AddCustomersController implements Initializable {
         Parent root;
         FXMLLoader addApptsView = new FXMLLoader(getClass().getResource("/group/views/ManageCustomersView.fxml"));
         root = addApptsView.load();
-        scene = new Scene(root, 1129, 652);
+        scene = new Scene(root, 825, 427);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -115,7 +115,6 @@ public class AddCustomersController implements Initializable {
             customer.setDivisionID(findDivisionID());
             switchToManageCustomers();
             customerList.add(customer);
-            System.out.println(findDivisionID());
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure that information has been entered/selected for all fields.");
             alert.show();

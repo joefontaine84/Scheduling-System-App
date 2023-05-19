@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="468.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.controller.ModCustomersController">
    <children>
-      <Text layoutX="296.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Customer">
+      <Text layoutX="281.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Customer">
          <font>
             <Font size="24.0" />
          </font>
@@ -19,7 +19,7 @@
       <TextField fx:id="addressTextField" layoutX="113.0" layoutY="189.0" />
       <TextField fx:id="postalCodeTextField" layoutX="113.0" layoutY="234.0" />
       <TextField fx:id="phoneNumberTextField" layoutX="113.0" layoutY="277.0" />
-      <ComboBox fx:id="countryComboBox" layoutX="468.0" layoutY="99.0" prefWidth="150.0" />
+      <ComboBox fx:id="countryComboBox" layoutX="468.0" layoutY="99.0" onAction="#clearDivisions" prefWidth="150.0" />
       <ComboBox fx:id="divisionComboBox" layoutX="468.0" layoutY="189.0" onMouseClicked="#filterDivisions" prefWidth="150.0" />
       <Text layoutX="35.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID: " />
       <Text layoutX="14.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Name:" />

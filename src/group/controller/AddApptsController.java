@@ -155,6 +155,8 @@ public class AddApptsController implements Initializable {
             }
 
             apptsList.add(appt);
+
+
             switchToAppointmentsController();
 
         } catch (NumberFormatException exception) {

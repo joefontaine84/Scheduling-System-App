@@ -128,6 +128,13 @@ public class Data {
         }
     }
 
+    public static void addApptToDB(Appointments appt) {
+        String sql = "INSERT INTO client_schedule.appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID)" +
+                "VALUES (" + appt.getAppointmentID() + ", " + appt.getTitle() + ", " + appt.getDescription() + ", "
+                + appt.getLocation() + ", " + appt.getType() + ", " + appt.getStartDateTime() + ", " + appt.getEndDateTime()
+                + ", " + app
+    }
+
 }
 
 

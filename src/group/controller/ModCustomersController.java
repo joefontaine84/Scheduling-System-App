@@ -73,6 +73,11 @@ public class ModCustomersController implements Initializable {
         }
     }
 
+    @FXML
+    public void clearDivisions() {
+        divisionComboBox.setValue(null);
+    }
+
     public int findCountryID() {
         int tempID = 0;
         for (Countries country : countriesList) {
@@ -116,6 +121,7 @@ public class ModCustomersController implements Initializable {
             customer.setAddress(addressTextField.getText());
             customer.setPostalCode(postalCodeTextField.getText());
             customer.setDivisionID(findDivisionID());
+            System.out.println(customer.getDivisionID());
             switchToManageCustomers();
             customerList.remove(selectedCustomer);
             customerList.add(customer);

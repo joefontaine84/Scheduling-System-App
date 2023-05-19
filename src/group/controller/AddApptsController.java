@@ -147,7 +147,7 @@ public class AddApptsController implements Initializable {
             }
 
             if (timeCheck == false) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within a given day.");
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
             }
 
             if (appt.getEndDateTime().before(appt.getStartDateTime())) {

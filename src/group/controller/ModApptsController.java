@@ -204,9 +204,10 @@ public class ModApptsController implements Initializable {
 
 
             List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == selectedAppt.getContactID()).collect(Collectors.toList());
-            System.out.println(apptsByContact.size());
+            apptsByContact.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
             boolean before = false;
             boolean after = false;
+            // if apptsByContact list is empty, this for loop does not fire and no exception is thrown
             for (Appointments element : apptsByContact) {
                 if (selectedAppt.getStartDateTime().before(element.getStartDateTime()) && (selectedAppt.getEndDateTime().before(element.getStartDateTime()) || selectedAppt.getEndDateTime().equals(element.getStartDateTime()))) {
                     before = true;
@@ -215,7 +216,8 @@ public class ModApptsController implements Initializable {
                 if ((selectedAppt.getStartDateTime().after(element.getEndDateTime()) || selectedAppt.getStartDateTime().equals(element.getEndDateTime())) && selectedAppt.getEndDateTime().after(element.getEndDateTime())) {
                     after = true;
                 }
-
+                System.out.println("before boolean variable: " + before);
+                System.out.println("after boolean variable: " + after);
                 if (before == false && after == false) {
                     throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
                 }
@@ -235,15 +237,21 @@ public class ModApptsController implements Initializable {
                 timeCheck = false;
             }
 
+            if (!(selectedAppt.getStartDateTime().toLocalDateTime().toLocalDate().equals(selectedAppt.getEndDateTime().toLocalDateTime().toLocalDate()))) {
+                timeCheck = false;
+            }
+
+            System.out.println("timeCheck boolean variable " + timeCheck);
 
             if (timeCheck == false) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM, EST/EDT.");
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
             }
 
             if (selectedAppt.getEndDateTime().before(selectedAppt.getStartDateTime())) {
                 throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
             }
 
+            //apptsList.add(selectedAppt);
             switchToAppointmentsController();
 
         } catch (NumberFormatException exception) {

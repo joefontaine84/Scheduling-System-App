@@ -16,13 +16,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
+import static group.dao.Data.deleteApptFromDB;
 import static group.model.Appointments.apptsList;
 import static group.controller.ModApptsController.apptIndex;
 import static group.controller.ReportsController.selectedReport;
@@ -49,6 +52,7 @@ public class AppointmentsController implements Initializable {
     public RadioButton allAppts;
 
     public static Users loggedInUser;
+    public static int firstCall = 0;
     public ComboBox reportsComboBox;
 
     @Override
@@ -72,6 +76,11 @@ public class AppointmentsController implements Initializable {
             reports.add("Appointments By Customer");
             reports.add("Schedules By Contact");
             reportsComboBox.setItems(reports);
+
+        if (firstCall == 0) {
+            meetingsInFifteen();
+            firstCall = 1;
+        }
 
     }
 
@@ -123,10 +132,10 @@ public class AppointmentsController implements Initializable {
      * This function deletes an appointment from the apptsList static variable.
      * */
     @FXML
-    public void deleteAppointment() {
-
+    public void deleteAppointment() throws SQLException {
         if (!apptsTableView.getSelectionModel().isEmpty()) {
             Appointments selectedAppt = apptsTableView.getSelectionModel().getSelectedItem();
+            deleteApptFromDB(selectedAppt);
             apptsList.remove(apptsList.indexOf(selectedAppt));
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have deleted Appointment ID: " + selectedAppt.getAppointmentID() + "; Type of appointment: " + selectedAppt.getType() + ".");
             alert.show();
@@ -173,17 +182,31 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    @FXML
     public void meetingsInFifteen() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime nowPlusFifteenMin = LocalDateTime.now().plusMinutes(15);
-        ObservableList<Appointments> tempList = FXCollections.observableArrayList();
-        tempList = apptsList.stream().filter(element -> element.getUserID() == loggedInUser.getUserID()).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        System.out.println(now);
+        LocalDateTime nowPlusFifteenMin = now.plusMinutes(15);
+
+        ArrayList<Appointments> tempList = new ArrayList<>();
+        for (Appointments appt : apptsList) {
+            LocalDateTime startTime = appt.getStartDateTime().toLocalDateTime();
+            if (appt.getUserID() == loggedInUser.getUserID()) {
+                if (((startTime.equals(now) || startTime.equals(nowPlusFifteenMin)) || (startTime.isAfter(now) && startTime.isBefore(nowPlusFifteenMin)))) {
+                    tempList.add(appt);
+                }
+            }
+        }
+
+/*        ObservableList<Appointments> tempList = apptsList.stream().filter(element -> element.getUserID() == loggedInUser.getUserID()).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        System.out.println(tempList);
         for (Appointments appts : tempList) {
             LocalDateTime startTime = appts.getStartDateTime().toLocalDateTime();
             if (!((startTime.equals(now) || startTime.equals(nowPlusFifteenMin)) || (startTime.isAfter(now) && startTime.isBefore(nowPlusFifteenMin)))) {
                 tempList.remove(appts);
             }
-        }
+        }*/
+        System.out.println(tempList);
         if (tempList.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have no appointments within the next 15 minutes.");
             alert.show();

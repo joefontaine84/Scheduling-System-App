@@ -17,11 +17,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
 import static group.controller.ModApptsController.apptIndex;
 import static group.controller.ModCustomersController.customerIndex;
+import static group.dao.Data.deleteCustomerFromDB;
 import static group.model.Appointments.apptsList;
 import static group.model.Customers.customerList;
 
@@ -90,7 +92,7 @@ public class ManageCustomersController implements Initializable {
     }
 
     @FXML
-    public void delete () throws InputValidationException {
+    public void delete () throws InputValidationException, SQLException {
         try {
             if (!(customersTableView.getSelectionModel().isEmpty())) {
                 for (Appointments appts : apptsList) {
@@ -100,6 +102,7 @@ public class ManageCustomersController implements Initializable {
                 }
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have successfully deleted the selected Customer with Customer ID: " + customersTableView.getSelectionModel().getSelectedItem().getCustomerID());
                 alert.show();
+                deleteCustomerFromDB(customersTableView.getSelectionModel().getSelectedItem());
                 customerList.remove(customersTableView.getSelectionModel().getSelectedItem());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer record to delete.");

@@ -18,9 +18,11 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
+import static group.dao.Data.updateCustomerFromDB;
 import static group.model.Appointments.apptsList;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
@@ -112,19 +114,16 @@ public class ModCustomersController implements Initializable {
     }
 
     @FXML
-    public void save () throws IOException {
+    public void save () throws IOException, SQLException {
         try {
-            Customers customer = new Customers();
-            customer.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
-            customer.setCustomerName(customerNameTextField.getText());
-            customer.setPhoneNumber(phoneNumberTextField.getText());
-            customer.setAddress(addressTextField.getText());
-            customer.setPostalCode(postalCodeTextField.getText());
-            customer.setDivisionID(findDivisionID());
-            System.out.println(customer.getDivisionID());
+            selectedCustomer.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
+            selectedCustomer.setCustomerName(customerNameTextField.getText());
+            selectedCustomer.setPhoneNumber(phoneNumberTextField.getText());
+            selectedCustomer.setAddress(addressTextField.getText());
+            selectedCustomer.setPostalCode(postalCodeTextField.getText());
+            selectedCustomer.setDivisionID(findDivisionID());
+            updateCustomerFromDB(selectedCustomer);
             switchToManageCustomers();
-            customerList.remove(selectedCustomer);
-            customerList.add(customer);
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure that information has been entered/selected for all fields.");
             alert.show();

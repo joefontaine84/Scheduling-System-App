@@ -138,13 +138,11 @@ public class Analysis {
         populateCustomersHashMap();
         reportDataOL.clear();
         for (Map.Entry<Customers, ArrayList> entry : customersHashMap.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
                 ReportData obj = new ReportData();
                 obj.setCustomerID(entry.getKey().getCustomerID());
                 obj.setCustomerName(entry.getKey().getCustomerName());
                 obj.setCount(entry.getValue().size());
                 reportDataOL.add(obj);
-            }
         }
     }
 

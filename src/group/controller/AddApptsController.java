@@ -132,7 +132,7 @@ public class AddApptsController implements Initializable {
                 if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
                     timeCheck = true;
                 }
-                else if (appt.getEndDateTime().toLocalDateTime().getHour() == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
+                else if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
                     timeCheck = true;
                 } else {
                     timeCheck = false;

@@ -171,6 +171,51 @@ public class Data {
         ps.executeUpdate();
     }
 
+    public static void deleteApptFromDB (Appointments appt) throws SQLException {
+        String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setInt(1, appt.getAppointmentID());
+        ps.executeUpdate();
+    }
+
+    public static void addCustomerToDB (Customers customer) throws SQLException {
+        String sql = "INSERT INTO client_schedule.customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID) "
+                + "VALUES (?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setInt(1, customer.getCustomerID());
+        ps.setString(2, customer.getCustomerName());
+        ps.setString(3, customer.getAddress());
+        ps.setString(4, customer.getPostalCode());
+        ps.setString(5, customer.getPhoneNumber());
+        ps.setInt(6, customer.getDivisionID());
+        ps.executeUpdate();
+    }
+
+    public static void updateCustomerFromDB (Customers customer) throws SQLException {
+        String sql = "UPDATE client_schedule.customers SET " +
+                "Customer_Name = ?, " +
+                "Address = ?, " +
+                "Postal_Code = ?, " +
+                "Phone = ?, " +
+                "Division_ID = ? " +
+                "WHERE customers.Customer_ID = ?;";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setString(1, customer.getCustomerName());
+        ps.setString(2, customer.getAddress());
+        ps.setString(3, customer.getPostalCode());
+        ps.setString(4, customer.getPhoneNumber());
+        ps.setInt(5, customer.getDivisionID());
+        ps.setInt(6, customer.getCustomerID());
+        ps.executeUpdate();
+    }
+
+    public static void deleteCustomerFromDB (Customers customer) throws SQLException {
+        String sql = "DELETE FROM client_schedule.customers WHERE Customer_ID = ?";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setInt(1, customer.getCustomerID());
+        ps.executeUpdate();
+    }
+
 }
 
 

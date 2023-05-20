@@ -183,11 +183,11 @@ public class ModApptsController implements Initializable {
 
         long timeDifference = localOffset - newYorkOffset;
 
-        long hoursFromNYTime = 0;
+        long adjustedHours = 0;
 
-        hoursFromNYTime = localDateTime.getHour() - timeDifference;
+        adjustedHours = localDateTime.getHour() - timeDifference;
 
-        return hoursFromNYTime;
+        return adjustedHours;
     }
 
 
@@ -231,7 +231,7 @@ public class ModApptsController implements Initializable {
                 if (hourConversionNYTime(selectedAppt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
                     timeCheck = true;
                 }
-                else if (selectedAppt.getEndDateTime().toLocalDateTime().getHour() == 22 && selectedAppt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
+                else if (hourConversionNYTime(selectedAppt.getEndDateTime().toLocalDateTime()) == 22 && selectedAppt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
                     timeCheck = true;
                 } else {
                     timeCheck = false;

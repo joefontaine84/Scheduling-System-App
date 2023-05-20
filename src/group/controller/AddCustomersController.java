@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
+import static group.dao.Data.addCustomerToDB;
 import static group.dao.Data.getNextCustomerID;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
@@ -104,7 +105,7 @@ public class AddCustomersController implements Initializable {
     }
 
     @FXML
-    public void save () throws IOException {
+    public void save () throws IOException, SQLException {
         try {
             Customers customer = new Customers();
             customer.setCustomerID(Integer.valueOf(customerIDTextField.getText()));
@@ -113,8 +114,11 @@ public class AddCustomersController implements Initializable {
             customer.setAddress(addressTextField.getText());
             customer.setPostalCode(postalCodeTextField.getText());
             customer.setDivisionID(findDivisionID());
-            switchToManageCustomers();
+
+            addCustomerToDB(customer);
             customerList.add(customer);
+            switchToManageCustomers();
+
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure that information has been entered/selected for all fields.");
             alert.show();

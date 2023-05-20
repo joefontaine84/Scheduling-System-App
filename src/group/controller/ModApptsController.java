@@ -194,6 +194,56 @@ public class ModApptsController implements Initializable {
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
         try {
+            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList());
+            apptsByContact.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
+            boolean before = false;
+            boolean after = false;
+            Timestamp start = formatDateTime(startDatePicker, startDateTimeTextField);
+            Timestamp end = formatDateTime(endDatePicker, endDateTimeTextField);
+            // if apptsByContact list is empty, this for loop does not fire and no exception is thrown
+            for (Appointments element : apptsByContact) {
+                if (start.before(element.getStartDateTime()) && (end.before(element.getStartDateTime()) || end.equals(element.getStartDateTime()))) {
+                    before = true;
+                }
+
+                if ((start.after(element.getEndDateTime()) || start.equals(element.getEndDateTime())) && end.after(element.getEndDateTime())) {
+                    after = true;
+                }
+/*                System.out.println("before boolean variable: " + before);
+                System.out.println("after boolean variable: " + after);*/
+                if (before == false && after == false) {
+                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
+                }
+            }
+
+            boolean timeCheck = true;
+            if (hourConversionNYTime(start.toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
+                if (hourConversionNYTime(end.toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
+                    timeCheck = true;
+                }
+                else if (hourConversionNYTime(end.toLocalDateTime()) == 22 && end.toLocalDateTime().getMinute() == 0) {
+                    timeCheck = true;
+                } else {
+                    timeCheck = false;
+                }
+            } else {
+                timeCheck = false;
+            }
+
+            if (!(start.toLocalDateTime().toLocalDate().equals(end.toLocalDateTime().toLocalDate()))) {
+                timeCheck = false;
+            }
+
+            System.out.println("timeCheck boolean variable " + timeCheck);
+
+            if (timeCheck == false) {
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
+            }
+
+            if (end.before(start)) {
+                throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
+            }
+
             selectedAppt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
             selectedAppt.setCustomerID(findCustomerID());
             selectedAppt.setUserID(findUserID());
@@ -205,61 +255,9 @@ public class ModApptsController implements Initializable {
             selectedAppt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             selectedAppt.setContactID(findContactID());
 
-
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == selectedAppt.getContactID()).collect(Collectors.toList());
-            apptsByContact.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
-            boolean before = false;
-            boolean after = false;
-            // if apptsByContact list is empty, this for loop does not fire and no exception is thrown
-            for (Appointments element : apptsByContact) {
-                if (selectedAppt.getStartDateTime().before(element.getStartDateTime()) && (selectedAppt.getEndDateTime().before(element.getStartDateTime()) || selectedAppt.getEndDateTime().equals(element.getStartDateTime()))) {
-                    before = true;
-                }
-
-                if ((selectedAppt.getStartDateTime().after(element.getEndDateTime()) || selectedAppt.getStartDateTime().equals(element.getEndDateTime())) && selectedAppt.getEndDateTime().after(element.getEndDateTime())) {
-                    after = true;
-                }
-                System.out.println("before boolean variable: " + before);
-                System.out.println("after boolean variable: " + after);
-                if (before == false && after == false) {
-                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
-                }
-            }
-
-            boolean timeCheck = true;
-            if (hourConversionNYTime(selectedAppt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
-                if (hourConversionNYTime(selectedAppt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
-                    timeCheck = true;
-                }
-                else if (hourConversionNYTime(selectedAppt.getEndDateTime().toLocalDateTime()) == 22 && selectedAppt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
-                    timeCheck = true;
-                } else {
-                    timeCheck = false;
-                }
-            } else {
-                timeCheck = false;
-            }
-
-            if (!(selectedAppt.getStartDateTime().toLocalDateTime().toLocalDate().equals(selectedAppt.getEndDateTime().toLocalDateTime().toLocalDate()))) {
-                timeCheck = false;
-            }
-
-            System.out.println("timeCheck boolean variable " + timeCheck);
-
-            if (timeCheck == false) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
-            }
-
-            if (selectedAppt.getEndDateTime().before(selectedAppt.getStartDateTime())) {
-                throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
-            }
-
             updateApptToDB(selectedAppt);
             switchToAppointmentsController();
 
-        } catch (NumberFormatException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
-            alert.show();
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, user ID, dates, and times.");
             alert.show();

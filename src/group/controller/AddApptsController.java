@@ -97,6 +97,50 @@ public class AddApptsController implements Initializable {
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
         try {
+
+            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList());
+            boolean before = false;
+            boolean after = false;
+            Timestamp start = formatDateTime(startDatePicker, startDateTimeTextField);
+            Timestamp end = formatDateTime(endDatePicker, endDateTimeTextField);
+            for (Appointments element : apptsByContact) {
+                if (end.equals(element.getStartDateTime()) || end.before(element.getStartDateTime())) {
+                    before = true;
+                }
+                if (start.after(element.getEndDateTime()) || start.equals(element.getEndDateTime())) {
+                    after = true;
+                }
+                if (before == false && after == false) {
+                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
+                }
+            }
+
+            boolean timeCheck = true;
+            if (hourConversionNYTime(start.toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
+                if (hourConversionNYTime(end.toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
+                    timeCheck = true;
+                }
+                else if (hourConversionNYTime(end.toLocalDateTime()) == 22 && end.toLocalDateTime().getMinute() == 0) {
+                    timeCheck = true;
+                } else {
+                    timeCheck = false;
+                }
+            } else {
+                timeCheck = false;
+            }
+
+            if (!(start.toLocalDateTime().toLocalDate().equals(end.toLocalDateTime().toLocalDate()))) {
+                timeCheck = false;
+            }
+
+            if (timeCheck == false) {
+                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
+            }
+
+            if (end.before(start)) {
+                throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
+            }
+
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
             appt.setCustomerID(findCustomerID());
@@ -108,50 +152,6 @@ public class AddApptsController implements Initializable {
             appt.setStartDateTime(formatDateTime(startDatePicker, startDateTimeTextField)); // calls on formatStartDateTime to return a Timestamp value refecting the date & time values entered.
             appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             appt.setContactID(findContactID());
-
-
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == appt.getContactID()).collect(Collectors.toList());
-            boolean before = false;
-            boolean after = false;
-            for (Appointments element : apptsByContact) {
-                if (appt.getStartDateTime().before(element.getStartDateTime()) && (appt.getEndDateTime().before(element.getStartDateTime()) || appt.getEndDateTime().equals(element.getStartDateTime()))) {
-                    before = true;
-                }
-
-                if ((appt.getStartDateTime().after(element.getEndDateTime()) || appt.getStartDateTime().equals(element.getEndDateTime())) && appt.getEndDateTime().after(element.getEndDateTime())) {
-                    after = true;
-                }
-
-                if (before == false && after == false) {
-                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
-                }
-            }
-
-            boolean timeCheck = true;
-            if (hourConversionNYTime(appt.getStartDateTime().toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
-                if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
-                    timeCheck = true;
-                }
-                else if (hourConversionNYTime(appt.getEndDateTime().toLocalDateTime()) == 22 && appt.getEndDateTime().toLocalDateTime().getMinute() == 0) {
-                    timeCheck = true;
-                } else {
-                    timeCheck = false;
-                }
-            } else {
-                timeCheck = false;
-            }
-
-            if (!(appt.getStartDateTime().toLocalDateTime().toLocalDate().equals(appt.getEndDateTime().toLocalDateTime().toLocalDate()))) {
-                timeCheck = false;
-            }
-
-            if (timeCheck == false) {
-                throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
-            }
-
-            if (appt.getEndDateTime().before(appt.getStartDateTime())) {
-                throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
-            }
 
             apptsList.add(appt);
             addApptToDB(appt);

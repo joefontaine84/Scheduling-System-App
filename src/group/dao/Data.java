@@ -128,11 +128,47 @@ public class Data {
         }
     }
 
-    public static void addApptToDB(Appointments appt) {
+    public static void addApptToDB(Appointments appt) throws SQLException {
         String sql = "INSERT INTO client_schedule.appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID)" +
-                "VALUES (" + appt.getAppointmentID() + ", " + appt.getTitle() + ", " + appt.getDescription() + ", "
-                + appt.getLocation() + ", " + appt.getType() + ", " + appt.getStartDateTime() + ", " + appt.getEndDateTime()
-                + ", " + app
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setInt(1, appt.getAppointmentID());
+        ps.setString(2, appt.getTitle());
+        ps.setString(3, appt.getDescription());
+        ps.setString(4, appt.getLocation());
+        ps.setString(5, appt.getType());
+        ps.setTimestamp(6, appt.getStartDateTime());
+        ps.setTimestamp(7, appt.getEndDateTime());
+        ps.setInt(8, appt.getCustomerID());
+        ps.setInt(9, appt.getUserID());
+        ps.setInt(10, appt.getContactID());
+        ps.executeUpdate();
+    }
+
+    public static void updateApptToDB(Appointments appt) throws SQLException {
+        String sql = "UPDATE client_schedule.appointments SET " +
+                "Title = ?, " +
+                "Description = ?, " +
+                "Location = ?, " +
+                "Type = ?, " +
+                "Start = ?, " +
+                "End = ?, " +
+                "Customer_ID = ?, " +
+                "User_ID = ?, " +
+                "Contact_ID = ?" +
+                " WHERE appointments.Appointment_ID = ?;";
+        PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
+        ps.setString(1, appt.getTitle());
+        ps.setString(2, appt.getDescription());
+        ps.setString(3, appt.getLocation());
+        ps.setString(4, appt.getType());
+        ps.setTimestamp(5, appt.getStartDateTime());
+        ps.setTimestamp(6, appt.getEndDateTime());
+        ps.setInt(7, appt.getCustomerID());
+        ps.setInt(8, appt.getUserID());
+        ps.setInt(9, appt.getContactID());
+        ps.setInt(10, appt.getAppointmentID());
+        ps.executeUpdate();
     }
 
 }

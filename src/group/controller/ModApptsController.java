@@ -1,5 +1,6 @@
 package group.controller;
 
+import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
@@ -19,6 +20,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +31,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
+import static group.dao.Data.updateApptToDB;
 import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
@@ -189,7 +192,7 @@ public class ModApptsController implements Initializable {
 
 
     @FXML
-    public void save() throws IOException, InputValidationException {
+    public void save() throws IOException, InputValidationException, SQLException {
         try {
             selectedAppt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
             selectedAppt.setCustomerID(findCustomerID());
@@ -251,7 +254,7 @@ public class ModApptsController implements Initializable {
                 throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
             }
 
-            //apptsList.add(selectedAppt);
+            updateApptToDB(selectedAppt);
             switchToAppointmentsController();
 
         } catch (NumberFormatException exception) {

@@ -33,8 +33,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static group.Main.primaryStage;
-import static group.dao.Data.getNextAppointmentID;
-import static group.dao.Data.populateContacts;
+import static group.dao.Data.*;
 import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
@@ -96,7 +95,7 @@ public class AddApptsController implements Initializable {
 
 
     @FXML
-    public void save() throws IOException, InputValidationException {
+    public void save() throws IOException, InputValidationException, SQLException {
         try {
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
@@ -155,8 +154,7 @@ public class AddApptsController implements Initializable {
             }
 
             apptsList.add(appt);
-
-
+            addApptToDB(appt);
             switchToAppointmentsController();
 
         } catch (NumberFormatException exception) {

@@ -128,7 +128,7 @@ public class ModCustomersController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure that information has been entered/selected for all fields.");
             alert.show();
         }
-        // find way of input validation after hitting save
+
     }
 
 

@@ -1,6 +1,5 @@
 package group.controller;
 
-import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
@@ -17,8 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -39,9 +36,11 @@ import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
 
+/**
+ * This class is the controller class for the "Add Appointment" pane of the GUI.
+ * */
 public class AddApptsController implements Initializable {
 
-    //get ID from sql
     public TextField appointmentIDTextField;
     public ComboBox<String> contactIDComboBox;
     public DatePicker startDatePicker;
@@ -57,32 +56,36 @@ public class AddApptsController implements Initializable {
     public ComboBox userIDComboBox;
     public ComboBox customerIDComboBox;
 
-
+    /**
+     * This function is called when the AddApptsView FXML file is loaded. The function establishes
+     * what the appointmentIDTextField variable will display as an appointmentID value, in addition to populating combo-box values
+     * within the Add Appointment pane of the GUI.
+     * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // Establish immutable appointmentID text field
+        // Sets the appointmentID value within the appropriate TextField
         try {
             appointmentIDTextField.setText(String.valueOf(getNextAppointmentID()));
-            //populateContacts();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        // Populate ContactList
+        // Populate ContactList combo-box
         ObservableList<String> tempContactList = FXCollections.observableArrayList();
         for (Contacts element : contactList) {
             tempContactList.add(element.getName());
         }
         contactIDComboBox.setItems(tempContactList);
 
-        // Populate User ID List
+        // Populate UserIDList combo-box
         ObservableList<String> tempUserList = FXCollections.observableArrayList();
         for (Users element : usersList) {
             tempUserList.add(element.getUsername());
         }
         userIDComboBox.setItems(tempUserList);
 
+        // Populate the customerID combo-box
         ObservableList<String> tempCustomerList = FXCollections.observableArrayList();
         for (Customers element : customerList) {
             tempCustomerList.add(element.getCustomerName());
@@ -91,18 +94,29 @@ public class AddApptsController implements Initializable {
 
     }
 
-
-
-
+    /**
+     * The save function performs several input validation procedures to ensure data has been entered correctly.
+     * Input validation procedures include checking whether the entered appointment information overlaps with
+     * other appointments for the Contact selected and checks whether the dates/times entered is consistent
+     * with requirements outlined in the performance assessment. THIS FUNCTION USES A LAMBDA EXPRESSION.
+     * @throws IOException
+     * @throws InputValidationException
+     * @throws SQLException
+     * */
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
-        try {
 
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList());
+        try {
+            // Variables below are used for input validation
+            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList()); // LAMBDA EXPRESSION USED TO MORE EFFICIENTLY OBTAIN ALL APPOINTMENTS THAT HAVE A MATCHING CONTACT ID
             boolean before = false;
             boolean after = false;
+            boolean timeCheck = true;
             Timestamp start = formatDateTime(startDatePicker, startDateTimeTextField);
             Timestamp end = formatDateTime(endDatePicker, endDateTimeTextField);
+
+            /*The for loop below will check if the appointment date/time entered will overlap with
+            other appointments scheduled with the same Contact. If there is overlap, an InputValidationException will be thrown. */
             for (Appointments element : apptsByContact) {
                 if (end.equals(element.getStartDateTime()) || end.before(element.getStartDateTime())) {
                     before = true;
@@ -115,12 +129,12 @@ public class AddApptsController implements Initializable {
                 }
             }
 
-            boolean timeCheck = true;
+            // The if/else statements below check whether the start & end times entered, corrected for the New York timezone, is between 8AM & 10PM.
             if (hourConversionNYTime(start.toLocalDateTime()) >= 8) {             // checks whether start time, corrected for the New York timezone, is >= 8
                 if (hourConversionNYTime(end.toLocalDateTime()) < 22) {          // checks whether the end time, corrected for the New York timezone, is <= 22
                     timeCheck = true;
                 }
-                else if (hourConversionNYTime(end.toLocalDateTime()) == 22 && end.toLocalDateTime().getMinute() == 0) {
+                else if (hourConversionNYTime(end.toLocalDateTime()) == 22 && end.toLocalDateTime().getMinute() == 0) {     // checks whether the end time is exactly 22:00
                     timeCheck = true;
                 } else {
                     timeCheck = false;
@@ -129,18 +143,23 @@ public class AddApptsController implements Initializable {
                 timeCheck = false;
             }
 
+            // The if statement below checks whether the start & end date/times provided are exactly the same
             if (!(start.toLocalDateTime().toLocalDate().equals(end.toLocalDateTime().toLocalDate()))) {
                 timeCheck = false;
             }
 
+            // The if statement below checks to see if the timeCheck variable, after passing through the above input validation code, is false.
+            // If so, an InputValidation Exception is thrown.
             if (timeCheck == false) {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
             }
 
+            // This is the final input validation check, which determines whether the end date/time is before the start date/time
             if (end.before(start)) {
                 throw new InputValidationException("The appointment's end time must occur after the appointment's start time.");
             }
 
+            // Provided no errors are thrown based on the above code, a new appointment object is created based on user entered information.
             Appointments appt = new Appointments();
             appt.setAppointmentID(Integer.valueOf(appointmentIDTextField.getText()));
             appt.setCustomerID(findCustomerID());
@@ -153,27 +172,26 @@ public class AddApptsController implements Initializable {
             appt.setEndDateTime(formatDateTime(endDatePicker, endDateTimeTextField));
             appt.setContactID(findContactID());
 
-            apptsList.add(appt);
-            addApptToDB(appt);
+            apptsList.add(appt);    // appointment object added to the apptsList static variable
+            addApptToDB(appt);      // appointment object added to database
             switchToAppointmentsController();
 
-        } catch (NumberFormatException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please ensure integer values are entered where they are expected");
-            alert.show();
         } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and/or enter values for a contact ID, user ID, dates, and times.");
             alert.show();
-        } catch (DateTimeException exception) {
+        } catch (DateTimeException exception) {     // This exception is thrown if the time is not entered correctly in the appropriate textfields. See formatDateTime function.
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter time values in accordance with the following format: HH:mm (hours:minutes).");
             alert.show();
         } catch (InputValidationException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());
             alert.show();
         }
-
-        //NOTE THAT APPOINTMENTID WILL ALWAYS BE 3 UNTIL THE APPOINTMENTS ARE ADDED INTO THE DATABASE, SEE GETNEXTAPPOINTID function in Data Class.
     }
 
+    /**
+     * This function switches the scene back to the main appointments pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void switchToAppointmentsController() throws IOException {
         Scene scene;
@@ -189,8 +207,8 @@ public class AddApptsController implements Initializable {
      * Within the AddApptsController, this function is meant to combine a date chosen in a DatePicker
      * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
      * provides validation that the time has been entered according to the provided pattern.
+     * @return Timestamp variable with a strict format of "uuuu-MM-dd HH:mm"
      */
-
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
@@ -206,8 +224,7 @@ public class AddApptsController implements Initializable {
 
     /**
      * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
-     *
-     * @returns The contact ID for the contact selected.
+     * @return The contact ID for the contact selected.
      */
 
     @FXML
@@ -223,8 +240,7 @@ public class AddApptsController implements Initializable {
 
     /**
      * This function returns the corresponding userID of the User that is selected when adding an appointment.
-     *
-     * @returns The user ID for the User selected.
+     * @return The user ID for the User selected.
      * */
     public int findUserID() {
         int userID = 0;
@@ -235,6 +251,10 @@ public class AddApptsController implements Initializable {
         }   return userID;
     }
 
+    /**
+     * This function returns the corresponding userID of the User that is selected when adding an appointment.
+     * @return The user ID for the User selected.
+     * */
     public int findCustomerID() {
         int customerID = 0;
         for (Customers customerObj : customerList) {
@@ -245,7 +265,10 @@ public class AddApptsController implements Initializable {
 
     }
 
-
+    /**
+     * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
+     * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 
         ZoneId newYork = ZoneId.of("America/New_York");

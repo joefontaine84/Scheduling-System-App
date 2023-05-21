@@ -285,17 +285,17 @@ public class AddApptsController implements Initializable {
         localDateTimeFormatted = localZoneDateTime.format(formatter);
         newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);
 
-        localSubstring = localDateTimeFormatted.substring(17, 20);
-        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);
+        localSubstring = localDateTimeFormatted.substring(17, 20);      // gets the offset from UTC in hours
+        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);  // gets the offset from UTC in hours
 
-        long localOffset = Integer.valueOf(localSubstring);
-        long newYorkOffset = Integer.valueOf(newYorkSubstring);
+        long localOffset = Integer.valueOf(localSubstring);            // converts string value to long data type
+        long newYorkOffset = Integer.valueOf(newYorkSubstring);        // converts string value to long data type
 
-        long timeDifference = localOffset - newYorkOffset;
+        long timeDifference = localOffset - newYorkOffset;              // the amount of hours the local time is from the New York time zone.
 
         long adjustedHours = 0;
 
-        adjustedHours = localDateTime.getHour() - timeDifference;
+        adjustedHours = localDateTime.getHour() - timeDifference;       // the hour of the day provided within the local time zone represented as New York time zone.
 
         return adjustedHours;
 

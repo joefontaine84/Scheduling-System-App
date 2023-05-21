@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+
 
 import static group.Main.primaryStage;
 import static group.dao.Data.addCustomerToDB;
@@ -26,6 +26,10 @@ import static group.dao.Data.getNextCustomerID;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
 import static group.model.FirstLevelDivisions.divisionList;
+
+/**
+ * This class is the controller class for the Add Customer pane of the GUI.
+ * */
 
 public class AddCustomersController implements Initializable {
 
@@ -38,7 +42,10 @@ public class AddCustomersController implements Initializable {
     public ComboBox<String> divisionComboBox;
     public ObservableList<String> tempDivListName = FXCollections.observableArrayList();
 
-
+/**
+ * This function is called when the AddCustomersView FXML file is loaded. The function establishes the customerID value that
+ * will be displayed in the customerIDTextField, in addition to populating values for the combo-box included within this pane of the GUI.
+ * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -55,6 +62,9 @@ public class AddCustomersController implements Initializable {
 
     }
 
+    /**
+     * This function is used to filter firstleveldivision data based on what country is selected within the GUI.
+     * */
     @FXML
     public void filterDivisions () {
         if (countryComboBox.getValue() == null) {
@@ -71,6 +81,11 @@ public class AddCustomersController implements Initializable {
         }
     }
 
+    /**
+     * This function is used to find the countryID of the corresponding country selected within the GUI. Country names are
+     * displayed within the GUI.
+     * @return a countryID value (integer)
+     * */
     public int findCountryID() {
         int tempID = 0;
         for (Countries country : countriesList) {
@@ -81,6 +96,12 @@ public class AddCustomersController implements Initializable {
         return tempID;
     }
 
+    /**
+     * This function is used to find the divisionID of the corresponding division selected within the GUI. Division names are
+     * displayed within the GUI.
+     * @return a divisionID value (integer)
+     * @throws NullPointerException
+     * */
     public int findDivisionID() throws NullPointerException {
         int tempID = 0;
         for (FirstLevelDivisions divisions : divisionList) {
@@ -91,9 +112,12 @@ public class AddCustomersController implements Initializable {
         }
 
         throw new NullPointerException();
-
     }
 
+    /**
+     * This function switches the scene to the Manage Customers pane of the GUI.
+     * @throws IOException
+     * */
     public void switchToManageCustomers() throws IOException {
         Scene scene;
         Parent root;
@@ -104,6 +128,11 @@ public class AddCustomersController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function creates a new customer object based on data entered by the user.
+     * @throws IOException
+     * @throws SQLException
+     * */
     @FXML
     public void save () throws IOException, SQLException {
         try {

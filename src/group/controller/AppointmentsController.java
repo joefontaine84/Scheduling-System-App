@@ -55,9 +55,13 @@ public class AppointmentsController implements Initializable {
     public static int firstCall = 0;
     public ComboBox reportsComboBox;
 
+    /**
+     * This is the function that is called once the AppointmentsView FXML page loads. This function sets the tableview
+     * within the pane of the GUI, populates values into the Report combo-box, and determines if the meetingsInFifteen
+     * function needs to be called.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            //Data.populateAppointments();
             apptsTableView.setItems(apptsList);
             appointmentID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("appointmentID"));
             title.setCellValueFactory(new PropertyValueFactory<Appointments, String>("title"));
@@ -129,14 +133,14 @@ public class AppointmentsController implements Initializable {
     }
 
     /**
-     * This function deletes an appointment from the apptsList static variable.
+     * This function deletes a selected appointment.
      * */
     @FXML
     public void deleteAppointment() throws SQLException {
         if (!apptsTableView.getSelectionModel().isEmpty()) {
             Appointments selectedAppt = apptsTableView.getSelectionModel().getSelectedItem();
-            deleteApptFromDB(selectedAppt);
-            apptsList.remove(apptsList.indexOf(selectedAppt));
+            deleteApptFromDB(selectedAppt); // deleted from database
+            apptsList.remove(apptsList.indexOf(selectedAppt)); // deleted from static variable
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have deleted Appointment ID: " + selectedAppt.getAppointmentID() + "; Type of appointment: " + selectedAppt.getType() + ".");
             alert.show();
         } else {
@@ -145,6 +149,10 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * This function switches the scene to Manage Customers pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void switchToManageCustomers() throws IOException {
         Scene scene;
@@ -156,6 +164,9 @@ public class AppointmentsController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function exits the application.
+     * */
     @FXML
     public void exit () {
         Platform.exit();
@@ -182,10 +193,13 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * This function determines if there are any scheduled appointments within 15 minutes from the user log-in time.
+     * The determination is relative to appointments associated with the user that has logged in.
+     * */
     @FXML
     public void meetingsInFifteen() {
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now);
         LocalDateTime nowPlusFifteenMin = now.plusMinutes(15);
 
         ArrayList<Appointments> tempList = new ArrayList<>();
@@ -197,16 +211,6 @@ public class AppointmentsController implements Initializable {
                 }
             }
         }
-
-/*        ObservableList<Appointments> tempList = apptsList.stream().filter(element -> element.getUserID() == loggedInUser.getUserID()).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        System.out.println(tempList);
-        for (Appointments appts : tempList) {
-            LocalDateTime startTime = appts.getStartDateTime().toLocalDateTime();
-            if (!((startTime.equals(now) || startTime.equals(nowPlusFifteenMin)) || (startTime.isAfter(now) && startTime.isBefore(nowPlusFifteenMin)))) {
-                tempList.remove(appts);
-            }
-        }*/
-        System.out.println(tempList);
         if (tempList.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have no appointments within the next 15 minutes.");
             alert.show();
@@ -225,6 +229,10 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * This function shows a new scene within the application which corresponds to the report selected by the user.
+     * @throws IOException
+     * */
     @FXML
     public void reportsSelection() throws IOException {
         selectedReport = reportsComboBox.getValue().toString();

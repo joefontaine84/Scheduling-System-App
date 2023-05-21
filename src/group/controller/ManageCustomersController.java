@@ -2,9 +2,7 @@ package group.controller;
 
 import group.helper.InputValidationException;
 import group.model.Appointments;
-import group.model.Countries;
 import group.model.Customers;
-import group.model.FirstLevelDivisions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,12 +19,14 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
-import static group.controller.ModApptsController.apptIndex;
 import static group.controller.ModCustomersController.customerIndex;
 import static group.dao.Data.deleteCustomerFromDB;
 import static group.model.Appointments.apptsList;
 import static group.model.Customers.customerList;
 
+/**
+ * This class is the controller class for the Manage Customers pane of the GUI.
+ * */
 public class ManageCustomersController implements Initializable {
 
     public TableView<Customers> customersTableView;
@@ -39,6 +39,9 @@ public class ManageCustomersController implements Initializable {
     public TableColumn <Customers, String> country;
     public TableColumn<Customers, String> division;
 
+    /**
+     * This function is called whenever the ManageCustomersView FXML file is loaded. This function sets the customersTableView.
+     * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customersTableView.setItems(customerList);
@@ -51,6 +54,10 @@ public class ManageCustomersController implements Initializable {
         division.setCellValueFactory(new PropertyValueFactory<Customers, String>("divisionName"));
     }
 
+    /**
+     * This function switches the scene to the Appointments pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void backToAppointments() throws IOException {
         Scene scene;
@@ -62,6 +69,10 @@ public class ManageCustomersController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function switches the scene to the Add Customers pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void switchToAddCustomers() throws IOException {
         Scene scene;
@@ -73,6 +84,10 @@ public class ManageCustomersController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function swithces the scene to the Modify Customers pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void switchToModifyCustomers() throws IOException {
         if (!customersTableView.getSelectionModel().isEmpty()) {
@@ -91,6 +106,13 @@ public class ManageCustomersController implements Initializable {
         }
     }
 
+    /**
+     * This function deletes a customer from the customer list. Before deleting, the function checks to see if the customer is assigned
+     * any appointments. If the customer is associated with existing appointments, these appointments must be deleted first before
+     * the customer object can be deleted.
+     * @throws InputValidationException
+     * @throws SQLException
+     * */
     @FXML
     public void delete () throws InputValidationException, SQLException {
         try {

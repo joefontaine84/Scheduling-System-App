@@ -1,6 +1,5 @@
 package group.controller;
 
-import group.dao.Data;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -72,9 +71,10 @@ public class LoginController implements Initializable {
      * username and password fields were entered. If a correct combination is entered, the GUI transfers the user to the GUI appointments page,
      * otherwise, a warning message is displayed. Based on the user's locale, the error message within this function will translate to french
      * or default to english.
+     * @throws IOException
      * */
     @FXML
-    public void verifyUser() throws SQLException, IOException {
+    public void verifyUser() throws IOException {
         String providedUsername = username.getText();
         String providedPassword = password.getText();
         boolean match = false;
@@ -92,20 +92,24 @@ public class LoginController implements Initializable {
                 primaryStage.show();
             }
         }
+        // error message in english
         if (match == false && englishLanguage == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid combination of username and password were entered. Please try again.");
             alert.show();
         }
-
+        // error message in french
         if (match == false && englishLanguage == false) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Une combinaison invalide de nom d'utilisateur et de mot de passe a été saisie. Veuillez réessayer.");
             alert.setHeaderText("Erreur");
             alert.setTitle("Erreur");
             alert.show();
         }
-        loginActivity(match);
+        loginActivity(match);   // calls the loginActivity function with the match variable as a parameter
     }
 
+    /**
+     * This function is used to create a login_activity text file, meant to track user login activity.
+     * */
     public void loginActivity(boolean successfulLogin) {
         try {
             File loginTracker = new File("login_activity.txt");
@@ -116,7 +120,6 @@ public class LoginController implements Initializable {
                     + "Local Date & Time: " + Timestamp.valueOf(LocalDateTime.now()).toString() + "\n"
                     + "Successful Login?: " + String.valueOf(successfulLogin) + "\n\n";
 
-            boolean append = true;
             FileWriter write = new FileWriter("login_activity.txt", true);
             write.append(text);
             write.close();

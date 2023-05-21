@@ -37,14 +37,15 @@ import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
 
+/**
+ * This class is the controller class for the Modify Appointment pane of the GUI.
+ * */
 public class ModApptsController implements Initializable {
     public TextField appointmentIDTextField;
     public TextField titleTextField;
     public TextField descriptionTextField;
     public TextField locationTextField;
     public TextField typeTextField;
-    public TextField userIDTextField;
-    public TextField customerIDTextField;
 
     public TextField startDateTimeTextField;
     public TextField endDateTimeTextField;
@@ -53,11 +54,15 @@ public class ModApptsController implements Initializable {
     public DatePicker endDatePicker;
     public ComboBox userIDComboBox;
 
-    public static int apptIndex;
+    public static int apptIndex; // this variable stores the index of the apptsList that was selected for modification
 
-    public Appointments selectedAppt = apptsList.get(apptIndex);
+    public Appointments selectedAppt = apptsList.get(apptIndex); // the appointment object that was selected for modification
     public ComboBox customerIDComboBox;
 
+    /**
+     * This function is called whenever the ModApptsView FXML file is loaded. This function determines what is displayed
+     * in the Modify Appointment pane of the GUI and also populates values for the combo-boxes within this pane of the GUI.
+     * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
 
@@ -66,11 +71,10 @@ public class ModApptsController implements Initializable {
         descriptionTextField.setText(selectedAppt.getDescription());
         locationTextField.setText(selectedAppt.getLocation());
         typeTextField.setText(selectedAppt.getType());
-        //customerIDTextField.setText(String.valueOf(selectedAppt.getCustomerID()));
         setDateTimeFromTS(selectedAppt.getStartDateTime(), startDatePicker, startDateTimeTextField);
         setDateTimeFromTS(selectedAppt.getEndDateTime(), endDatePicker, endDateTimeTextField);
 
-        // Populate ContactList
+        // Populate ContactList combo-box
         ObservableList<String> tempContactList = FXCollections.observableArrayList();
         for (Contacts element : contactList) {
             tempContactList.add(element.getName());
@@ -78,7 +82,7 @@ public class ModApptsController implements Initializable {
         contactIDComboBox.setItems(tempContactList);
         contactIDComboBox.setValue(getContactNameFromID());
 
-        // Populate User ID List
+        // Populate UserIDList combo-box
         ObservableList<String> tempUserList = FXCollections.observableArrayList();
         for (Users element : usersList) {
             tempUserList.add(element.getUsername());
@@ -86,6 +90,7 @@ public class ModApptsController implements Initializable {
         userIDComboBox.setItems(tempUserList);
         userIDComboBox.setValue(getUsernameFromID());
 
+        // Populate the customerID combo-box
         ObservableList<String> tempCustomerList = FXCollections.observableArrayList();
         for (Customers element : customerList) {
             tempCustomerList.add(element.getCustomerName());
@@ -94,7 +99,10 @@ public class ModApptsController implements Initializable {
         customerIDComboBox.setValue(getCustomerNameFromID());
     }
 
-
+    /**
+     * This function switches the scene back to the main appointments pane of the GUI.
+     * @throws IOException
+     * */
     @FXML
     public void switchToAppointmentsController() throws IOException {
         Scene scene;
@@ -106,6 +114,9 @@ public class ModApptsController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     *
+     * */
     public void setDateTimeFromTS(Timestamp timestamp, DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
         String dateTime = timestamp.toLocalDateTime().format(formatter);

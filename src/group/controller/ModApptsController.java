@@ -115,7 +115,8 @@ public class ModApptsController implements Initializable {
     }
 
     /**
-     *
+     * This function is used to break a timestamp value into separate date & time fields to populate DatePickers and TextFields
+     * within the Modify Appointment pane of the GUI.
      * */
     public void setDateTimeFromTS(Timestamp timestamp, DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
@@ -127,6 +128,12 @@ public class ModApptsController implements Initializable {
         textField.setText(localTime);
     }
 
+    /**
+     * Within the ModApptsController, this function is meant to combine a date chosen in a DatePicker
+     * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
+     * provides validation that the time has been entered according to the provided pattern.
+     * @return Timestamp variable with a strict format of "uuuu-MM-dd HH:mm"
+     */
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT);
@@ -140,6 +147,10 @@ public class ModApptsController implements Initializable {
         return Timestamp.valueOf(combinedDateTime);
     }
 
+    /**
+     * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
+     * @return The contact ID for the contact selected.
+     */
     @FXML
     public int findContactID() {
         int contactID = 0;
@@ -151,6 +162,10 @@ public class ModApptsController implements Initializable {
         return contactID;
     }
 
+    /**
+     * This function returns the corresponding userID of the User that is selected when adding an appointment.
+     * @return The user ID for the User selected.
+     * */
     public int findUserID() {
         int userID = 0;
         for (Users userObj : usersList) {
@@ -160,6 +175,10 @@ public class ModApptsController implements Initializable {
         }   return userID;
     }
 
+    /**
+     * This function returns the corresponding userID of the User that is selected when adding an appointment.
+     * @return The user ID for the User selected.
+     * */
     public int findCustomerID() {
         int customerID = 0;
         for (Customers customerObj : customerList) {
@@ -170,6 +189,10 @@ public class ModApptsController implements Initializable {
 
     }
 
+    /**
+     * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
+     * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 
         ZoneId newYork = ZoneId.of("America/New_York");
@@ -183,25 +206,33 @@ public class ModApptsController implements Initializable {
         String localSubstring = "";
         String newYorkSubstring = "";
 
-        localDateTimeFormatted = localZoneDateTime.format(formatter);
-        newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);
+        localDateTimeFormatted = localZoneDateTime.format(formatter);       // gets the offset from UTC in hours
+        newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);   // gets the offset from UTC in hours
 
-        localSubstring = localDateTimeFormatted.substring(17, 20);
-        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);
+        localSubstring = localDateTimeFormatted.substring(17, 20);          // converts string value to long data type
+        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);      // converts string value to long data type
 
         long localOffset = Integer.valueOf(localSubstring);
         long newYorkOffset = Integer.valueOf(newYorkSubstring);
 
-        long timeDifference = localOffset - newYorkOffset;
+        long timeDifference = localOffset - newYorkOffset;                  // the amount of hours the local time is from the New York time zone.
 
         long adjustedHours = 0;
 
-        adjustedHours = localDateTime.getHour() - timeDifference;
+        adjustedHours = localDateTime.getHour() - timeDifference;           // the hour of the day provided within the local time zone represented as New York time zone.
 
         return adjustedHours;
     }
 
-
+    /**
+     * The save function performs several input validation procedures to ensure data has been entered correctly.
+     * Input validation procedures include checking whether the entered appointment information overlaps with
+     * other appointments for the Contact selected and checks whether the dates/times entered is consistent
+     * with requirements outlined in the performance assessment. THIS FUNCTION USES A LAMBDA EXPRESSION.
+     * @throws IOException
+     * @throws InputValidationException
+     * @throws SQLException
+     * */
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
         try {
@@ -220,8 +251,6 @@ public class ModApptsController implements Initializable {
                 if ((start.after(element.getEndDateTime()) || start.equals(element.getEndDateTime())) && end.after(element.getEndDateTime())) {
                     after = true;
                 }
-/*                System.out.println("before boolean variable: " + before);
-                System.out.println("after boolean variable: " + after);*/
                 if (before == false && after == false) {
                     throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
                 }
@@ -244,8 +273,6 @@ public class ModApptsController implements Initializable {
             if (!(start.toLocalDateTime().toLocalDate().equals(end.toLocalDateTime().toLocalDate()))) {
                 timeCheck = false;
             }
-
-            System.out.println("timeCheck boolean variable " + timeCheck);
 
             if (timeCheck == false) {
                 throw new InputValidationException("Please enter appointment times between 8AM and 10PM (EST/EDT) within one given day.");
@@ -279,10 +306,12 @@ public class ModApptsController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());
             alert.show();
         }
-
-        //NOTE THAT APPOINTMENTID WILL ALWAYS BE 3 UNTIL THE APPOINTMENTS ARE ADDED INTO THE DATABASE, SEE GETNEXTAPPOINTID function in Data Class.
     }
 
+    /**
+     * This function gets the contactName value from the selected contactID.
+     * @return the contact name (string)
+     * */
     public String getContactNameFromID() {
         String name = "";
         for (Contacts contact : contactList) {
@@ -293,6 +322,10 @@ public class ModApptsController implements Initializable {
         return name;
     }
 
+    /**
+     * This function gets the username value from the selected userID.
+     * @return the username (string)
+     * */
     public String getUsernameFromID() {
         String username = "";
         for (Users user : usersList) {
@@ -303,6 +336,10 @@ public class ModApptsController implements Initializable {
         return username;
     }
 
+    /**
+     * This function gets the customerName value from the selected customerID.
+     * @return the customerName (string)
+     * */
     public String getCustomerNameFromID() {
         String customerName = "";
         for (Customers customer : customerList) {
@@ -312,7 +349,5 @@ public class ModApptsController implements Initializable {
         }
         return customerName;
     }
-
-
 
 }

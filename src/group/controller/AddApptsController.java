@@ -226,7 +226,6 @@ public class AddApptsController implements Initializable {
      * This function returns the corresponding contactID of the Contact that is selected when adding an appointment.
      * @return The contact ID for the contact selected.
      */
-
     @FXML
     public int findContactID() {
         int contactID = 0;

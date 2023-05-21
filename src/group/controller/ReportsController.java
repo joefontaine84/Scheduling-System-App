@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,6 +21,9 @@ import java.util.stream.Collectors;
 import static group.model.Contacts.contactList;
 import static group.model.ReportData.reportDataOL;
 
+/**
+ * This class is the controller class for all views (panes) within the GUI associated with reports.
+ * */
 public class ReportsController implements Initializable {
 
     public TableColumn<ReportData, Integer> amount;
@@ -42,6 +43,10 @@ public class ReportsController implements Initializable {
 
     Analysis analysis = new Analysis();
 
+    /**
+     * This function is called whenever the ApptsByCustomerView, ApptsByMonthView, ApptsByTypeView, or SchedulesByContactView
+     * are loaded. Based on what report is selected in the GUI, this function determines what to show in the GUI.
+     * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -72,11 +77,12 @@ public class ReportsController implements Initializable {
                 tempList.add(contact.getName());
             }
             contactComboBox.setItems(tempList);
-
         }
-
     }
 
+    /**
+     * This function produces a schedule (tableview) of appointments for a selected contact.
+     * */
     @FXML
     public void showSchedule() {
         if (!(contactComboBox.getValue() == null)) {

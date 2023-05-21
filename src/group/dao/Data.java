@@ -13,14 +13,14 @@ import static group.model.FirstLevelDivisions.divisionList;
 import static group.model.Users.usersList;
 import static group.model.Appointments.apptsList;
 
-
+/**
+ * This class is used to connect to the mySQL database and incorporate functions that conduct queries on data within the database.
+ * */
 public class Data {
-    private String sql;
-
-
     /**
      * This function creates Users objects, populates each object with username and password data,
      * and adds each Users object to the usersList variable.
+     * @throws SQLException
      * */
     public static void populateUsers() throws SQLException {
         String sql = "SELECT User_ID, User_Name, Password FROM users";
@@ -38,6 +38,7 @@ public class Data {
     /**
      * This function creates Appointments objects, populates each object with appointmentID, title, description, location, type,
      * start, end, customerID, userID, and contactID parameters, in addition to adding each Appointments object to the apptsList variable.
+     * @throws SQLException
      * */
     public static void populateAppointments() throws SQLException {
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID FROM appointments";
@@ -59,6 +60,10 @@ public class Data {
         }
     }
 
+    /**
+     * This function creates Contacts objects based on available information within the database and populates data into each object accordingly.
+     * @throws SQLException
+     * */
     public static void populateContacts () throws SQLException {
         String sql = "SELECT Contact_ID, Contact_Name FROM client_schedule.contacts";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -71,6 +76,10 @@ public class Data {
         }
     }
 
+    /**
+     * This function determines what the next appointmentID will be based on what appointment entries currently exist.
+     * @throws SQLException
+     * */
     public static int getNextAppointmentID () throws SQLException {
         String sql = "SELECT max(Appointment_ID) as Appointment_ID from client_schedule.appointments";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -79,6 +88,10 @@ public class Data {
         return rs.getInt(1) + 1;
     }
 
+    /**
+     * This function creates Customers objects based on available information within the database and populates data into each object accordingly.
+     * @throws SQLException
+     * */
     public static void populateCustomers() throws SQLException {
         String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM client_schedule.customers";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -95,6 +108,10 @@ public class Data {
         }
     }
 
+    /**
+     * This function determines what the next appointmentID will be based on what appointment entries currently exist.
+     * @throws SQLException
+     * */
     public static int getNextCustomerID() throws SQLException {
         String sql = "SELECT max(Customer_ID) as Customer_ID FROM client_schedule.customers";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -103,6 +120,10 @@ public class Data {
         return rs.getInt(1) + 1;
     }
 
+    /**
+     * This function creates Country objects based on available information within the database and populates data into each object accordingly.
+     * @throws SQLException
+     * */
     public static void populateCountries() throws SQLException {
         String sql = "SELECT Country_ID, Country FROM client_schedule.countries";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -115,6 +136,10 @@ public class Data {
         }
     }
 
+    /**
+     * This function creates Country objects based on available information within the database and populates data into each object accordingly.
+     * @throws SQLException
+     * */
     public static void populateFirstLevelDivisions() throws SQLException {
         String sql = "SELECT Division_ID, Division, Country_ID FROM client_schedule.first_level_divisions";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -128,6 +153,10 @@ public class Data {
         }
     }
 
+    /**
+     * This function adds an appointment object into the database.
+     * @throws SQLException
+     * */
     public static void addApptToDB(Appointments appt) throws SQLException {
         String sql = "INSERT INTO client_schedule.appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -145,6 +174,10 @@ public class Data {
         ps.executeUpdate();
     }
 
+    /**
+     * This function updates an Appointment object from the database.
+     * @throws SQLException
+     * */
     public static void updateApptToDB(Appointments appt) throws SQLException {
         String sql = "UPDATE client_schedule.appointments SET " +
                 "Title = ?, " +
@@ -171,6 +204,10 @@ public class Data {
         ps.executeUpdate();
     }
 
+    /**
+     * This function deletes an Appointment object from the database.
+     * @throws SQLException
+     * */
     public static void deleteApptFromDB (Appointments appt) throws SQLException {
         String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());
@@ -178,6 +215,10 @@ public class Data {
         ps.executeUpdate();
     }
 
+    /**
+     * This function adds a customer object to the database.
+     * @throws SQLException
+     * */
     public static void addCustomerToDB (Customers customer) throws SQLException {
         String sql = "INSERT INTO client_schedule.customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID) "
                 + "VALUES (?, ?, ?, ?, ?, ?);";
@@ -191,6 +232,10 @@ public class Data {
         ps.executeUpdate();
     }
 
+    /**
+     * This function updates a customer object within the existing database.
+     * @throws SQLException
+     * */
     public static void updateCustomerFromDB (Customers customer) throws SQLException {
         String sql = "UPDATE client_schedule.customers SET " +
                 "Customer_Name = ?, " +

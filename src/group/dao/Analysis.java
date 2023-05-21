@@ -15,6 +15,9 @@ import static group.model.ReportData.reportDataOL;
 import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
 
+/**
+ * This class assists with data creation and manipulation for use in other classes.
+ * */
 public class Analysis {
     public ArrayList<String> typeList = new ArrayList<>();
     public static Map<String, Integer> typeMap = new HashMap<>();
@@ -22,6 +25,10 @@ public class Analysis {
     public static Map<Contacts, ArrayList> schedule = new HashMap<>();
     public static Map<Customers, ArrayList> customersHashMap = new HashMap<>();
 
+    /**
+     * This function populates key-value pairs into a hashmap. The hashmap keys are the type of appointment (string), while
+     * the values are the amount of times that the type occurs amongst all appointments.
+     * */
     public void populateTypeMap() {
         for (Appointments appts : apptsList) {
             typeList.add(appts.getType().toLowerCase());
@@ -44,6 +51,10 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function creates ReportData objects for each entry (key-value pair) in the typeMap hashmap. Objects are added
+     * to the reportDataOL.
+     * */
     public void getUniqueTypes() {
         populateTypeMap();
         reportDataOL.clear();
@@ -55,6 +66,10 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function populates key-value pairs into a hashmap. The hashmap keys are the month in which appointments occur (string), while
+     * the values represent the number of appointments that occur in each month where an appointment is scheduled.
+     * */
     public void populateMonthsHashMap() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-uuuu");
         ArrayList<String> monthList = new ArrayList<>();
@@ -79,6 +94,10 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function creates ReportData objects for each entry (key-value pair) in the months hashmap. Objects are added
+     * to the reportDataOL.
+     * */
     public void getApptsByMonth() {
         populateMonthsHashMap();
         reportDataOL.clear();
@@ -90,6 +109,10 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function populates key-value pairs into a hashmap. The hashmap keys are Contact objects, while
+     * the values represent an arraylist of all appointments associated with each contact.
+     * */
     public void populateContactHashMap() {
         for (int i = 0; i < contactList.size(); i++) {
             ArrayList<Appointments> apptsByContact = new ArrayList<>();
@@ -102,6 +125,9 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function produces ReportData object for each entry (key-value pair) within the schedule hashmap.
+     * */
     public void getContactSchedule() {
         populateContactHashMap();
         reportDataOL.clear();
@@ -122,6 +148,10 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function populates the customersHashMap. Keys of the hashmap are Customer objects, while
+     * values of the hashmap are an arraylist of appointments associated with each customer.
+     * */
     public void populateCustomersHashMap() {
         for (int i = 0; i < customerList.size(); i++) {
             ArrayList<Appointments> apptsByCustomer = new ArrayList<>();
@@ -134,6 +164,9 @@ public class Analysis {
         }
     }
 
+    /**
+     * This function produces ReportData object for each entry (key-value pair) within the customersHashMap.
+     * */
     public void getAppointmentsByCustomer() {
         populateCustomersHashMap();
         reportDataOL.clear();

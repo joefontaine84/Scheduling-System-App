@@ -1,7 +1,5 @@
 package group.controller;
 
-import group.helper.InputValidationException;
-import group.model.Appointments;
 import group.model.Countries;
 import group.model.Customers;
 import group.model.FirstLevelDivisions;
@@ -23,11 +21,13 @@ import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
 import static group.dao.Data.updateCustomerFromDB;
-import static group.model.Appointments.apptsList;
 import static group.model.Countries.countriesList;
 import static group.model.Customers.customerList;
 import static group.model.FirstLevelDivisions.divisionList;
 
+/**
+ * This class is the controller class for the Modify Customers pane of the GUI.
+ * */
 public class ModCustomersController implements Initializable {
     public TextField customerIDTextField;
     public TextField customerNameTextField;
@@ -40,6 +40,10 @@ public class ModCustomersController implements Initializable {
     public static int customerIndex;
     public Customers selectedCustomer = customerList.get(customerIndex);
 
+    /**
+     * This function is called whenever the ModCustomersView FXML page is loaded. This function displays the selected
+     * customer object data and populates values into a combo-box.
+     * */
     @FXML
     public void initialize (URL url, ResourceBundle resourceBundle) {
         customerIDTextField.setText(String.valueOf(selectedCustomer.getCustomerID()));
@@ -57,8 +61,9 @@ public class ModCustomersController implements Initializable {
         countryComboBox.setItems(tempCountriesList);
     }
 
-
-
+    /**
+     * This function is used to filter firstleveldivision data based on what country is selected within the GUI.
+     * */
     @FXML
     public void filterDivisions () {
         if (countryComboBox.getValue() == null) {
@@ -75,11 +80,19 @@ public class ModCustomersController implements Initializable {
         }
     }
 
+    /**
+     * This function sets the value within the divisionComboBox to null
+     * */
     @FXML
     public void clearDivisions() {
         divisionComboBox.setValue(null);
     }
 
+    /**
+     * This function is used to find the countryID of the corresponding country selected within the GUI. Country names are
+     * displayed within the GUI.
+     * @return a countryID value (integer)
+     * */
     public int findCountryID() {
         int tempID = 0;
         for (Countries country : countriesList) {
@@ -90,6 +103,12 @@ public class ModCustomersController implements Initializable {
         return tempID;
     }
 
+    /**
+     * This function is used to find the divisionID of the corresponding division selected within the GUI. Division names are
+     * displayed within the GUI.
+     * @return a divisionID value (integer)
+     * @throws NullPointerException
+     * */
     public int findDivisionID() throws NullPointerException {
         int tempID = 0;
         for (FirstLevelDivisions divisions : divisionList) {
@@ -103,6 +122,10 @@ public class ModCustomersController implements Initializable {
 
     }
 
+    /**
+     * This function switches the scene to the Manage Customers pane of the GUI.
+     * @throws IOException
+     * */
     public void switchToManageCustomers() throws IOException {
         Scene scene;
         Parent root;
@@ -113,6 +136,11 @@ public class ModCustomersController implements Initializable {
         primaryStage.show();
     }
 
+    /**
+     * This function updates an existing customer object based on data entered by the user.
+     * @throws IOException
+     * @throws SQLException
+     * */
     @FXML
     public void save () throws IOException, SQLException {
         try {

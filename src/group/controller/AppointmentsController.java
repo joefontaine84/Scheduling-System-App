@@ -51,14 +51,16 @@ public class AppointmentsController implements Initializable {
     public RadioButton apptsByMonth;
     public RadioButton allAppts;
 
-    public static Users loggedInUser;
-    public static int firstCall = 0;
+    public static Users loggedInUser;   // Determines which Users object is logged in to the application
+    public static int firstCall = 0;    // This is a static int variable associated with the function that issues a message whether appointments occur within 15-minutes of the user logging in
     public ComboBox reportsComboBox;
 
     /**
      * This is the function that is called once the AppointmentsView FXML page loads. This function sets the tableview
      * within the pane of the GUI, populates values into the Report combo-box, and determines if the meetingsInFifteen
      * function needs to be called.
+     * @param resourceBundle the ResourceBundle required for this function
+     * @param url the URl required for this function
      * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

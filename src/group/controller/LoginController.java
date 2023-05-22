@@ -47,6 +47,8 @@ public class LoginController implements Initializable {
      * This is the first function called once the Login portion of the GUI is fired. This function determines region/language
      * locale information and adjusts the text translation within the GUI accordingly. In addition, this function populates the User
      * Location field with disabled text based on the locale information.
+     * @param url the URL required for this function
+     * @param resourceBundle the ResourceBundle required for this function
      * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
@@ -109,6 +111,7 @@ public class LoginController implements Initializable {
 
     /**
      * This function is used to create a login_activity text file, meant to track user login activity.
+     * @param successfulLogin a boolean value representing whether the user attempt of logging in was successful (true) or unsuccessful (false)
      * */
     public void loginActivity(boolean successfulLogin) {
         try {

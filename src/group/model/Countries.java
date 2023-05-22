@@ -21,6 +21,7 @@ public class Countries {
 
     /**
      * Sets the Countries object's countryID value
+     * @param countryID the countryID to be set
      * */
     public void setCountryID(int countryID) {
         this.countryID = countryID;
@@ -36,6 +37,7 @@ public class Countries {
 
     /**
      * Sets the Countries object's countryName value
+     * @param countryName the countryName to be set
      * */
     public void setCountryName(String countryName) {
         this.countryName = countryName;

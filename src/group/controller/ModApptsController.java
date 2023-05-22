@@ -62,6 +62,8 @@ public class ModApptsController implements Initializable {
     /**
      * This function is called whenever the ModApptsView FXML file is loaded. This function determines what is displayed
      * in the Modify Appointment pane of the GUI and also populates values for the combo-boxes within this pane of the GUI.
+     * @param resourceBundle the ResourceBundle required of this function
+     * @param url the URL required of this function
      * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
@@ -117,6 +119,9 @@ public class ModApptsController implements Initializable {
     /**
      * This function is used to break a timestamp value into separate date & time fields to populate DatePickers and TextFields
      * within the Modify Appointment pane of the GUI.
+     * @param textField a TextField within the GUI that will display the time portion of a timestamp
+     * @param datePicker a DatePicker within the GUI that will display the date portion of a timestamp
+     * @param timestamp the timestamp in which the date and time elements will be independently displayed within the GUI
      * */
     public void setDateTimeFromTS(Timestamp timestamp, DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
@@ -133,6 +138,8 @@ public class ModApptsController implements Initializable {
      * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
      * provides validation that the time has been entered according to the provided pattern.
      * @return Timestamp variable with a strict format of "uuuu-MM-dd HH:mm"
+     * @param datePicker the DatePicker in which a date value will be extracted from to obtain the date portion of a timestamp
+     * @param textField the TextField in which a time value will be extracted from to obtain the time portion of a timestamp
      */
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -192,6 +199,7 @@ public class ModApptsController implements Initializable {
     /**
      * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
      * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * @param localDateTime the LocalDateTime entered by the user
      * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 

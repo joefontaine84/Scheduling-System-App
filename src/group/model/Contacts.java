@@ -23,6 +23,7 @@ public class Contacts {
 
     /**
      * Sets the Contacts object's name value
+     * @param name the name to be set
      * */
     public void setName(String name) {
         this.name = name;
@@ -38,6 +39,7 @@ public class Contacts {
 
     /**
      * Sets the Contacts object's contactID value
+     * @param contactID the contactID to be set
      * */
     public void setContactID(int contactID) {
         this.contactID = contactID;

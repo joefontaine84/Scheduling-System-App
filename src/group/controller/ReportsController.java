@@ -46,6 +46,8 @@ public class ReportsController implements Initializable {
     /**
      * This function is called whenever the ApptsByCustomerView, ApptsByMonthView, ApptsByTypeView, or SchedulesByContactView
      * are loaded. Based on what report is selected in the GUI, this function determines what to show in the GUI.
+     * @param resourceBundle the ResourceBundle required of this function
+     * @param url the URl required of this function
      * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -102,8 +104,4 @@ public class ReportsController implements Initializable {
             titleText.setVisible(true);
         }
     }
-
-
-
-
 }

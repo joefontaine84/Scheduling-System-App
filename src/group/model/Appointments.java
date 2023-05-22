@@ -37,6 +37,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's title value
+     * @param title the title to be set
      * */
     public void setTitle(String title) {
         this.title = title;
@@ -52,6 +53,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's description value
+     * @param description the description to be set
      * */
     public void setDescription(String description) {
         this.description = description;
@@ -67,6 +69,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's location value
+     * @param location the location to be set
      * */
     public void setLocation(String location) {
         this.location = location;
@@ -82,6 +85,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's type value
+     * @param type the type to be set
      * */
     public void setType(String type) {
         this.type = type;
@@ -97,6 +101,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's startDateTime value
+     * @param startDateTime the startDateTime to be set
      * */
     public void setStartDateTime(Timestamp startDateTime) {
         this.startDateTime = startDateTime;
@@ -112,6 +117,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's endDateTime value
+     * @param endDateTime the endDateTime to be set
      * */
     public void setEndDateTime(Timestamp endDateTime) {
         this.endDateTime = endDateTime;
@@ -127,6 +133,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's customerID value
+     * @param customerID the customerID to be set
      * */
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
@@ -142,6 +149,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's userID value
+     * @param userID the userID to be set
      * */
     public void setUserID(int userID) {
         this.userID = userID;
@@ -157,6 +165,7 @@ public class Appointments {
 
     /**
      * Sets the Appointment object's contactID value
+     * @param contactID the contactID to be set
      * */
     public void setContactID(int contactID) {
         this.contactID = contactID;

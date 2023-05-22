@@ -60,6 +60,8 @@ public class AddApptsController implements Initializable {
      * This function is called when the AddApptsView FXML file is loaded. The function establishes
      * what the appointmentIDTextField variable will display as an appointmentID value, in addition to populating combo-box values
      * within the Add Appointment pane of the GUI.
+     * @param resourceBundle the ResourceBundle required for this function
+     * @param url the URL required for this function
      * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -208,6 +210,8 @@ public class AddApptsController implements Initializable {
      * and combine it with a time entered in the GUI such that a Timestamp variable can be returned. This function
      * provides validation that the time has been entered according to the provided pattern.
      * @return Timestamp variable with a strict format of "uuuu-MM-dd HH:mm"
+     * @param datePicker a DatePicker within the GUI in which a date will be extracted from
+     * @param textField a TextField within the GUI in which a time will be extracted from
      */
     public Timestamp formatDateTime(DatePicker datePicker, TextField textField) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -267,6 +271,7 @@ public class AddApptsController implements Initializable {
     /**
      * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
      * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * @param localDateTime a LocalDateTime entered by the user
      * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 

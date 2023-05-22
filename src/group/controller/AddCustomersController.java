@@ -45,6 +45,8 @@ public class AddCustomersController implements Initializable {
 /**
  * This function is called when the AddCustomersView FXML file is loaded. The function establishes the customerID value that
  * will be displayed in the customerIDTextField, in addition to populating values for the combo-box included within this pane of the GUI.
+ * @param url the URL required for this function
+ * @param resourceBundle the ResourceBundle required for this function
  * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {

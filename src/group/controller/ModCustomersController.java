@@ -43,6 +43,8 @@ public class ModCustomersController implements Initializable {
     /**
      * This function is called whenever the ModCustomersView FXML page is loaded. This function displays the selected
      * customer object data and populates values into a combo-box.
+     * @param url the URL required of this function
+     * @param resourceBundle the ResourceBundle required of this function
      * */
     @FXML
     public void initialize (URL url, ResourceBundle resourceBundle) {

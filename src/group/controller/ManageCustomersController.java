@@ -41,6 +41,8 @@ public class ManageCustomersController implements Initializable {
 
     /**
      * This function is called whenever the ManageCustomersView FXML file is loaded. This function sets the customersTableView.
+     * @param resourceBundle the ResourceBundle required for this function
+     * @param url the URl required for this function
      * */
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -4,6 +4,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * This class is utilized to establish the connection with the mySQL database.
+ * */
 public abstract class JDBC {
  private static final String protocol = "jdbc";
  private static final String vendor = ":mysql:";

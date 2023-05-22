@@ -2,16 +2,11 @@ package group.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * This is the Appointments Class that stores data for Appointment objects.
+ * */
 public class Appointments {
     private int appointmentID;
     private String title;
@@ -23,98 +18,154 @@ public class Appointments {
     private int customerID;
     private int userID;
     private int contactID;
-    public static ObservableList<Appointments> apptsList = FXCollections.observableArrayList();
+    public static ObservableList<Appointments> apptsList = FXCollections.observableArrayList(); // where all appointments are stored
 
-
+    /**
+     * Sets the Appointment object's appointmentID value
+     * */
     public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
     }
 
+    /**
+     * Gets the Appointment object's appointmentID value
+     * @return  appointmentID (int)
+     * */
     public int getAppointmentID() {
         return appointmentID;
     }
 
+    /**
+     * Sets the Appointment object's title value
+     * */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Gets the Appointment object's title value
+     * @return  title (string)
+     * */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the Appointment object's description value
+     * */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the Appointment object's description value
+     * @return  description (string)
+     * */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the Appointment object's location value
+     * */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * Gets the Appointment object's location value
+     * @return  location (string)
+     * */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Sets the Appointment object's type value
+     * */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Gets the Appointment object's type value
+     * @return  type (string)
+     * */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the Appointment object's startDateTime value
+     * */
     public void setStartDateTime(Timestamp startDateTime) {
         this.startDateTime = startDateTime;
     }
 
+    /**
+     * Gets the Appointment object's timestamp value
+     * @return  start date/time (timestamp)
+     * */
     public Timestamp getStartDateTime() {
-        //implement the commented code block below for formatting to Appointments pane
-        /*        String dateTimePattern = "uuuu-MM-dd HH:mm";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        String time = startDateTime.toLocalDateTime().format(formatter);
-        return time;*/
-
         return startDateTime;
     }
 
+    /**
+     * Sets the Appointment object's endDateTime value
+     * */
     public void setEndDateTime(Timestamp endDateTime) {
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * Gets the Appointment object's timestamp value
+     * @return  end date/time (timestamp)
+     * */
     public Timestamp getEndDateTime() {
-
-        //implement the commented code block below for formatting to Appointments pane
-        /*        String dateTimePattern = "uuuu-MM-dd HH:mm";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        String time = endDateTime.toLocalDateTime().format(formatter);
-        return time;*/
-
         return endDateTime;
     }
 
+    /**
+     * Sets the Appointment object's customerID value
+     * */
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
 
+    /**
+     * Gets the Appointment object's customerID value
+     * @return  customerID (int)
+     * */
     public int getCustomerID() {
         return customerID;
     }
 
+    /**
+     * Sets the Appointment object's userID value
+     * */
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
+    /**
+     * Gets the Appointment object's userID value
+     * @return  userID (int)
+     * */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * Sets the Appointment object's contactID value
+     * */
     public void setContactID(int contactID) {
         this.contactID = contactID;
     }
 
+    /**
+     * Gets the Appointment object's contactID value
+     * @return  contactID (int)
+     * */
     public int getContactID() {
         return contactID;
     }

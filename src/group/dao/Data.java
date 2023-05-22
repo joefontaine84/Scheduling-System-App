@@ -14,7 +14,7 @@ import static group.model.Users.usersList;
 import static group.model.Appointments.apptsList;
 
 /**
- * This class is used to connect to the mySQL database and incorporate functions that conduct queries on data within the database.
+ * This class is used to incorporate functions that conduct queries on data within the database.
  * */
 public class Data {
     /**
@@ -254,6 +254,9 @@ public class Data {
         ps.executeUpdate();
     }
 
+    /**
+     * This function deletes a customer object from the database.
+     * */
     public static void deleteCustomerFromDB (Customers customer) throws SQLException {
         String sql = "DELETE FROM client_schedule.customers WHERE Customer_ID = ?";
         PreparedStatement ps = JDBC.makePreparedStatement(sql, JDBC.getConnection());

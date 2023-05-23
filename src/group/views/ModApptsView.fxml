@@ -23,9 +23,9 @@
       <Text layoutX="114.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" />
       <Text layoutX="425.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
       <Text layoutX="426.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
-      <Text layoutX="85.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID:" />
-      <Text layoutX="442.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID:" />
-      <Text layoutX="424.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact ID:" />
+      <Text layoutX="88.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer:" />
+      <Text layoutX="454.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:" />
+      <Text layoutX="435.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact:" />
       <Text layoutX="259.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Appointment:">
          <font>
             <Font size="24.0" />
@@ -33,13 +33,13 @@
       </Text>
       <Button layoutX="294.0" layoutY="429.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="52.0" text="Save" />
       <Button layoutX="389.0" layoutY="429.0" mnemonicParsing="false" onAction="#switchToAppointmentsController" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
-      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="328.0" prefWidth="150.0" promptText="Select Contact ID" />
+      <ComboBox fx:id="contactIDComboBox" layoutX="500.0" layoutY="328.0" prefWidth="150.0" promptText="Select Contact" />
       <DatePicker fx:id="startDatePicker" layoutX="500.0" layoutY="109.0" prefHeight="25.0" prefWidth="149.0" />
       <DatePicker fx:id="endDatePicker" layoutX="500.0" layoutY="194.0" prefHeight="25.0" prefWidth="149.0" />
       <Text layoutX="431.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:" />
       <TextField fx:id="endDateTimeTextField" layoutX="500.0" layoutY="237.0" />
       <Text layoutX="430.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
-      <ComboBox fx:id="userIDComboBox" layoutX="500.0" layoutY="283.0" prefWidth="150.0" promptText="Select User ID" />
-      <ComboBox fx:id="customerIDComboBox" layoutX="171.0" layoutY="328.0" prefWidth="150.0" promptText="Select Customer ID" />
+      <ComboBox fx:id="userIDComboBox" layoutX="500.0" layoutY="283.0" prefWidth="150.0" promptText="Select User" />
+      <ComboBox fx:id="customerIDComboBox" layoutX="171.0" layoutY="328.0" prefWidth="150.0" promptText="Select Customer" />
    </children>
 </AnchorPane>

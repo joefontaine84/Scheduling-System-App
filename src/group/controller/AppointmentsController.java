@@ -53,7 +53,7 @@ public class AppointmentsController implements Initializable {
 
     public static Users loggedInUser;   // Determines which Users object is logged in to the application
     public static int firstCall = 0;    // This is a static int variable associated with the function that issues a message whether appointments occur within 15-minutes of the user logging in
-    public ComboBox reportsComboBox;
+    public ComboBox<String> reportsComboBox;
 
     /**
      * This is the function that is called once the AppointmentsView FXML page loads. This function sets the tableview

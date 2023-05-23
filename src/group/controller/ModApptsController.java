@@ -1,6 +1,5 @@
 package group.controller;
 
-import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Contacts;
@@ -49,10 +48,10 @@ public class ModApptsController implements Initializable {
 
     public TextField startDateTimeTextField;
     public TextField endDateTimeTextField;
-    public ComboBox contactIDComboBox;
+    public ComboBox<String> contactIDComboBox;
     public DatePicker startDatePicker;
     public DatePicker endDatePicker;
-    public ComboBox userIDComboBox;
+    public ComboBox<String> userIDComboBox;
 
     public static int apptIndex; // this variable stores the index of the apptsList that was selected for modification
 

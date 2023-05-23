@@ -244,14 +244,14 @@ public class ModApptsController implements Initializable {
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
         try {
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList());
-            apptsByContact.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
+            List<Appointments> apptsByCustomer = apptsList.stream().filter(element -> element.getCustomerID() == findCustomerID()).collect(Collectors.toList());
+            apptsByCustomer.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
             boolean before = false;
             boolean after = false;
             Timestamp start = formatDateTime(startDatePicker, startDateTimeTextField);
             Timestamp end = formatDateTime(endDatePicker, endDateTimeTextField);
-            // if apptsByContact list is empty, this for loop does not fire and no exception is thrown
-            for (Appointments element : apptsByContact) {
+            // if apptsByCustomer list is empty, this for loop does not fire and no exception is thrown
+            for (Appointments element : apptsByCustomer) {
                 if (start.before(element.getStartDateTime()) && (end.before(element.getStartDateTime()) || end.equals(element.getStartDateTime()))) {
                     before = true;
                 }
@@ -260,7 +260,7 @@ public class ModApptsController implements Initializable {
                     after = true;
                 }
                 if (before == false && after == false) {
-                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
+                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Customer selected");
                 }
             }
 

@@ -188,7 +188,7 @@ public class AppointmentsController implements Initializable {
         } else if (apptsByMonth.isSelected()) {
             int month = LocalDateTime.now().getMonthValue();
             int year = LocalDateTime.now().getYear();
-            tempList = apptsList.stream().filter(element -> element.getStartDateTime().toLocalDateTime().getMonthValue() == month && element.getStartDateTime().toLocalDateTime().getYear() == year).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tempList = apptsList.stream().filter(element -> element.getStartDateTime().toLocalDateTime().getMonthValue() == month && element.getStartDateTime().toLocalDateTime().getYear() == year).collect(Collectors.toCollection(FXCollections::observableArrayList)); //LAMBDA EXPRESSION
             apptsTableView.setItems(tempList);
         } else if (allAppts.isSelected()) {
             apptsTableView.setItems(apptsList);

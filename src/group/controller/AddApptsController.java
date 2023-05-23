@@ -23,7 +23,6 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -49,12 +48,10 @@ public class AddApptsController implements Initializable {
     public TextField descriptionTextField;
     public TextField locationTextField;
     public TextField typeTextField;
-    public TextField userIDTextField;
-    public TextField customerIDTextField;
     public TextField endDateTimeTextField;
     public DatePicker endDatePicker;
-    public ComboBox userIDComboBox;
-    public ComboBox customerIDComboBox;
+    public ComboBox<String> userIDComboBox;
+    public ComboBox<String> customerIDComboBox;
 
     /**
      * This function is called when the AddApptsView FXML file is loaded. The function establishes
@@ -110,7 +107,7 @@ public class AddApptsController implements Initializable {
 
         try {
             // Variables below are used for input validation
-            List<Appointments> apptsByContact = apptsList.stream().filter(element -> element.getContactID() == findContactID()).collect(Collectors.toList()); // LAMBDA EXPRESSION USED TO MORE EFFICIENTLY OBTAIN ALL APPOINTMENTS THAT HAVE A MATCHING CONTACT ID
+            List<Appointments> apptsByCustomer = apptsList.stream().filter(element -> element.getCustomerID() == findCustomerID()).collect(Collectors.toList()); // LAMBDA EXPRESSION USED TO MORE EFFICIENTLY OBTAIN ALL APPOINTMENTS THAT HAVE A MATCHING CONTACT ID
             boolean before = false;
             boolean after = false;
             boolean timeCheck = true;
@@ -118,8 +115,8 @@ public class AddApptsController implements Initializable {
             Timestamp end = formatDateTime(endDatePicker, endDateTimeTextField);
 
             /*The for loop below will check if the appointment date/time entered will overlap with
-            other appointments scheduled with the same Contact. If there is overlap, an InputValidationException will be thrown. */
-            for (Appointments element : apptsByContact) {
+            other appointments scheduled with the same Customer. If there is overlap, an InputValidationException will be thrown. */
+            for (Appointments element : apptsByCustomer) {
                 if (end.equals(element.getStartDateTime()) || end.before(element.getStartDateTime())) {
                     before = true;
                 }
@@ -127,7 +124,7 @@ public class AddApptsController implements Initializable {
                     after = true;
                 }
                 if (before == false && after == false) {
-                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Contact selected");
+                    throw new InputValidationException("Please enter appointment times that do not overlap with existing appointments for the Customer selected");
                 }
             }
 
@@ -240,7 +237,6 @@ public class AddApptsController implements Initializable {
         }
         return contactID;
     }
-
     /**
      * This function returns the corresponding userID of the User that is selected when adding an appointment.
      * @return The user ID for the User selected.

@@ -52,7 +52,6 @@ public class LoginController implements Initializable {
      * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializer for login controller");
         if (Locale.getDefault().getLanguage().equals("fr")) {
             englishLanguage = false;
             usernameText.setText("Nom d'utilisateur:");
@@ -62,7 +61,6 @@ public class LoginController implements Initializable {
             userLocationTextField.setText("Canada");
         } else if (Locale.getDefault().getISO3Country().equals("USA")){
             userLocationTextField.setText("United States");
-            System.out.println(Locale.getDefault().getISO3Country());
         } else if (Locale.getDefault().getISO3Country().equals("GBR")) {
             userLocationTextField.setText("Great Britain");
         }
@@ -82,7 +80,6 @@ public class LoginController implements Initializable {
         boolean match = false;
         for (int i = 0; i < usersList.size(); i++) {
             if (usersList.get(i).getUsername().equals(providedUsername) && usersList.get(i).getPassword().equals(providedPassword)) {
-                // switch to new scene
                 loggedInUser = usersList.get(i);
                 match = true;
                 Scene scene;

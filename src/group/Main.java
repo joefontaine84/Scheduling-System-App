@@ -1,9 +1,7 @@
 package group;
 
-import group.controller.LoginController;
 import group.dao.Data;
 import group.dao.JDBC;
-import group.model.Appointments;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,12 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.sql.SQLOutput;
 
 public class Main extends Application {
 
@@ -32,14 +25,14 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException {
-        JDBC.makeConnection();
-        Data.populateUsers();
-        Data.populateContacts();
-        Data.populateAppointments();
-        Data.populateCustomers();
-        Data.populateCountries();
-        Data.populateFirstLevelDivisions();
-        launch(args);
-        JDBC.closeConnection();
+        JDBC.makeConnection(); // connects to database
+        Data.populateUsers(); // loads all User information from database
+        Data.populateContacts(); // loads all Contact information from database
+        Data.populateAppointments(); // loads all Appointment information from database
+        Data.populateCustomers(); // loads all Customer information from database
+        Data.populateCountries(); // loads all Country information from database
+        Data.populateFirstLevelDivisions(); // loads all FirstLevelDivision information from database
+        launch(args); // launches application
+        JDBC.closeConnection(); // closes database connection
     }
 }

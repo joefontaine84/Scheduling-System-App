@@ -35,6 +35,7 @@ import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
+import static java.time.ZoneId.SHORT_IDS;
 
 /**
  * This class is the controller class for the Modify Appointment pane of the GUI.
@@ -116,7 +117,7 @@ public class ModApptsController implements Initializable {
     }
 
     /**
-     * This function is used to break a timestamp value into separate date & time fields to populate DatePickers and TextFields
+     * This function is used to break a timestamp value into separate date and time fields to populate DatePickers and TextFields
      * within the Modify Appointment pane of the GUI.
      * @param textField a TextField within the GUI that will display the time portion of a timestamp
      * @param datePicker a DatePicker within the GUI that will display the date portion of a timestamp
@@ -196,37 +197,35 @@ public class ModApptsController implements Initializable {
     }
 
     /**
-     * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
-     * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * This function exists to convert the hour entered by the user into the corresponding hour of the Eastern Standard Time (EST) zone.
+     * @return The hour in EST after being converted from the user-entered time entry in their respective time zone.
      * @param localDateTime the LocalDateTime entered by the user
      * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 
-        ZoneId newYork = ZoneId.of("America/New_York");
+        String EST = SHORT_IDS.get("EST");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm Z");
 
         ZonedDateTime localZoneDateTime = localDateTime.atZone(TimeZone.getDefault().toZoneId());
-        ZonedDateTime newYorkZoneDateTime = localDateTime.atZone(newYork);
 
         String localDateTimeFormatted = "";
-        String newYorkDateTimeFormatted = "";
+
         String localSubstring = "";
-        String newYorkSubstring = "";
+        String ESTSubstring = "";
 
-        localDateTimeFormatted = localZoneDateTime.format(formatter);       // gets the offset from UTC in hours
-        newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);   // gets the offset from UTC in hours
+        localDateTimeFormatted = localZoneDateTime.format(formatter);
 
-        localSubstring = localDateTimeFormatted.substring(17, 20);          // converts string value to long data type
-        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);      // converts string value to long data type
+        localSubstring = localDateTimeFormatted.substring(17, 20);      // gets the offset from UTC in hours
+        ESTSubstring = EST.substring(0,3);  // gets the offset from UTC in hours
 
-        long localOffset = Integer.valueOf(localSubstring);
-        long newYorkOffset = Integer.valueOf(newYorkSubstring);
+        long localOffset = Integer.valueOf(localSubstring);            // converts string value to long data type
+        long ESTOffset = Integer.valueOf(ESTSubstring);        // converts string value to long data type
 
-        long timeDifference = localOffset - newYorkOffset;                  // the amount of hours the local time is from the New York time zone.
+        long timeDifference = localOffset - ESTOffset;              // the amount of hours the local time is from the New York time zone.
 
         long adjustedHours = 0;
 
-        adjustedHours = localDateTime.getHour() - timeDifference;           // the hour of the day provided within the local time zone represented as New York time zone.
+        adjustedHours = localDateTime.getHour() - timeDifference;       // the hour of the day provided within the local time zone represented as New York time zone.
 
         return adjustedHours;
     }
@@ -235,7 +234,11 @@ public class ModApptsController implements Initializable {
      * The save function performs several input validation procedures to ensure data has been entered correctly.
      * Input validation procedures include checking whether the entered appointment information overlaps with
      * other appointments for the Contact selected and checks whether the dates/times entered is consistent
-     * with requirements outlined in the performance assessment. THIS FUNCTION USES A LAMBDA EXPRESSION.
+     * with requirements outlined in the performance assessment.
+     *
+     * THIS FUNCTION USES A LAMBDA EXPRESSION. The lambda expression below is used to create a list
+     * of Appointments objects based on the apptsList static variable, in which the list stores Appointments
+     * only if the customerID for each Appointment in apptsList matches the user-selected customerID.
      * @throws IOException
      * @throws InputValidationException
      * @throws SQLException
@@ -243,6 +246,7 @@ public class ModApptsController implements Initializable {
     @FXML
     public void save() throws IOException, InputValidationException, SQLException {
         try {
+            // lambda expression below used to create list of Appointments objects based on apptsList static variable, in which the list stores Appointments only if the customerID for each Appointment in apptsList matches the user-selected customerID.
             List<Appointments> apptsByCustomer = apptsList.stream().filter(element -> element.getCustomerID() == findCustomerID()).collect(Collectors.toList());
             apptsByCustomer.remove(selectedAppt); // removes the appointment already existing so that it doesn't compare to itself
             boolean before = false;

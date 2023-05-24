@@ -84,11 +84,13 @@ public class ReportsController implements Initializable {
 
     /**
      * This function produces a schedule (tableview) of appointments for a selected contact.
+     * THIS FUNCTION USES A LAMBDA EXPRESSION. The lambda expression is used to create an ObservableList of ReportData objects based on the reportDataOL static
+     * variable, in which the ObservableList created collects ReportData objects only if their contactName variable equals the user selected contactName in the GUI.
      * */
     @FXML
     public void showSchedule() {
         if (!(contactComboBox.getValue() == null)) {
-            ObservableList<ReportData> filteredData = reportDataOL.stream().filter(element -> element.getContactName().equals(contactComboBox.getValue().toString())).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            ObservableList<ReportData> filteredData = reportDataOL.stream().filter(element -> element.getContactName().equals(contactComboBox.getValue().toString())).collect(Collectors.toCollection(FXCollections::observableArrayList)); // see function description for more information
             apptsTableView.setItems(filteredData);
             appointmentID.setCellValueFactory(new PropertyValueFactory<ReportData, Integer>("appointmentID"));
             title.setCellValueFactory(new PropertyValueFactory<ReportData, String>("title"));

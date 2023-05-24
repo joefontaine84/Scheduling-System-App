@@ -34,6 +34,7 @@ import static group.model.Appointments.apptsList;
 import static group.model.Contacts.contactList;
 import static group.model.Customers.customerList;
 import static group.model.Users.usersList;
+import static java.time.ZoneId.SHORT_IDS;
 
 /**
  * This class is the controller class for the "Add Appointment" pane of the GUI.
@@ -97,7 +98,11 @@ public class AddApptsController implements Initializable {
      * The save function performs several input validation procedures to ensure data has been entered correctly.
      * Input validation procedures include checking whether the entered appointment information overlaps with
      * other appointments for the Contact selected and checks whether the dates/times entered is consistent
-     * with requirements outlined in the performance assessment. THIS FUNCTION USES A LAMBDA EXPRESSION.
+     * with requirements outlined in the performance assessment.
+     *
+     * THIS FUNCTION USES A LAMBDA EXPRESSION. The lambda expression below is used to create a list
+     * of Appointments objects based on the apptsList static variable, in which the list stores Appointments
+     * only if the customerID for each Appointment in apptsList matches the user-selected customerID.
      * @throws IOException
      * @throws InputValidationException
      * @throws SQLException
@@ -107,7 +112,8 @@ public class AddApptsController implements Initializable {
 
         try {
             // Variables below are used for input validation
-            List<Appointments> apptsByCustomer = apptsList.stream().filter(element -> element.getCustomerID() == findCustomerID()).collect(Collectors.toList()); // LAMBDA EXPRESSION USED TO MORE EFFICIENTLY OBTAIN ALL APPOINTMENTS THAT HAVE A MATCHING CONTACT ID
+            // lambda expression below used to create list of Appointments objects based on apptsList static variable, in which the list stores Appointments only if the customerID for each Appointment in apptsList matches the user-selected customerID.
+            List<Appointments> apptsByCustomer = apptsList.stream().filter(element -> element.getCustomerID() == findCustomerID()).collect(Collectors.toList());
             boolean before = false;
             boolean after = false;
             boolean timeCheck = true;
@@ -265,33 +271,31 @@ public class AddApptsController implements Initializable {
     }
 
     /**
-     * This function exists to convert the hour entered by the user into the corresponding hour of the America/New_York time zone.
-     * @return The hour in EST/EDT after being converted from the user-entered time entry in their respective time zone.
+     * This function exists to convert the hour entered by the user into the corresponding hour of the Eastern Standard Time (EST) time zone.
+     * @return The hour in EST after being converted from the user-entered time entry in their respective time zone.
      * @param localDateTime a LocalDateTime entered by the user
      * */
     public long hourConversionNYTime(LocalDateTime localDateTime) {
 
-        ZoneId newYork = ZoneId.of("America/New_York");
+        String EST = SHORT_IDS.get("EST");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm Z");
 
         ZonedDateTime localZoneDateTime = localDateTime.atZone(TimeZone.getDefault().toZoneId());
-        ZonedDateTime newYorkZoneDateTime = localDateTime.atZone(newYork);
 
         String localDateTimeFormatted = "";
-        String newYorkDateTimeFormatted = "";
+
         String localSubstring = "";
-        String newYorkSubstring = "";
+        String ESTSubstring = "";
 
         localDateTimeFormatted = localZoneDateTime.format(formatter);
-        newYorkDateTimeFormatted = newYorkZoneDateTime.format(formatter);
 
         localSubstring = localDateTimeFormatted.substring(17, 20);      // gets the offset from UTC in hours
-        newYorkSubstring = newYorkDateTimeFormatted.substring(17, 20);  // gets the offset from UTC in hours
+        ESTSubstring = EST.substring(0,3);  // gets the offset from UTC in hours
 
         long localOffset = Integer.valueOf(localSubstring);            // converts string value to long data type
-        long newYorkOffset = Integer.valueOf(newYorkSubstring);        // converts string value to long data type
+        long ESTOffset = Integer.valueOf(ESTSubstring);        // converts string value to long data type
 
-        long timeDifference = localOffset - newYorkOffset;              // the amount of hours the local time is from the New York time zone.
+        long timeDifference = localOffset - ESTOffset;              // the amount of hours the local time is from the New York time zone.
 
         long adjustedHours = 0;
 

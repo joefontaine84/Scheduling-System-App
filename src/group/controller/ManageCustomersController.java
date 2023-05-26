@@ -1,5 +1,6 @@
 package group.controller;
 
+import group.dao.Data;
 import group.helper.InputValidationException;
 import group.model.Appointments;
 import group.model.Customers;
@@ -16,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static group.Main.primaryStage;
@@ -109,33 +111,33 @@ public class ManageCustomersController implements Initializable {
     }
 
     /**
-     * This function deletes a customer from the customer list. Before deleting, the function checks to see if the customer is assigned
-     * any appointments. If the customer is associated with existing appointments, these appointments must be deleted first before
-     * the customer object can be deleted.
+     * This function deletes a customer from the customer list, in addition to all associated appointments with the customer. The associated appointments
+     * are deleted before the customer object is deleted. If a customer object is not selected within the tableview within the GUI, an alert message appears
+     * informing the user that they must first select a customer object.
      * @throws InputValidationException
      * @throws SQLException
      * */
     @FXML
     public void delete () throws InputValidationException, SQLException {
-        try {
-            if (!(customersTableView.getSelectionModel().isEmpty())) {
-                for (Appointments appts : apptsList) {
-                    if (appts.getCustomerID() == customersTableView.getSelectionModel().getSelectedItem().getCustomerID()) {
-                        throw new InputValidationException("You must first delete all associated appointments with this customer before deleting the customer record.");
-                    }
+
+        if (!(customersTableView.getSelectionModel().isEmpty())) {
+            ArrayList<Appointments> tempList = new ArrayList<>();
+            for (Appointments appts : apptsList) {
+                if (appts.getCustomerID() == customersTableView.getSelectionModel().getSelectedItem().getCustomerID()) {
+                    tempList.add(appts);
                 }
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have successfully deleted the selected Customer with Customer ID: " + customersTableView.getSelectionModel().getSelectedItem().getCustomerID());
-                alert.show();
-                deleteCustomerFromDB(customersTableView.getSelectionModel().getSelectedItem());
-                customerList.remove(customersTableView.getSelectionModel().getSelectedItem());
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer record to delete.");
-                alert.show();
             }
-        } catch (InputValidationException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, exception.getMessage());
+            for (Appointments appts : tempList) {
+                Data.deleteApptFromDB(appts);
+                apptsList.remove(appts);
+            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You have successfully deleted the selected Customer with Customer ID: " + customersTableView.getSelectionModel().getSelectedItem().getCustomerID() + ", in addition to all associated appointments with this Customer.");
+            alert.show();
+            deleteCustomerFromDB(customersTableView.getSelectionModel().getSelectedItem());
+            customerList.remove(customersTableView.getSelectionModel().getSelectedItem());
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer record to delete.");
             alert.show();
         }
     }
-
 }

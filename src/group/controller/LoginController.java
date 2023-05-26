@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import static group.model.Users.usersList;
@@ -52,17 +53,16 @@ public class LoginController implements Initializable {
      * */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
+        String defaultZoneID = ZoneId.systemDefault().toString();
         if (Locale.getDefault().getLanguage().equals("fr")) {
             englishLanguage = false;
             usernameText.setText("Nom d'utilisateur:");
             passwordText.setText("Pot de passe:");
-            userLocationText.setText("Emplacement:");
+            userLocationText.setText("ID de zone:");
             loginButton.setText("Connexion");
-            userLocationTextField.setText("Canada");
-        } else if (Locale.getDefault().getISO3Country().equals("USA")){
-            userLocationTextField.setText("United States");
-        } else if (Locale.getDefault().getISO3Country().equals("GBR")) {
-            userLocationTextField.setText("Great Britain");
+            userLocationTextField.setText(defaultZoneID);
+        } else {
+            userLocationTextField.setText(defaultZoneID);
         }
     }
 
